@@ -5,8 +5,10 @@ NAME = cube3d
 CFLAGS = -Wall -Wextra -Werror
 SANITIZER = -g -fsanitize=address,undefined
 LIBFT = libft/libft.a
-INC = -I./includes
-SRCS =			srcs/parsing/get_next_line.c
+INC = -I./incs
+SRCS =			srcs/main.c \
+				srcs/parsing/get_next_line.c \
+				srcs/utilities/string.c
 OBJS = 			${SRCS:.c=.o}
 
 .c.o:
@@ -14,6 +16,7 @@ OBJS = 			${SRCS:.c=.o}
 
 ${NAME}: ${LIBFT}
 	${CC} ${SANITIZER} ${INC} ${LIBFT} ${CFLAGS} ${SRCS} -o ${NAME}
+	rm -rf cube3d.dSYM
 
 ${LIBFT}:
 	@make all -C libft

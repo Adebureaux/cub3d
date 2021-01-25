@@ -6,12 +6,13 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/25 15:46:59 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/01/25 19:32:19 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE3D_H
 # define CUBE3D_H
+# include "../libft/libft.h"
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
@@ -24,7 +25,6 @@ struct			s_rgb
 	int g;
 	int b;
 };
-
 typedef struct s_cub	t_cub;
 struct			s_cub
 {
@@ -38,5 +38,6 @@ struct			s_cub
 	t_rgb f;
 	t_rgb c;
 };
-
+char	*ft_strndup(const char *s1, size_t n);
+char	*ft_strncpy(char *dst, char *src, size_t n);
 #endif
