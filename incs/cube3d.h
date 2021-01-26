@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/25 19:32:19 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/01/26 01:10:54 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <math.h>
 
 typedef struct s_rgb	t_rgb;
 struct			s_rgb
@@ -28,7 +29,7 @@ struct			s_rgb
 typedef struct s_cub	t_cub;
 struct			s_cub
 {
-	char id[9];
+	char **id;
 	char *r;
 	char *no;
 	char *so;

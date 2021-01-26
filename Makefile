@@ -14,8 +14,8 @@ OBJS = 			${SRCS:.c=.o}
 .c.o:
 	${CC} ${CFLAGS} -c ${INC} $< -o ${<:.c=.o}
 
-${NAME}: ${LIBFT}
-	${CC} ${SANITIZER} ${INC} ${LIBFT} ${CFLAGS} ${SRCS} -o ${NAME}
+${NAME}: ${LIBFT} ${OBJS}
+	${CC} ${SANITIZER} ${INC} ${LIBFT} ${CFLAGS} ${OBJS} -o ${NAME}
 	rm -rf cube3d.dSYM
 
 ${LIBFT}:
