@@ -19,25 +19,18 @@
 # include <stdio.h>
 # include <math.h>
 
-typedef struct s_rgb	t_rgb;
-struct			s_rgb
-{
-	int r;
-	int g;
-	int b;
-};
 typedef struct s_cub	t_cub;
 struct			s_cub
 {
-	char **id;
-	char *r;
+	int rx;
+	int ry;
 	char *no;
 	char *so;
 	char *we;
 	char *ea;
 	char *s;
-	t_rgb f;
-	t_rgb c;
+	int f;
+	int c;
 };
 char	*ft_strndup(const char *s1, size_t n);
 char	*ft_strncpy(char *dst, char *src, size_t n);

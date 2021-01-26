@@ -19,19 +19,15 @@ t_cub	*init_cub(void)
 	cub = (t_cub*)malloc(sizeof(t_cub));
 	if (!cub)
 		return (NULL);
-	cub->id = ft_split("R|NO|SO|WE|EA|S|F|C", '|');
-	cub->r = NULL;
+	cub->rx = -1;
+	cub->ry = -1;
 	cub->no = NULL;
 	cub->so = NULL;
 	cub->we = NULL;
 	cub->ea = NULL;
 	cub->s = NULL;
-	cub->f.r = -1;
-	cub->f.g = -1;
-	cub->f.b = -1;
-	cub->c.r = -1;
-	cub->c.g = -1;
-	cub->c.b = -1;
+	cub->f = -1;
+	cub->c = -1;
 	return (cub);
 }
 
