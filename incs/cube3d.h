@@ -31,6 +31,7 @@ struct			s_cub
 	char *s;
 	int f;
 	int c;
+	int save;
 };
 char	*ft_strndup(const char *s1, size_t n);
 char	*ft_strncpy(char *dst, char *src, size_t n);

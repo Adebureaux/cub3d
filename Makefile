@@ -7,8 +7,7 @@ SANITIZER = -g -fsanitize=address,undefined
 LIBFT = libft/libft.a
 INC = -I./incs
 SRCS =			srcs/main.c \
-				srcs/parsing/get_next_line.c \
-				srcs/utilities/string.c
+				srcs/parsing/get_next_line.c
 OBJS = 			${SRCS:.c=.o}
 
 .c.o:
