@@ -1,38 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cube3d.h                                           :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/28 13:52:00 by adeburea         ###   ########.fr       */
+/*   Created: 2020/09/28 00:12:29 by adeburea          #+#    #+#             */
+/*   Updated: 2020/11/13 15:47:18 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUBE3D_H
-# define CUBE3D_H
-# include "../libft/libft.h"
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <math.h>
+#include "libft.h"
 
-typedef struct s_cub	t_cub;
-struct			s_cub
+int		ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int rx;
-	int ry;
-	char *no;
-	char *so;
-	char *we;
-	char *ea;
-	char *s;
-	int f;
-	int c;
-	int save;
-};
-int		get_next_line(int fd, char **line);
-void	parse_file(t_cub *cub);
-#endif
+	const unsigned char	*ptr_s1;
+	const unsigned char	*ptr_s2;
+
+	ptr_s1 = (unsigned char*)s1;
+	ptr_s2 = (unsigned char*)s2;
+	if (n < 1)
+		return (0);
+	while (--n)
+	{
+		if (*ptr_s1 != *ptr_s2)
+			break ;
+		ptr_s1++;
+		ptr_s2++;
+	}
+	return ((*ptr_s1) - (*ptr_s2));
+}

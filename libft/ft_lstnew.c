@@ -1,38 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cube3d.h                                           :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/28 13:52:00 by adeburea         ###   ########.fr       */
+/*   Created: 2020/09/29 14:26:01 by adeburea          #+#    #+#             */
+/*   Updated: 2020/11/17 16:36:13 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUBE3D_H
-# define CUBE3D_H
-# include "../libft/libft.h"
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <math.h>
+#include "libft.h"
 
-typedef struct s_cub	t_cub;
-struct			s_cub
+t_list	*ft_lstnew(void *content)
 {
-	int rx;
-	int ry;
-	char *no;
-	char *so;
-	char *we;
-	char *ea;
-	char *s;
-	int f;
-	int c;
-	int save;
-};
-int		get_next_line(int fd, char **line);
-void	parse_file(t_cub *cub);
-#endif
+	t_list *lst;
+
+	if (!(lst = malloc(sizeof(t_list))))
+		return (NULL);
+	lst->content = content;
+	lst->next = NULL;
+	return (lst);
+}

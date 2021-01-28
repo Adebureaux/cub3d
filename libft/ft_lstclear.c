@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cube3d.h                                           :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/28 13:52:00 by adeburea         ###   ########.fr       */
+/*   Created: 2020/09/29 16:57:39 by adeburea          #+#    #+#             */
+/*   Updated: 2020/11/17 16:16:59 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUBE3D_H
-# define CUBE3D_H
-# include "../libft/libft.h"
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <math.h>
+#include "libft.h"
 
-typedef struct s_cub	t_cub;
-struct			s_cub
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	int rx;
-	int ry;
-	char *no;
-	char *so;
-	char *we;
-	char *ea;
-	char *s;
-	int f;
-	int c;
-	int save;
-};
-int		get_next_line(int fd, char **line);
-void	parse_file(t_cub *cub);
-#endif
+	t_list *tmp;
+
+	tmp = (*lst);
+	if (lst)
+	{
+		while ((*lst) && del)
+		{
+			tmp = (*lst)->next;
+			ft_lstdelone(*lst, del);
+			(*lst) = tmp;
+		}
+	}
+}

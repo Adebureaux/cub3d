@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cube3d.h                                           :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/28 13:52:00 by adeburea         ###   ########.fr       */
+/*   Created: 2020/09/28 21:44:41 by adeburea          #+#    #+#             */
+/*   Updated: 2020/09/29 17:05:06 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUBE3D_H
-# define CUBE3D_H
-# include "../libft/libft.h"
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <math.h>
+#include "libft.h"
 
-typedef struct s_cub	t_cub;
-struct			s_cub
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	int rx;
-	int ry;
-	char *no;
-	char *so;
-	char *we;
-	char *ea;
-	char *s;
-	int f;
-	int c;
-	int save;
-};
-int		get_next_line(int fd, char **line);
-void	parse_file(t_cub *cub);
-#endif
+	char	*dst;
+	int		i;
+
+	i = -1;
+	if (!s || !f)
+		return (NULL);
+	if (!(dst = (char*)malloc(sizeof(char) * (ft_strlen(s) + 1))))
+		return (NULL);
+	while (s[++i])
+		dst[i] = f(i, s[i]);
+	dst[i] = '\0';
+	return (dst);
+}

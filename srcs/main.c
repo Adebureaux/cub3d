@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/26 01:29:17 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/01/28 13:56:05 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_cub	*init_cub(void)
 	return (cub);
 }
 
-int main(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_cub	*cub;
 
@@ -52,13 +52,14 @@ int main(int ac, char **av)
 	cub = init_cub();
 	if (ac == 3)
 	{
-		if (ft_strcmp(av[2], "--save"))
+		if (!ft_strcmp(av[2], "--save"))
 			cub->save = 1;
 		else
-			ft_exit(EXIT_FAILURE, cub, "error: wrong second --save\n");
+			ft_exit(EXIT_FAILURE, cub, "error: wrong second argument\n");
 	}
-	if (!ft_strcmp(ft_strnstr(av[1], ".cub", ft_strlen(av[1])), ".cub"))
-		ft_exit(EXIT_FAILURE, cub, "error: wrong map format filename\n");
+	if (ft_strcmp(ft_strnstr(av[1], ".cub", ft_strlen(av[1])), ".cub"))
+		ft_exit(EXIT_FAILURE, cub, "error: wrong map format\n");
+	parse_file(cub);
 	ft_exit(EXIT_SUCCESS, cub, NULL);
 	return (EXIT_SUCCESS);
 }

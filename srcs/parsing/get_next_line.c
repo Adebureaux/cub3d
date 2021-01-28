@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 21:53:59 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/25 19:30:10 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/01/28 13:14:29 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int		get_file(int fd, char *save)
 	if (!save[0])
 		ft_bzero(save, 10000);
 	while (rd > 0 && get_size('\n', save) == -1)
-		rd = read(fd, &save[ft_strlen(save)], 64);
+		rd = read(fd, &save[ft_strlen(save)], 128);
 	return (1);
 }
 

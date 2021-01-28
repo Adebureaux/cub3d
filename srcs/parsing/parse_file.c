@@ -1,38 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cube3d.h                                           :+:      :+:    :+:   */
+/*   parse_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/28 13:52:00 by adeburea         ###   ########.fr       */
+/*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
+/*   Updated: 2021/01/28 13:56:23 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUBE3D_H
-# define CUBE3D_H
-# include "../libft/libft.h"
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include <math.h>
+#include "../../incs/cube3d.h"
 
-typedef struct s_cub	t_cub;
-struct			s_cub
+void	parse_file(t_cub *cub)
 {
-	int rx;
-	int ry;
-	char *no;
-	char *so;
-	char *we;
-	char *ea;
-	char *s;
-	int f;
-	int c;
-	int save;
-};
-int		get_next_line(int fd, char **line);
-void	parse_file(t_cub *cub);
-#endif
+	char	*line;
+	int		fd;
+
+	fd = open("gnl.c", O_RDONLY);
+	while ((get_next_line(fd, &line) > 0))
+	{
+		printf("%s\n", line);
+		free(line);
+	}
+	(void)cub;
+	close(fd);
+}
