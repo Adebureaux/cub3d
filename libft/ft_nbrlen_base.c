@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_nbrlen_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/27 15:35:59 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/29 14:59:12 by adeburea         ###   ########.fr       */
+/*   Created: 2021/01/29 14:51:19 by adeburea          #+#    #+#             */
+/*   Updated: 2021/01/29 14:57:36 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_strcmp(const char *s1, const char *s2)
+int		ft_nbrlen_base(int n, int base)
 {
-	int i;
+	int	j;
 
-	i = 0;
-	if (!s1 || !s2)
-		return (-1);
-	while (s1[i])
+	j = 0;
+	if (n <= 0)
 	{
-		if (s1[i] != s2[i])
-			break ;
-		i++;
+		n *= -1;
+		j++;
 	}
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+	while (n > 0)
+	{
+		n /= base;
+		j++;
+	}
+	return (j);
 }

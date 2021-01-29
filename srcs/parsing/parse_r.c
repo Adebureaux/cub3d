@@ -1,40 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_file.c                                       :+:      :+:    :+:   */
+/*   parse_r.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/29 14:18:24 by adeburea         ###   ########.fr       */
+/*   Created: 2021/01/29 12:50:33 by adeburea          #+#    #+#             */
+/*   Updated: 2021/01/29 14:48:59 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cube3d.h"
 
-void	parse_desc(t_cub *cub, int n)
+void	parse_r_valid(t_cub *cub)
 {
-	if (n == 1)
-		parse_r_valid(cub);
-	// else if (n == 2)
-	// else if (n == 3)
-	// else if (n == 4)
-	// else if (n == 5)
-}
+	int i;
 
-void	parse_file(char *av, t_cub *cub)
-{
-	int		n;
-	int		fd;
-
-	n = 1;
-	fd = open(av, O_RDONLY);
-	while ((get_next_line(fd, &cub->line) > 0))
-	{
-		printf("%s\n", cub->line);
-		if (cub->line[0] != '\n')
-			parse_desc(cub, n++);
-		free(cub->line);
-	}
-	close(fd);
+	i = 0;
+	if (cub->line[i++] != 'R')
+		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
+	if (cub->line[i++] != ' ')
+		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
+	while (ft_isdigit(cub->line[i]))
+		i++;
+	
 }

@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/05 23:54:27 by adeburea          #+#    #+#              #
-#    Updated: 2021/01/27 15:52:53 by adeburea         ###   ########.fr        #
+#    Updated: 2021/01/29 14:55:55 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,9 @@ SRCS =			ft_memset.c \
 				ft_putchar_fd.c \
 				ft_putstr_fd.c \
 				ft_putendl_fd.c \
-				ft_putnbr_fd.c
+				ft_putnbr_fd.c \
+				ft_nbrlen_base.c \
+				ft_putnbr_base.c
 BONUS_SRCS =	ft_lstnew.c \
 				ft_lstadd_front.c \
 				ft_lstsize.c \

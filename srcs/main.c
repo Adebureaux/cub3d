@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/28 13:56:05 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/01/29 14:16:39 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	ft_exit(int status, t_cub *cub, char *err)
 		ft_putstr_fd(err, 2);
 	else
 		ft_putstr_fd("cube3d exited properly\n", 1);
+	if (cub->line)
+		free(cub->line);
 	if (cub)
 		free(cub);
 	exit(status);
@@ -40,6 +42,7 @@ t_cub	*init_cub(void)
 	cub->f = -1;
 	cub->c = -1;
 	cub->save = 0;
+	cub->line = NULL;
 	return (cub);
 }
 
@@ -59,7 +62,7 @@ int		main(int ac, char **av)
 	}
 	if (ft_strcmp(ft_strnstr(av[1], ".cub", ft_strlen(av[1])), ".cub"))
 		ft_exit(EXIT_FAILURE, cub, "error: wrong map format\n");
-	parse_file(cub);
+	parse_file(av[1], cub);
 	ft_exit(EXIT_SUCCESS, cub, NULL);
 	return (EXIT_SUCCESS);
 }
