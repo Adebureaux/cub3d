@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/29 16:41:13 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/01/29 17:09:14 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,9 @@ void	parse_r(t_cub *cub)
 
 void	parse_texture(t_cub *cub)
 {
-	int		i;
-
-	i = 2;
-	if (cub->line[i++] != ' ')
-		ft_exit(EXIT_FAILURE, cub, "error: wrong north texture\n");
-	if (cub->line[i] != '.')
-		ft_exit(EXIT_FAILURE, cub, "error: wrong north texture\n");
-	if (cub->line[i + 1] != '/')
-		ft_exit(EXIT_FAILURE, cub, "error: wrong north texture\n");
-	cub->no = ft_strdup(cub->line);
+	if (!ft_strncmp(cub->line + 2, " ./", 3))
+	cub->no = ft_strdup(cub->line + 3);
+	printf("%s\n", cub->no);
 }
 
 void	parse_desc(t_cub *cub, int n)
@@ -59,6 +52,7 @@ void	parse_desc(t_cub *cub, int n)
 	{
 		// 26 lines
 		// Place THIS in parse_texture(cub, 'N' 'O');
+		// Use strncmp istead of direct comparaison
 		if (cub->line[0] != 'N' && cub->line[1] != 'O')
 			ft_exit(EXIT_FAILURE, cub, "error: wrong north texture\n");
 		parse_texture(cub);
