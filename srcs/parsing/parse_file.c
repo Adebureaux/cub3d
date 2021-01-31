@@ -6,21 +6,20 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/29 17:09:14 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/01/31 22:05:19 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cube3d.h"
 
-void	parse_r(t_cub *cub)
+void	parse_resolution(t_cub *cub)
 {
 	int		i;
 
 	i = 0;
-	if (cub->line[i++] != 'R')
+	if (ft_strncmp(cub->line, "R ", 2))
 		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
-	if (cub->line[i++] != ' ')
-		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
+	i += 2;
 	cub->rx = ft_atoi(cub->line + i);
 	if (cub->rx < 1)
 		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
@@ -37,44 +36,60 @@ void	parse_r(t_cub *cub)
 		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
 }
 
-void	parse_texture(t_cub *cub)
+void	parse_texture(char *cp, char **dst, t_cub *cub)
 {
-	if (!ft_strncmp(cub->line + 2, " ./", 3))
-	cub->no = ft_strdup(cub->line + 3);
-	printf("%s\n", cub->no);
+	int	len;
+
+	len = ft_strlen(cp);
+	if (ft_strncmp(cp, cub->line, len)
+	|| ft_strncmp(cub->line + len, " ./", 3))
+		ft_exit(EXIT_FAILURE, cub, "error: wrong texture\n");
+	*dst = ft_strdup(cub->line + len + 1);
+	if (!*dst || !*dst[0])
+		ft_exit(EXIT_FAILURE, cub, "error: wrong texture\n");
+}
+
+void	parse_color(t_cub *cub)
+{
+	int	r;
+	int	g;
+	int	b;
+
+	
+	printf("line = %s\n", cub->line);
 }
 
 void	parse_desc(t_cub *cub, int n)
 {
 	if (n == 1)
-		parse_r(cub);
+		parse_resolution(cub);
 	else if (n == 2)
-	{
-		// 26 lines
-		// Place THIS in parse_texture(cub, 'N' 'O');
-		// Use strncmp istead of direct comparaison
-		if (cub->line[0] != 'N' && cub->line[1] != 'O')
-			ft_exit(EXIT_FAILURE, cub, "error: wrong north texture\n");
-		parse_texture(cub);
-	}
+		parse_texture("NO", &cub->no, cub);
 	else if (n == 3)
-	{
-		if (cub->line[0] != 'S' && cub->line[1] != 'O')
-			ft_exit(EXIT_FAILURE, cub, "error: wrong north texture\n");
-		parse_texture(cub);
-	}
+		parse_texture("SO", &cub->so, cub);
 	else if (n == 4)
-	{
-		if (cub->line[0] != 'W' && cub->line[1] != 'E')
-			ft_exit(EXIT_FAILURE, cub, "error: wrong north texture\n");
-		parse_texture(cub);
-	}
+		parse_texture("WE", &cub->we, cub);
 	else if (n == 5)
-	{
-		if (cub->line[0] != 'E' && cub->line[1] != 'A')
-			ft_exit(EXIT_FAILURE, cub, "error: wrong north texture\n");
-		parse_texture(cub);
-	}
+		parse_texture("EA", &cub->ea, cub);
+	else if (n == 6)
+		parse_texture("S", &cub->s, cub);
+	else if (n == 7)
+		parse_color(cub);
+}
+
+//To delete
+void	display(t_cub *cub)
+{
+	printf("rx = %d\n", cub->rx);
+	printf("ry = %d\n", cub->ry);
+	printf("no = %s\n", cub->no);
+	printf("so = %s\n", cub->so);
+	printf("we = %s\n", cub->we);
+	printf("ea = %s\n", cub->ea);
+	printf("s = %s\n", cub->s);
+	printf("f = %d\n", cub->f);
+	printf("c = %d\n", cub->c);
+	printf("save = %d\n", cub->save);
 }
 
 void	parse_file(char *av, t_cub *cub)
@@ -98,5 +113,6 @@ void	parse_file(char *av, t_cub *cub)
 		printf("%s\n", cub->line);
 		free(cub->line);
 	}
+	display(cub);
 	close(fd);
 }
