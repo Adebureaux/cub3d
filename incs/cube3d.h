@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/29 15:12:45 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/01 10:52:05 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
+
+typedef struct s_rgb	t_rgb;
+struct			s_rgb
+{
+	int		r;
+	int		g;
+	int		b;
+};
 
 typedef struct s_cub	t_cub;
 struct			s_cub

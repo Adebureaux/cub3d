@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/31 22:05:19 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/01 23:53:23 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,60 +36,62 @@ void	parse_resolution(t_cub *cub)
 		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
 }
 
-void	parse_texture(char *cp, char **dst, t_cub *cub)
+void	parse_texture(char **dst, t_cub *cub, int len)
 {
-	int	len;
-
-	len = ft_strlen(cp);
-	if (ft_strncmp(cp, cub->line, len)
-	|| ft_strncmp(cub->line + len, " ./", 3))
+	if (ft_strncmp(cub->line + len, " ./", 3))
 		ft_exit(EXIT_FAILURE, cub, "error: wrong texture\n");
 	*dst = ft_strdup(cub->line + len + 1);
 	if (!*dst || !*dst[0])
 		ft_exit(EXIT_FAILURE, cub, "error: wrong texture\n");
 }
 
-void	parse_color(t_cub *cub)
+void	parse_color(int *c, t_cub *cub)
 {
-	int	r;
-	int	g;
-	int	b;
+	int		i;
+	t_rgb	rgb;
 
-	
-	printf("line = %s\n", cub->line);
+	i = 2;
+	if (!ft_isdigit(cub->line[i]))
+		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+	rgb.r = ft_atoi(&cub->line[i]);
+	i += ft_nbrlen_base(rgb.r, 10);
+	if (cub->line[i++] != ',' || rgb.r < 0 || rgb.r > 255)
+		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+	if (!ft_isdigit(cub->line[i]))
+		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+	rgb.g = ft_atoi(&cub->line[i]);
+	i += ft_nbrlen_base(rgb.g, 10);
+	if (cub->line[i++] != ',' || rgb.g < 0 || rgb.g > 255)
+		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+	if (!ft_isdigit(cub->line[i]))
+		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+	rgb.b = ft_atoi(&cub->line[i]);
+	i += ft_nbrlen_base(rgb.b, 10);
+	if (cub->line[i] || rgb.b < 0 || rgb.b > 255)
+		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+	*c = (rgb.r << 16 | rgb.g << 8 | rgb.b);
 }
 
-void	parse_desc(t_cub *cub, int n)
+void	parse_desc(t_cub *cub)
 {
-	if (n == 1)
+	if (!ft_strncmp(cub->line, "R ", 2) && cub->rx == -1 && cub->ry == -1)
 		parse_resolution(cub);
-	else if (n == 2)
-		parse_texture("NO", &cub->no, cub);
-	else if (n == 3)
-		parse_texture("SO", &cub->so, cub);
-	else if (n == 4)
-		parse_texture("WE", &cub->we, cub);
-	else if (n == 5)
-		parse_texture("EA", &cub->ea, cub);
-	else if (n == 6)
-		parse_texture("S", &cub->s, cub);
-	else if (n == 7)
-		parse_color(cub);
-}
-
-//To delete
-void	display(t_cub *cub)
-{
-	printf("rx = %d\n", cub->rx);
-	printf("ry = %d\n", cub->ry);
-	printf("no = %s\n", cub->no);
-	printf("so = %s\n", cub->so);
-	printf("we = %s\n", cub->we);
-	printf("ea = %s\n", cub->ea);
-	printf("s = %s\n", cub->s);
-	printf("f = %d\n", cub->f);
-	printf("c = %d\n", cub->c);
-	printf("save = %d\n", cub->save);
+	else if (!ft_strncmp("NO", cub->line, 2) && !cub->no)
+		parse_texture(&cub->no, cub, 2);
+	else if (!ft_strncmp("SO", cub->line, 2) && !cub->so)
+		parse_texture(&cub->so, cub, 2);
+	else if (!ft_strncmp("WE", cub->line, 2) && !cub->we)
+		parse_texture(&cub->we, cub, 2);
+	else if (!ft_strncmp("EA", cub->line, 2) && !cub->ea)
+		parse_texture(&cub->ea, cub, 2);
+	else if (!ft_strncmp("S", cub->line, 1) && !cub->s)
+		parse_texture(&cub->s, cub, 1);
+	else if (!ft_strncmp("F ", cub->line, 2) && cub->f == -1)
+		parse_color(&cub->f, cub);
+	else if (!ft_strncmp("C ", cub->line, 2) && cub->c == -1)
+		parse_color(&cub->c, cub);
+	else
+		ft_exit(EXIT_FAILURE, cub, "error: wrong description\n");
 }
 
 void	parse_file(char *av, t_cub *cub)
@@ -98,21 +100,23 @@ void	parse_file(char *av, t_cub *cub)
 	int		ret;
 	int		fd;
 
-	n = 1;
+	n = 0;
 	ret = 1;
 	fd = open(av, O_RDONLY);
-	while (1)
+	while (n < 8)
 	{
 		ret = get_next_line(fd, &cub->line);
 		if (!ret)
 			break ;
 		if (ret == -1)
 			ft_exit(EXIT_FAILURE, cub, "error: wrong file descriptor\n");
-		if (cub->line[0] != '\n')
-			parse_desc(cub, n++);
-		printf("%s\n", cub->line);
+		if (cub->line[0])
+		{
+			parse_desc(cub);
+			n++;
+		}
 		free(cub->line);
+		cub->line = NULL;
 	}
-	display(cub);
 	close(fd);
 }

@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/29 16:37:49 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/01 23:46:27 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 void	ft_exit(int status, t_cub *cub, char *err)
 {
-	if (status)
-		ft_putstr_fd(err, 2);
-	else
-		ft_putstr_fd("cube3d exited properly\n", 1);
 	if (cub)
 	{
 		if (cub->no)
@@ -34,6 +30,10 @@ void	ft_exit(int status, t_cub *cub, char *err)
 			free(cub->line);
 		free(cub);
 	}
+	if (status)
+		ft_putstr_fd(err, 2);
+	else
+		ft_putstr_fd("cube3d exited properly\n", 1);
 	exit(status);
 }
 
@@ -58,6 +58,23 @@ t_cub	*init_cub(void)
 	return (cub);
 }
 
+/* To delete (Only for verification prupose) */
+void	display(t_cub *cub)
+{
+	printf("\n______________DISPLAY______________\n");
+	printf("rx = %d\n", cub->rx);
+	printf("ry = %d\n", cub->ry);
+	printf("no = %s\n", cub->no);
+	printf("so = %s\n", cub->so);
+	printf("we = %s\n", cub->we);
+	printf("ea = %s\n", cub->ea);
+	printf("s = %s\n", cub->s);
+	printf("f = %d\n", cub->f);
+	printf("c = %d\n", cub->c);
+	printf("save = %d\n", cub->save);
+	printf("_______________END_________________\n\n");
+}
+
 int		main(int ac, char **av)
 {
 	t_cub	*cub;
@@ -75,6 +92,7 @@ int		main(int ac, char **av)
 	if (ft_strcmp(ft_strnstr(av[1], ".cub", ft_strlen(av[1])), ".cub"))
 		ft_exit(EXIT_FAILURE, cub, "error: wrong map format\n");
 	parse_file(av[1], cub);
+	display(cub);
 	ft_exit(EXIT_SUCCESS, cub, NULL);
 	return (EXIT_SUCCESS);
 }
