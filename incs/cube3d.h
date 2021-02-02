@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/01 10:52:05 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/02 12:57:17 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,37 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <string.h>
+# include <errno.h>
 # include <stdio.h>
 # include <math.h>
 
 typedef struct s_rgb	t_rgb;
 struct			s_rgb
 {
-	int		r;
-	int		g;
-	int		b;
+	int			r;
+	int			g;
+	int			b;
 };
 
 typedef struct s_cub	t_cub;
 struct			s_cub
 {
-	int		rx;
-	int		ry;
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
-	char	*s;
-	int		f;
-	int		c;
-	int		save;
-	char	*line;
+	int			rx;
+	int			ry;
+	char		*no;
+	char		*so;
+	char		*we;
+	char		*ea;
+	char		*s;
+	int			f;
+	int			c;
+	int			save;
+	int			fd;
+	char		*line;
 };
-void	ft_exit(int status, t_cub *cub, char *err);
-int		get_next_line(int fd, char **line);
-void	parse_file(char *av, t_cub *cub);
+int				get_next_line(int fd, char **line);
+void			ft_exit(int status, t_cub *cub, char *err);
+void			parse_file(char *av, t_cub *cub);
+void			parse_map(t_cub *cub);
 #endif

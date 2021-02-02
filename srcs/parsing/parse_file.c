@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/01 23:53:23 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/02 13:10:37 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,32 @@ void	parse_resolution(t_cub *cub)
 {
 	int		i;
 
-	i = 0;
+	i = 2;
 	if (ft_strncmp(cub->line, "R ", 2))
-		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
-	i += 2;
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong resolution\n");
 	cub->rx = ft_atoi(cub->line + i);
 	if (cub->rx < 1)
-		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong resolution\n");
 	while (ft_isdigit(cub->line[i]))
 		i++;
 	if (cub->line[i++] != ' ')
-		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong resolution\n");
 	cub->ry = ft_atoi(cub->line + i);
 	if (cub->ry < 1)
-		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong resolution\n");
 	while (ft_isdigit(cub->line[i]))
 		i++;
 	if (cub->line[i])
-		ft_exit(EXIT_FAILURE, cub, "error: wrong resolution\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong resolution\n");
 }
 
 void	parse_texture(char **dst, t_cub *cub, int len)
 {
 	if (ft_strncmp(cub->line + len, " ./", 3))
-		ft_exit(EXIT_FAILURE, cub, "error: wrong texture\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong texture\n");
 	*dst = ft_strdup(cub->line + len + 1);
 	if (!*dst || !*dst[0])
-		ft_exit(EXIT_FAILURE, cub, "error: wrong texture\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong texture\n");
 }
 
 void	parse_color(int *c, t_cub *cub)
@@ -52,23 +51,23 @@ void	parse_color(int *c, t_cub *cub)
 
 	i = 2;
 	if (!ft_isdigit(cub->line[i]))
-		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
 	rgb.r = ft_atoi(&cub->line[i]);
 	i += ft_nbrlen_base(rgb.r, 10);
 	if (cub->line[i++] != ',' || rgb.r < 0 || rgb.r > 255)
-		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
 	if (!ft_isdigit(cub->line[i]))
-		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
 	rgb.g = ft_atoi(&cub->line[i]);
 	i += ft_nbrlen_base(rgb.g, 10);
 	if (cub->line[i++] != ',' || rgb.g < 0 || rgb.g > 255)
-		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
 	if (!ft_isdigit(cub->line[i]))
-		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
 	rgb.b = ft_atoi(&cub->line[i]);
 	i += ft_nbrlen_base(rgb.b, 10);
 	if (cub->line[i] || rgb.b < 0 || rgb.b > 255)
-		ft_exit(EXIT_FAILURE, cub, "error: wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
 	*c = (rgb.r << 16 | rgb.g << 8 | rgb.b);
 }
 
@@ -91,25 +90,22 @@ void	parse_desc(t_cub *cub)
 	else if (!ft_strncmp("C ", cub->line, 2) && cub->c == -1)
 		parse_color(&cub->c, cub);
 	else
-		ft_exit(EXIT_FAILURE, cub, "error: wrong description\n");
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong description\n");
 }
 
 void	parse_file(char *av, t_cub *cub)
 {
 	int		n;
 	int		ret;
-	int		fd;
 
 	n = 0;
 	ret = 1;
-	fd = open(av, O_RDONLY);
+	cub->fd = open(av, O_RDONLY);
 	while (n < 8)
 	{
-		ret = get_next_line(fd, &cub->line);
-		if (!ret)
-			break ;
-		if (ret == -1)
-			ft_exit(EXIT_FAILURE, cub, "error: wrong file descriptor\n");
+		ret = get_next_line(cub->fd, &cub->line);
+		if (ret < 1)
+			ft_exit(EXIT_FAILURE, cub, "Error: Wrong description\n");
 		if (cub->line[0])
 		{
 			parse_desc(cub);
@@ -118,5 +114,5 @@ void	parse_file(char *av, t_cub *cub)
 		free(cub->line);
 		cub->line = NULL;
 	}
-	close(fd);
+	parse_map(cub);
 }

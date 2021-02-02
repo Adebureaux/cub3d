@@ -8,7 +8,8 @@ LIBFT = libft/libft.a
 INC = -I./incs
 SRCS =			srcs/main.c \
 				srcs/parsing/get_next_line.c \
-				srcs/parsing/parse_file.c
+				srcs/parsing/parse_file.c \
+				srcs/parsing/parse_map.c
 OBJS = 			${SRCS:.c=.o}
 
 .c.o:
