@@ -6,13 +6,13 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/02 13:08:39 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/03 15:59:45 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cube3d.h"
 
-void	ft_exit(int status, t_cub *cub, char *err)
+void	ft_free(t_cub *cub)
 {
 	if (cub)
 	{
@@ -28,9 +28,20 @@ void	ft_exit(int status, t_cub *cub, char *err)
 			free(cub->s);
 		if (cub->line)
 			free(cub->line);
+		if (cub->map)
+		{
+			while (*cub->map)
+				free(*cub->map++);
+			free(cub->map);
+		}
 		close(cub->fd);
 		free(cub);
 	}
+}
+
+void	ft_exit(int status, t_cub *cub, char *err)
+{
+	ft_free(cub);
 	if (status && !errno)
 		ft_putstr_fd(err, 2);
 	else if (status && errno)
@@ -47,6 +58,8 @@ t_cub	*init_cub(void)
 	cub = (t_cub*)malloc(sizeof(t_cub));
 	if (!cub)
 		ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
+	if (!cub->map)
+		ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
 	cub->rx = -1;
 	cub->ry = -1;
 	cub->no = NULL;
@@ -58,12 +71,16 @@ t_cub	*init_cub(void)
 	cub->c = -1;
 	cub->save = 0;
 	cub->line = NULL;
+	cub->map = (void*)malloc(sizeof(void*));
 	return (cub);
 }
 
 /* To delete (Only for verification prupose) */
 void	display(t_cub *cub)
 {
+	int	i;
+
+	i = 0;
 	printf("\n______________DISPLAY______________\n");
 	printf("rx = %d\n", cub->rx);
 	printf("ry = %d\n", cub->ry);
@@ -74,7 +91,12 @@ void	display(t_cub *cub)
 	printf("s = %s\n", cub->s);
 	printf("f = %d\n", cub->f);
 	printf("c = %d\n", cub->c);
-	printf("save = %d\n", cub->save);
+	printf("save = %d\n\n", cub->save);
+	if (cub->map)
+	{
+		while (cub->map[i])
+			printf("%s\n", cub->map[i++]);
+	}
 	printf("_______________END_________________\n\n");
 }
 
@@ -97,5 +119,4 @@ int		main(int ac, char **av)
 	parse_file(av[1], cub);
 	display(cub);
 	ft_exit(EXIT_SUCCESS, cub, NULL);
-	return (EXIT_SUCCESS);
 }

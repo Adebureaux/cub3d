@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/02 13:10:37 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/03 15:46:17 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,7 @@ void	parse_file(char *av, t_cub *cub)
 		free(cub->line);
 		cub->line = NULL;
 	}
+	while (get_next_line(cub->fd, &cub->map[0]) > 0 && !cub->map[0][0])
+		free(cub->map[0]);
 	parse_map(cub);
 }

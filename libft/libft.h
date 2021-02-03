@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/28 00:15:11 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/29 14:54:55 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/03 14:57:46 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ char			*ft_strnstr
 				(const char *haystack, const char *needle, size_t len);
 int				ft_atoi(const char *str);
 void			*ft_calloc(size_t count, size_t size);
+void			*ft_realloc(void *ptr, size_t ex, size_t size);
 char			*ft_strdup(const char *s1);
 char			*ft_strndup(const char *s1, size_t n);
 char			*ft_substr(const char *s, unsigned int start, size_t len);

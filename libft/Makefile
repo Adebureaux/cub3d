@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/05 23:54:27 by adeburea          #+#    #+#              #
-#    Updated: 2021/01/29 14:55:55 by adeburea         ###   ########.fr        #
+#    Updated: 2021/02/03 13:49:36 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRCS =			ft_memset.c \
 				ft_strnstr.c \
 				ft_atoi.c \
 				ft_calloc.c \
+				ft_realloc.c \
 				ft_strdup.c \
 				ft_strndup.c \
 				ft_substr.c \
