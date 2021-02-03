@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/03 15:59:45 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/03 16:05:27 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_free(t_cub *cub)
 {
+	cub->save = 0;
 	if (cub)
 	{
 		if (cub->no)
@@ -30,8 +31,8 @@ void	ft_free(t_cub *cub)
 			free(cub->line);
 		if (cub->map)
 		{
-			while (*cub->map)
-				free(*cub->map++);
+			while (cub->map[cub->save])
+				free(cub->map[cub->save++]);
 			free(cub->map);
 		}
 		close(cub->fd);
