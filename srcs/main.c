@@ -6,15 +6,14 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/03 16:05:27 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/04 03:14:39 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cube3d.h"
 
-void	ft_free(t_cub *cub)
+void	ft_free(t_cub *cub, int i)
 {
-	cub->save = 0;
 	if (cub)
 	{
 		if (cub->no)
@@ -31,8 +30,8 @@ void	ft_free(t_cub *cub)
 			free(cub->line);
 		if (cub->map)
 		{
-			while (cub->map[cub->save])
-				free(cub->map[cub->save++]);
+			while (cub->map[i])
+				free(cub->map[i++]);
 			free(cub->map);
 		}
 		close(cub->fd);
@@ -42,7 +41,7 @@ void	ft_free(t_cub *cub)
 
 void	ft_exit(int status, t_cub *cub, char *err)
 {
-	ft_free(cub);
+	ft_free(cub, 0);
 	if (status && !errno)
 		ft_putstr_fd(err, 2);
 	else if (status && errno)
@@ -59,6 +58,7 @@ t_cub	*init_cub(void)
 	cub = (t_cub*)malloc(sizeof(t_cub));
 	if (!cub)
 		ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
+	cub->map = (void*)malloc(sizeof(void*));
 	if (!cub->map)
 		ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
 	cub->rx = -1;
@@ -71,8 +71,8 @@ t_cub	*init_cub(void)
 	cub->f = -1;
 	cub->c = -1;
 	cub->save = 0;
+	cub->pos = '\0';
 	cub->line = NULL;
-	cub->map = (void*)malloc(sizeof(void*));
 	return (cub);
 }
 

@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/03 12:41:14 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/04 03:08:02 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ struct			s_cub
 	int			c;
 	int			save;
 	int			fd;
+	char		pos;
 	char		*line;
 	char		**map;
 };

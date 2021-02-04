@@ -1,7 +1,7 @@
 .PHONY: all clean fclean re
 
 CC = gcc
-NAME = cube3d
+NAME = cube3D
 CFLAGS = -Wall -Wextra -Werror
 SANITIZER = -g -fsanitize=address,undefined
 LIBFT = libft/libft.a
@@ -16,8 +16,8 @@ OBJS = 			${SRCS:.c=.o}
 	${CC} ${CFLAGS} -c ${INC} $< -o ${<:.c=.o}
 
 ${NAME}: ${LIBFT} ${OBJS}
-	${CC} ${SANITIZER} ${INC} ${LIBFT} ${CFLAGS} ${OBJS} -o ${NAME}
-	rm -rf cube3d.dSYM
+	${CC} ${INC} ${LIBFT} ${CFLAGS} ${OBJS} -o ${NAME}
+	rm -rf cube3D.dSYM
 
 ${LIBFT}:
 	@make all -C libft
