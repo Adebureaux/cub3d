@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/04 03:22:26 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/05 03:25:09 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,24 @@ void	valid_map(t_cub *cub)
 	while (cub->map[i])
 	{
 		j = 0;
-		while (cub->map[j])
+		while (cub->map[i][j])
 		{
 			if (!ft_strchr(" 012NSEW", cub->map[i][j]))
 				ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
 			if (ft_strchr("NSEW", cub->map[i][j]))
 			{
-				if (cub->pos)
+				if (cub->cp)
 					ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
-				cub->pos = cub->map[i][j];
+				cub->cp = cub->map[i][j];
+				cub->pos.x = j;
+				cub->pos.y = i;
 			}
 			j++;
 		}
 		i++;
 	}
+	if (!cub->cp)
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
 }
 
 void	parse_map(t_cub *cub)

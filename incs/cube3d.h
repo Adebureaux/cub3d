@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/04 03:08:02 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/04 15:50:44 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ struct			s_rgb
 	int			b;
 };
 
+typedef struct s_pos	t_pos;
+struct			s_pos
+{
+	int			x;
+	int			y;
+};
+
 typedef struct s_cub	t_cub;
 struct			s_cub
 {
@@ -43,7 +50,8 @@ struct			s_cub
 	int			c;
 	int			save;
 	int			fd;
-	char		pos;
+	char		cp;
+	t_pos		pos;
 	char		*line;
 	char		**map;
 };
