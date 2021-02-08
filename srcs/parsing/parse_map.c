@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/09 00:26:58 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/09 00:34:27 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,11 @@ void	check_map(t_cub *cub)
 		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
 }
 
-// Iterative form : https://www.codesdope.com/blog/article/making-a-queue-using-linked-list-in-c/
 void	flood_check(t_cub *cub, int x, int y, int overflow)
 {
-	overflow++;
 	if (x < 0 || y < 0 || !cub->map[y][x] || cub->map[y][x] == ' ')
 		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
-	if (overflow > 174463)
+	if (overflow > 87905)
 		ft_exit(EXIT_FAILURE, cub, "Error: Map is too big\n");
 	if (cub->map[y][x] != '0' && cub->map[y][x] != '2')
 		return ;
@@ -78,10 +76,10 @@ void	flood_check(t_cub *cub, int x, int y, int overflow)
 		cub->map[y][x] = 'O';
 	else if (cub->map[y][x] == '2')
 		cub->map[y][x] = 'X';
-	flood_check(cub, x + 1, y, overflow);
-	flood_check(cub, x - 1, y, overflow);
-	flood_check(cub, x, y + 1, overflow);
-	flood_check(cub, x, y - 1, overflow);
+	flood_check(cub, x + 1, y, overflow++);
+	flood_check(cub, x - 1, y, overflow++);
+	flood_check(cub, x, y + 1, overflow++);
+	flood_check(cub, x, y - 1, overflow++);
 }
 
 void	parse_map(t_cub *cub)
