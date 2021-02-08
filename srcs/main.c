@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/08 03:13:34 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/08 14:36:09 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,6 @@ t_cub	*init_cub(void)
 	cub = (t_cub*)malloc(sizeof(t_cub));
 	if (!cub)
 		ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
-	cub->map = (void*)malloc(sizeof(void*));
-	if (!cub->map)
-		ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
 	cub->rx = -1;
 	cub->ry = -1;
 	cub->no = NULL;
@@ -71,8 +68,9 @@ t_cub	*init_cub(void)
 	cub->f = -1;
 	cub->c = -1;
 	cub->save = 0;
-	cub->cp = '\0';
+	cub->cp = 'X';
 	cub->line = NULL;
+	cub->map = NULL;
 	return (cub);
 }
 

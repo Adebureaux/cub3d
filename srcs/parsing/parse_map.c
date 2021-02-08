@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/08 03:12:48 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/08 15:20:43 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ void	get_map(t_cub *cub)
 
 	i = 1;
 	len = sizeof(char*);
+	cub->map = (void*)malloc(len);
+	if (!cub->map)
+		ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
+	while (get_next_line(cub->fd, &cub->map[0]) > 0 && !cub->map[0][0])
+		free(cub->map[0]);
 	while (get_next_line(cub->fd, &cub->map[i]) > 0)
 	{
 		cub->map = ft_realloc(cub->map, len * (i + 1), len * (i + 2));
@@ -28,7 +33,7 @@ void	get_map(t_cub *cub)
 	cub->map[i] = NULL;
 }
 
-void	valid_map(t_cub *cub)
+void	check_map(t_cub *cub)
 {
 	int	i;
 	int	j;
@@ -43,7 +48,7 @@ void	valid_map(t_cub *cub)
 				ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
 			if (ft_strchr("NSEW", cub->map[i][j]))
 			{
-				if (cub->cp)
+				if (cub->cp != 'X' && cub->cp)
 					ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
 				cub->cp = cub->map[i][j];
 				cub->start.x = j;
@@ -57,44 +62,30 @@ void	valid_map(t_cub *cub)
 		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
 }
 
-void floodFillUtil(char **screen, int x, int y, char prevC, char newC)
+// Iterative form : https://www.codesdope.com/blog/article/making-a-queue-using-linked-list-in-c/
+void	flood_check(t_cub *cub, char **map, int x, int y)
 {
-	if (ft_strchr("NSEW", screen[x][y]))
-		screen[x][y] = '0';
-    // Base case
-   if (x < 0 || y < 0 || !screen[x][y])
-        return;
-    if (screen[x][y] != prevC)
-        return;
-    if (screen[x][y] == newC)
-        return;
-
-    // Replace the color at (x, y)
-    screen[x][y] = newC;
-
-    // Recur for north, east, south and west
-    floodFillUtil(screen, x+1, y, prevC, newC);
-    floodFillUtil(screen, x-1, y, prevC, newC);
-    floodFillUtil(screen, x, y+1, prevC, newC);
-    floodFillUtil(screen, x, y-1, prevC, newC);
-}
-
-// It mainly finds the previous color on (x, y) and
-// calls floodFillUtil()
-void floodFill(char **screen, int x, int y, char newC)
-{
-    floodFillUtil(screen, y, x, '0', newC);
-}
-
-void	check_map(t_cub *cub)
-{
-	floodFill(cub->map, cub->start.x, cub->start.y, 'X');
-	cub->map[cub->start.y][cub->start.x] = cub->cp;
+	if (x < 0 || y < 0 || !map[y][x] || map[y][x] == ' ')
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
+	if (map[y][x] != '0' && map[y][x] != '2')
+		return ;
+	if (map[y][x] == 'O' || map[y][x] == 'X')
+		return ;
+	if (map[y][x] == '0')
+		map[y][x] = 'O';
+	else if (map[y][x] == '2')
+		map[y][x] = 'X';
+	flood_check(cub, map, x + 1, y);
+	flood_check(cub, map, x - 1, y);
+	flood_check(cub, map, x, y + 1);
+	flood_check(cub, map, x, y - 1);
 }
 
 void	parse_map(t_cub *cub)
 {
 	get_map(cub);
-	valid_map(cub);
 	check_map(cub);
+	cub->map[cub->start.y][cub->start.x] = '0';
+	flood_check(cub, cub->map, cub->start.x, cub->start.y);
+	cub->map[cub->start.y][cub->start.x] = cub->cp;
 }
