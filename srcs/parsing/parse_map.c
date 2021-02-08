@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/07 01:17:00 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/08 03:12:48 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,36 +57,39 @@ void	valid_map(t_cub *cub)
 		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
 }
 
-t_pos	*pos_create(int x, int y)
+void floodFillUtil(char **screen, int x, int y, char prevC, char newC)
 {
-	t_pos	*pos = malloc(sizeof(t_pos));
+	if (ft_strchr("NSEW", screen[x][y]))
+		screen[x][y] = '0';
+    // Base case
+   if (x < 0 || y < 0 || !screen[x][y])
+        return;
+    if (screen[x][y] != prevC)
+        return;
+    if (screen[x][y] == newC)
+        return;
 
-	pos->x = x;
-	pos->y = y;
-	return (pos);
+    // Replace the color at (x, y)
+    screen[x][y] = newC;
+
+    // Recur for north, east, south and west
+    floodFillUtil(screen, x+1, y, prevC, newC);
+    floodFillUtil(screen, x-1, y, prevC, newC);
+    floodFillUtil(screen, x, y+1, prevC, newC);
+    floodFillUtil(screen, x, y-1, prevC, newC);
 }
 
-void	pos_delete(t_pos **p)
+// It mainly finds the previous color on (x, y) and
+// calls floodFillUtil()
+void floodFill(char **screen, int x, int y, char newC)
 {
-	t_pos *pos;
-
-	pos = *p;
-	free(p);
-	*p = NULL;
+    floodFillUtil(screen, y, x, '0', newC);
 }
 
 void	check_map(t_cub *cub)
 {
-	t_pos	*pos;
-	t_list	*lst;
-
-	pos = pos_create(cub->start.x, cub->start.y);
-	while (lst->next)
-	{
-		lst = ft_lstnew(&pos);
-		ft_lstadd_front(&lst, );
-
-	}
+	floodFill(cub->map, cub->start.x, cub->start.y, 'X');
+	cub->map[cub->start.y][cub->start.x] = cub->cp;
 }
 
 void	parse_map(t_cub *cub)
