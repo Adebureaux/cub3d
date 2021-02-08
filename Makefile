@@ -1,10 +1,22 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
+#    Updated: 2021/02/09 00:10:34 by adeburea         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 .PHONY: all clean fclean re
 
-CC = gcc
+CC = clang
 NAME = cube3D
 CFLAGS = -Wall -Wextra -Werror
 SANITIZER = -g -fsanitize=address,undefined
-LIBFT = libft/libft.a
+LIBFT = ./libft/libft.a
 INC = -I./incs
 SRCS =			srcs/main.c \
 				srcs/parsing/get_next_line.c \
@@ -13,11 +25,10 @@ SRCS =			srcs/main.c \
 OBJS = 			${SRCS:.c=.o}
 
 .c.o:
-	${CC} ${CFLAGS} -c ${INC} $< -o ${<:.c=.o}
+	${CC} -fPIC ${CFLAGS} -c ${INC} $< -o ${<:.c=.o}
 
 ${NAME}: ${LIBFT} ${OBJS}
-	${CC} ${SANITIZER} ${INC} ${LIBFT} ${CFLAGS} ${OBJS} -o ${NAME}
-	rm -rf cube3D.dSYM
+	${CC} ${OBJS} ${INC} ${LIBFT} ${CFLAGS} -o ${NAME}
 
 ${LIBFT}:
 	@make all -C libft

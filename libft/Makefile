@@ -12,7 +12,7 @@
 
 .PHONY: all clean fclean re bonus
 
-CC = gcc
+CC = clang
 NAME = libft.a
 CFLAGS = -Wall -Wextra -Werror
 SRCS =			ft_memset.c \

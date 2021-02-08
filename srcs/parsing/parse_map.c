@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/08 15:20:43 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/09 00:26:58 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,22 +63,25 @@ void	check_map(t_cub *cub)
 }
 
 // Iterative form : https://www.codesdope.com/blog/article/making-a-queue-using-linked-list-in-c/
-void	flood_check(t_cub *cub, char **map, int x, int y)
+void	flood_check(t_cub *cub, int x, int y, int overflow)
 {
-	if (x < 0 || y < 0 || !map[y][x] || map[y][x] == ' ')
+	overflow++;
+	if (x < 0 || y < 0 || !cub->map[y][x] || cub->map[y][x] == ' ')
 		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
-	if (map[y][x] != '0' && map[y][x] != '2')
+	if (overflow > 174463)
+		ft_exit(EXIT_FAILURE, cub, "Error: Map is too big\n");
+	if (cub->map[y][x] != '0' && cub->map[y][x] != '2')
 		return ;
-	if (map[y][x] == 'O' || map[y][x] == 'X')
+	if (cub->map[y][x] == 'O' || cub->map[y][x] == 'X')
 		return ;
-	if (map[y][x] == '0')
-		map[y][x] = 'O';
-	else if (map[y][x] == '2')
-		map[y][x] = 'X';
-	flood_check(cub, map, x + 1, y);
-	flood_check(cub, map, x - 1, y);
-	flood_check(cub, map, x, y + 1);
-	flood_check(cub, map, x, y - 1);
+	if (cub->map[y][x] == '0')
+		cub->map[y][x] = 'O';
+	else if (cub->map[y][x] == '2')
+		cub->map[y][x] = 'X';
+	flood_check(cub, x + 1, y, overflow);
+	flood_check(cub, x - 1, y, overflow);
+	flood_check(cub, x, y + 1, overflow);
+	flood_check(cub, x, y - 1, overflow);
 }
 
 void	parse_map(t_cub *cub)
@@ -86,6 +89,6 @@ void	parse_map(t_cub *cub)
 	get_map(cub);
 	check_map(cub);
 	cub->map[cub->start.y][cub->start.x] = '0';
-	flood_check(cub, cub->map, cub->start.x, cub->start.y);
+	flood_check(cub, cub->start.x, cub->start.y, 0);
 	cub->map[cub->start.y][cub->start.x] = cub->cp;
 }
