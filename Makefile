@@ -6,18 +6,18 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
-#    Updated: 2021/02/10 17:40:41 by adeburea         ###   ########.fr        #
+#    Updated: 2021/02/10 18:05:23 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: all clean fclean re
 
 # Name of file
-NAME		=	Cub3D
+NAME		=	cub3D
 
 # Name directory
 PATH_INC	=	incs
-PATH_SRC	=	srcs/parsing
+PATH_SRC	=	srcs
 PATH_OBJ	=	objs
 PATH_LIBFT	=	libft
 PATH_LIBMLX	=	libmlx
@@ -25,7 +25,8 @@ PATH_LIBMLX	=	libmlx
 # List of sources
 SRCS =	get_next_line.c \
 		parse_file.c \
-		parse_map.c
+		parse_map.c \
+		motor.c
 OBJS		=	$(addprefix $(PATH_OBJ)/, $(SRCS:.c=.o))
 INCS		=	$(addprefix $(PATH_INC)/, cube3d.h)
 

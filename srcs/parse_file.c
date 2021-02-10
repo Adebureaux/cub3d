@@ -6,11 +6,11 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/08 13:03:29 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/10 17:51:57 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/cube3d.h"
+#include "../incs/cube3d.h"
 
 void	parse_resolution(t_cub *cub)
 {

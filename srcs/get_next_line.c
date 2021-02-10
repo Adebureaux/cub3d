@@ -6,11 +6,11 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/18 21:53:59 by adeburea          #+#    #+#             */
-/*   Updated: 2021/01/29 12:36:32 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/10 17:51:59 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/cube3d.h"
+#include "../incs/cube3d.h"
 
 int		get_size(int c, char *save)
 {

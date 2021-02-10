@@ -6,11 +6,11 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/09 00:34:27 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/10 18:07:09 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/cube3d.h"
+#include "../incs/cube3d.h"
 
 void	get_map(t_cub *cub)
 {
@@ -89,4 +89,5 @@ void	parse_map(t_cub *cub)
 	cub->map[cub->start.y][cub->start.x] = '0';
 	flood_check(cub, cub->start.x, cub->start.y, 0);
 	cub->map[cub->start.y][cub->start.x] = cub->cp;
+	motor(cub);
 }
