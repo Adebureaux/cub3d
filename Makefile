@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
-#    Updated: 2021/02/14 13:45:56 by adeburea         ###   ########.fr        #
+#    Updated: 2021/02/14 13:47:44 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,11 +35,10 @@ $(NAME): $(OBJS) $(INCS)
 	$(CC) $(FLAGS) -I$(INC) -o $(NAME) srcs/main.c $(OBJS) -Llibft -lft -Llibmlx -lmlx -lX11 -lbsd -lm -lXext
 
 $(OBJ)/%.o: $(SRC)/%.c $(INCS)
-	mkdir -p $(OBJ)
 	$(CC) $(FLAGS) -I$(INC) -c $< -o $@
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJS)
 	make -C $(LIBFT) clean
 	make -C $(LIBMLX) clean
 
