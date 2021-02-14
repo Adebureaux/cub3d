@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/14 15:16:41 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/14 15:38:51 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_free(t_cub *cub, int i)
 {
-	// if (cub)
-	// {
+	if (cub)
+	{
 		if (cub->no)
 			free(cub->no);
 		if (cub->so)
@@ -35,8 +35,7 @@ void	ft_free(t_cub *cub, int i)
 			free(cub->map);
 		}
 		close(cub->fd);
-		// free(cub);
-	// }
+	}
 }
 
 void	ft_exit(int status, t_cub *cub, char *err)
@@ -53,11 +52,6 @@ void	ft_exit(int status, t_cub *cub, char *err)
 
 void	init_cub(t_cub	*cub)
 {
-	// t_cub	*cub;
-	//
-	// cub = (t_cub*)malloc(sizeof(t_cub));
-	// if (!cub)
-	// 	ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
 	cub->rx = -1;
 	cub->ry = -1;
 	cub->no = NULL;
@@ -71,7 +65,6 @@ void	init_cub(t_cub	*cub)
 	cub->cp = 'X';
 	cub->line = NULL;
 	cub->map = NULL;
-	// return (cub);
 }
 
 /* To delete (Only for verification prupose) */

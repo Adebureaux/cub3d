@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/14 15:20:03 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/14 15:39:09 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	get_map(t_cub *cub)
 
 	i = 1;
 	len = sizeof(char*);
-	cub->map = (void*)malloc(len);
+	cub->map = (void*)malloc(len * 2);
 	if (!cub->map)
 		ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
 	while (get_next_line(cub->fd, &cub->map[0]) > 0 && !cub->map[0][0])
@@ -66,7 +66,7 @@ void	flood_check(t_cub *cub, int x, int y, int overflow)
 {
 	if (x < 0 || y < 0 || !cub->map[y][x] || cub->map[y][x] == ' ')
 		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
-	if (overflow > 87905)
+	if (overflow > 11591)
 		ft_exit(EXIT_FAILURE, cub, "Error: Map is too big\n");
 	if (cub->map[y][x] != '0' && cub->map[y][x] != '2')
 		return ;
@@ -89,5 +89,5 @@ void	parse_map(t_cub *cub)
 	cub->map[cub->start.y][cub->start.x] = '0';
 	flood_check(cub, cub->start.x, cub->start.y, 0);
 	cub->map[cub->start.y][cub->start.x] = cub->cp;
-	//start_game(cub);
+	start_game(cub);
 }
