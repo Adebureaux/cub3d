@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/10 18:06:43 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/14 15:14:42 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,20 @@ struct			s_cub
 	char		*line;
 	char		**map;
 };
+
+typedef struct  s_win {
+	void        *img;
+	char        *addr;
+	int         bpp;
+	int         len;
+	int         endian;
+}               t_win;
+
 int				get_next_line(int fd, char **line);
 void			ft_exit(int status, t_cub *cub, char *err);
+void			ft_free(t_cub *cub, int i);
 void			parse_file(char *av, t_cub *cub);
 void			parse_map(t_cub *cub);
-void			motor(t_cub *cub);
+void			start_game(t_cub *cub);
+void			raycasting(t_cub *cub, t_win *win);
 #endif

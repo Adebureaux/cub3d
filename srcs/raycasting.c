@@ -6,8 +6,14 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/14 14:49:36 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/14 15:14:24 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cube3d.h"
+
+void	raycasting(t_cub *cub, t_win *win)
+{
+	(void)cub;
+	(void)win;
+}

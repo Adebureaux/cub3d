@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/14 12:54:06 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/14 15:08:03 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,5 @@ void	parse_map(t_cub *cub)
 	cub->map[cub->start.y][cub->start.x] = '0';
 	flood_check(cub, cub->start.x, cub->start.y, 0);
 	cub->map[cub->start.y][cub->start.x] = cub->cp;
-	motor(cub);
+	start_game(cub);
 }

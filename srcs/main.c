@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/09 00:38:18 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/14 15:16:41 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_free(t_cub *cub, int i)
 {
-	if (cub)
-	{
+	// if (cub)
+	// {
 		if (cub->no)
 			free(cub->no);
 		if (cub->so)
@@ -35,8 +35,8 @@ void	ft_free(t_cub *cub, int i)
 			free(cub->map);
 		}
 		close(cub->fd);
-		free(cub);
-	}
+		// free(cub);
+	// }
 }
 
 void	ft_exit(int status, t_cub *cub, char *err)
@@ -51,13 +51,13 @@ void	ft_exit(int status, t_cub *cub, char *err)
 	exit(status);
 }
 
-t_cub	*init_cub(void)
+void	init_cub(t_cub	*cub)
 {
-	t_cub	*cub;
-
-	cub = (t_cub*)malloc(sizeof(t_cub));
-	if (!cub)
-		ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
+	// t_cub	*cub;
+	//
+	// cub = (t_cub*)malloc(sizeof(t_cub));
+	// if (!cub)
+	// 	ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
 	cub->rx = -1;
 	cub->ry = -1;
 	cub->no = NULL;
@@ -71,7 +71,7 @@ t_cub	*init_cub(void)
 	cub->cp = 'X';
 	cub->line = NULL;
 	cub->map = NULL;
-	return (cub);
+	// return (cub);
 }
 
 /* To delete (Only for verification prupose) */
@@ -105,21 +105,21 @@ void	display(t_cub *cub)
 
 int		main(int ac, char **av)
 {
-	t_cub	*cub;
+	t_cub	cub;
 
 	if (ac > 3 || ac < 2)
 		ft_exit(EXIT_FAILURE, NULL, "Error: Wrong number of arguments\n");
-	cub = init_cub();
+	init_cub(&cub);
 	if (ac == 3)
 	{
 		if (!ft_strcmp(av[2], "--save"))
-			cub->save = 1;
+			cub.save = 1;
 		else
-			ft_exit(EXIT_FAILURE, cub, "Error: Wrong second argument\n");
+			ft_exit(EXIT_FAILURE, &cub, "Error: Wrong second argument\n");
 	}
 	if (ft_strcmp(ft_strnstr(av[1], ".cub", ft_strlen(av[1])), ".cub"))
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map format\n");
-	parse_file(av[1], cub);
-	display(cub);
-	ft_exit(EXIT_SUCCESS, cub, NULL);
+		ft_exit(EXIT_FAILURE, &cub, "Error: Wrong map format\n");
+	parse_file(av[1], &cub);
+	display(&cub);
+	ft_exit(EXIT_SUCCESS, &cub, NULL);
 }
