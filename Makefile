@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
-#    Updated: 2021/02/14 13:22:23 by adeburea         ###   ########.fr        #
+#    Updated: 2021/02/14 13:45:56 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ NAME	=	cub3D
 CC		=	clang
 FLAGS	=	-Wall -Werror -Wextra
 INC		=	incs
-SRC		=	srcs
 OBJ		=	objs
+SRC		=	srcs
 LIBFT	=	libft
 LIBMLX	=	libmlx
 INCS	=	$(addprefix $(INC)/, cube3d.h)
@@ -27,17 +27,15 @@ SRCS 	=	get_next_line.c \
 			parse_map.c \
 			motor.c
 
-all:	init $(NAME)
-
-init:
-	$(shell mkdir -p $(OBJ))
-	make -C $(LIBFT)
-	make -C $(LIBMLX)
+all: $(NAME)
 
 $(NAME): $(OBJS) $(INCS)
+	make -C $(LIBFT)
+	make -C $(LIBMLX)
 	$(CC) $(FLAGS) -I$(INC) -o $(NAME) srcs/main.c $(OBJS) -Llibft -lft -Llibmlx -lmlx -lX11 -lbsd -lm -lXext
 
 $(OBJ)/%.o: $(SRC)/%.c $(INCS)
+	mkdir -p $(OBJ)
 	$(CC) $(FLAGS) -I$(INC) -c $< -o $@
 
 clean:
