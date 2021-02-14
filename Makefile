@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
-#    Updated: 2021/02/14 13:49:26 by adeburea         ###   ########.fr        #
+#    Updated: 2021/02/14 14:49:28 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ OBJS	=	$(addprefix $(OBJ)/, $(SRCS:.c=.o))
 SRCS 	=	get_next_line.c \
 			parse_file.c \
 			parse_map.c \
-			motor.c
+			start_game.c \
+			raycasting.c
 
 all: init $(NAME)
 

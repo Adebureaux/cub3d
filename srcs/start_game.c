@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   motor.c                                            :+:      :+:    :+:   */
+/*   start_game.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/14 14:19:47 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/14 14:47:53 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	init_mlx(t_cub *cub)
 	mlx_loop(mlx);
 }
 
-void	motor(t_cub *cub)
+void	start_game(t_cub *cub)
 {
 	init_mlx(cub);
-	//raycaster(cub);
+	raycaster(cub);
 }
