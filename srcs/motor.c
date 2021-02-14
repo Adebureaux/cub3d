@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/14 14:03:00 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/14 14:19:47 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-void	init_mlx(void)
+void	init_mlx(t_cub *cub)
 {
 	void	*mlx;
 	void	*mlx_win;
 	t_data	img;
 
-	mlx = mlx_init(t_cub cub);
+	mlx = mlx_init();
 	mlx_win = mlx_new_window(mlx, cub->rx, cub->ry, "Cube3D");
 	img.img = mlx_new_image(mlx, cub->rx, cub->ry);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.len, &img.endian);
@@ -46,5 +46,5 @@ void	init_mlx(void)
 void	motor(t_cub *cub)
 {
 	init_mlx(cub);
-	raycaster(cub);
+	//raycaster(cub);
 }
