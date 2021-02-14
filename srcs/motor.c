@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/10 18:16:21 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/14 14:03:00 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ typedef struct  s_data {
 	int         endian;
 }               t_data;
 
-void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-	char    *dst;
+	char	*dst;
 
 	dst = data->addr + (y * data->len + x * (data->bpp / 8));
 	*(unsigned int*)dst = color;
@@ -30,13 +30,13 @@ void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 void	init_mlx(void)
 {
-	void    *mlx;
-	void    *mlx_win;
-	t_data  img;
+	void	*mlx;
+	void	*mlx_win;
+	t_data	img;
 
-	mlx = mlx_init();
-	mlx_win = mlx_new_window(mlx, 1920, 1080, "Hello world!");
-	img.img = mlx_new_image(mlx, 1920, 1080);
+	mlx = mlx_init(t_cub cub);
+	mlx_win = mlx_new_window(mlx, cub->rx, cub->ry, "Cube3D");
+	img.img = mlx_new_image(mlx, cub->rx, cub->ry);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.len, &img.endian);
 	my_mlx_pixel_put(&img, 5, 5, 0x00FF0000);
 	mlx_put_image_to_window(mlx, mlx_win, img.img, 0, 0);
@@ -45,7 +45,6 @@ void	init_mlx(void)
 
 void	motor(t_cub *cub)
 {
-	init_mlx();
-	(void)cub;
-
+	init_mlx(cub);
+	raycaster(cub);
 }
