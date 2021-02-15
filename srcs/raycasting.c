@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/15 15:57:34 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/15 18:07:21 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,32 @@ void	raycasting(t_cub *cub, t_win *win)
 	double	posX = (double)cub->start.x;
 	double	posY = (double)cub->start.y;  //x and y start position
 	double	dirX = -1, dirY = 0; //initial direction vector
-	double planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
+	double	planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
 
 	double time = 0; //time of current frame
 	double oldTime = 0; //time of previous frame
+	int w = cub->rx;
 
 	while (1)
 	{
 		for(int x = 0; x < w; x++)
 		{
 			//calculate ray position and direction
-			double cameraX = 2 * x / double(w) - 1; //x-coordinate in camera space
+			double cameraX = 2 * x / (double)w - 1; //x-coordinate in camera space
 			double rayDirX = dirX + planeX * cameraX;
 			double rayDirY = dirY + planeY * cameraX;
 
 			//which box of the map we're in
-			int mapX = int(posX);
-			int mapY = int(posY);
+			int mapX = (int)posX;
+			int mapY = (int)posY;
 
 			//length of ray from current position to next x or y-side
 			double sideDistX;
 			double sideDistY;
 
 			//length of ray from one x or y-side to next x or y-side
-			double deltaDistX = std::abs(1 / rayDirX);
-			double deltaDistY = std::abs(1 / rayDirY);
+			double deltaDistX = fabs(1 / rayDirX);
+			double deltaDistY = fabs(1 / rayDirY);
 			double perpWallDist;
 
 			//what direction to step in x or y-direction (either +1 or -1)
@@ -50,8 +51,8 @@ void	raycasting(t_cub *cub, t_win *win)
 
 			int hit = 0; //was there a wall hit?
 			int side; //was a NS or a EW wall hit?
-			double deltaDistX = (rayDirY == 0) ? 0 : ((rayDirX == 0) ? 1 : abs(1 / rayDirX));
-			double deltaDistY = (rayDirX == 0) ? 0 : ((rayDirY == 0) ? 1 : abs(1 / rayDirY));
+			deltaDistX = (rayDirY == 0) ? 0 : ((rayDirX == 0) ? 1 : fabs(1 / rayDirX));
+			deltaDistY = (rayDirX == 0) ? 0 : ((rayDirY == 0) ? 1 : fabs(1 / rayDirY));
 
 			//calculate step and initial sideDist
 			if (rayDirX < 0)
@@ -103,6 +104,7 @@ void	raycasting(t_cub *cub, t_win *win)
 				perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
 
 			//Calculate height of line to draw on screen
+			int h = cub->ry;
 			int lineHeight = (int)(h / perpWallDist);
 
 			//calculate lowest and highest pixel to fill in current stripe
@@ -112,16 +114,16 @@ void	raycasting(t_cub *cub, t_win *win)
 			if (drawEnd >= h)
 				drawEnd = h - 1;
 
-				//choose wall color
-			ColorRGB color;
-			switch(worldMap[mapX][mapY])
-			{
-				case 1:  color = RGB_Red;  break; //red
-				case 2:  color = RGB_Green;  break; //green
-				case 3:  color = RGB_Blue;   break; //blue
-				case 4:  color = RGB_White;  break; //white
-				default: color = RGB_Yellow; break; //yellow
-			}
+			//choose wall color
+			int color = cub->c;
+			// switch(cub->map[mapX][mapY])
+			// {
+			// 	case 1:  color = RGB_Red;  break; //red
+			// 	case 2:  color = RGB_Green;  break; //green
+			// 	case 3:  color = RGB_Blue;   break; //blue
+			// 	case 4:  color = RGB_White;  break; //white
+			// 	default: color = RGB_Yellow; break; //yellow
+			// }
 
 			//give x and y sides different brightness
 			if (side == 1) {color = color / 2;}
@@ -142,39 +144,41 @@ void	raycasting(t_cub *cub, t_win *win)
 		double rotSpeed = frameTime * 3.0; //the constant value is in radians/second
 
 		readKeys();
- //move forward if no wall in front of you
- if (keyDown(SDLK_UP))
- {
-   if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
-   if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
- }
- //move backwards if no wall behind you
- if (keyDown(SDLK_DOWN))
- {
-   if(worldMap[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
-   if(worldMap[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
- }
- //rotate to the right
- if (keyDown(SDLK_RIGHT))
- {
-   //both camera direction and camera plane must be rotated
-   double oldDirX = dirX;
-   dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-   dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
-   double oldPlaneX = planeX;
-   planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-   planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
- }
- //rotate to the left
- if (keyDown(SDLK_LEFT))
- {
-   //both camera direction and camera plane must be rotated
-   double oldDirX = dirX;
-   dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-   dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
-   double oldPlaneX = planeX;
-   planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-   planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
- }
-}
+		//move forward if no wall in front of you
+		if (keyDown(SDLK_UP))
+		{
+			if (cub->map[int(posX + dirX * moveSpeed)][int(posY)] == 0)
+				posX += dirX * moveSpeed;
+			if (cub->map[int(posX)][int(posY + dirY * moveSpeed)] == 0)
+				posY += dirY * moveSpeed;
+		}
+		//move backwards if no wall behind you
+		if (keyDown(SDLK_DOWN))
+		{
+		if(cub->map[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
+		if(cub->map[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
+		}
+		//rotate to the right
+		if (keyDown(SDLK_RIGHT))
+		{
+		//both camera direction and camera plane must be rotated
+			double oldDirX = dirX;
+			dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
+			dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+			double oldPlaneX = planeX;
+			planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
+			planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+		}
+		//rotate to the left
+		if (keyDown(SDLK_LEFT))
+		{
+			//both camera direction and camera plane must be rotated
+			double oldDirX = dirX;
+			dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
+			dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+			double oldPlaneX = planeX;
+			planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
+			planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+		}
+	}
 }
