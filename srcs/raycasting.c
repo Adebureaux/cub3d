@@ -6,13 +6,13 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/15 18:07:21 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/17 20:00:27 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cube3d.h"
 
-void	raycasting(t_cub *cub, t_win *win)
+void	raycasting(t_cub *cub, t_mlx *mlx)
 {
 	double	posX = (double)cub->start.x;
 	double	posY = (double)cub->start.y;  //x and y start position
@@ -129,7 +129,7 @@ void	raycasting(t_cub *cub, t_win *win)
 			if (side == 1) {color = color / 2;}
 
 			//draw the pixels of the stripe as a vertical line
-			verLine(x, drawStart, drawEnd, color);
+			mlx_pixel_put(win->addr, win->img, drawStart, drawEnd, color);
 		}
 		//timing for input and FPS counter
 		oldTime = time;
@@ -155,8 +155,8 @@ void	raycasting(t_cub *cub, t_win *win)
 		//move backwards if no wall behind you
 		if (keyDown(SDLK_DOWN))
 		{
-		if(cub->map[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
-		if(cub->map[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
+		if(cub->map[int(posX - dirX * moveSpeed)][int(posY)] == 0) posX -= dirX * moveSpeed;
+		if(cub->map[int(posX)][int(posY - dirY * moveSpeed)] == 0) posY -= dirY * moveSpeed;
 		}
 		//rotate to the right
 		if (keyDown(SDLK_RIGHT))
