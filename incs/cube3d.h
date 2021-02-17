@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/17 20:02:44 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/17 21:44:53 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct  s_mlx	t_mlx;
 struct			s_mlx
 {
 	void		*mlx;
-	void		*mlx_win;
+	void		*win;
 	void        *img;
 	char        *addr;
 	int         bpp;
