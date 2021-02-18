@@ -6,11 +6,11 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/14 15:38:51 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/18 22:54:54 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/cube3d.h"
+#include "../incs/cub3d.h"
 
 void	ft_free(t_cub *cub, int i)
 {

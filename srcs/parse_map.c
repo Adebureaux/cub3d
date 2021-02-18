@@ -6,11 +6,11 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/14 15:39:09 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/18 13:48:22 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/cube3d.h"
+#include "../incs/cub3d.h"
 
 void	get_map(t_cub *cub)
 {

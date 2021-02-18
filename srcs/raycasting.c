@@ -6,11 +6,11 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/17 20:00:27 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/18 13:48:25 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/cube3d.h"
+#include "../incs/cub3d.h"
 
 void	raycasting(t_cub *cub, t_mlx *mlx)
 {

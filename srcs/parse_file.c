@@ -6,11 +6,11 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/10 17:51:57 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/18 22:09:04 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/cube3d.h"
+#include "../incs/cub3d.h"
 
 void	parse_resolution(t_cub *cub)
 {
@@ -37,7 +37,7 @@ void	parse_resolution(t_cub *cub)
 
 void	parse_texture(char **dst, t_cub *cub, int len)
 {
-	if (ft_strncmp(cub->line + len, " ./", 3))
+	if (cub->line[len] != ' ')
 		ft_exit(EXIT_FAILURE, cub, "Error: Wrong texture\n");
 	*dst = ft_strdup(cub->line + len + 1);
 	if (!*dst || !*dst[0])

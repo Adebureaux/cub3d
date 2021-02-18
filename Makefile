@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
-#    Updated: 2021/02/17 22:26:08 by adeburea         ###   ########.fr        #
+#    Updated: 2021/02/18 22:51:03 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJ		=	objs
 SRC		=	srcs
 LIBFT	=	libft
 LIBMLX	=	libmlx
-INCS	=	$(addprefix $(INC)/, cube3d.h)
+INCS	=	$(addprefix $(INC)/, cub3d.h)
 OBJS	=	$(addprefix $(OBJ)/, $(SRCS:.c=.o))
 SRCS 	=	get_next_line.c \
 			parse_file.c \
