@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/18 22:54:54 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/19 03:16:00 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,35 +67,6 @@ void	init_cub(t_cub	*cub)
 	cub->map = NULL;
 }
 
-/* To delete (Only for verification prupose) */
-void	display(t_cub *cub)
-{
-	int	i;
-
-	i = 0;
-	printf("\n______________DISPLAY______________\n");
-	printf("rx = %d\n", cub->rx);
-	printf("ry = %d\n", cub->ry);
-	printf("no = %s\n", cub->no);
-	printf("so = %s\n", cub->so);
-	printf("we = %s\n", cub->we);
-	printf("ea = %s\n", cub->ea);
-	printf("s = %s\n", cub->s);
-	printf("f = %d\n", cub->f);
-	printf("c = %d\n", cub->c);
-	printf("save = %d\n", cub->save);
-	printf("pos cp = %c\n", cub->map[cub->start.y][cub->start.x]);
-	printf("player pos x = %d\n", cub->start.x);
-	printf("player pos y = %d\n", cub->start.y);
-	printf("\n");
-	if (cub->map)
-	{
-		while (cub->map[i])
-			printf("%s\n", cub->map[i++]);
-	}
-	printf("_______________END_________________\n\n");
-}
-
 int		main(int ac, char **av)
 {
 	t_cub	cub;
@@ -113,6 +84,5 @@ int		main(int ac, char **av)
 	if (ft_strcmp(ft_strnstr(av[1], ".cub", ft_strlen(av[1])), ".cub"))
 		ft_exit(EXIT_FAILURE, &cub, "Error: Wrong map format\n");
 	parse_file(av[1], &cub);
-	display(&cub);
 	ft_exit(EXIT_SUCCESS, &cub, NULL);
 }

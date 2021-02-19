@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/18 13:48:03 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/19 03:11:22 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ struct			s_cub
 typedef struct  s_mlx	t_mlx;
 struct			s_mlx
 {
+	void		*cub;
 	void		*mlx;
 	void		*win;
 	void        *img;

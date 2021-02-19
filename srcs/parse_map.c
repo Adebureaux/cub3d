@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/18 13:48:22 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/19 03:18:35 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,34 @@ void	flood_check(t_cub *cub, int x, int y, int overflow)
 	flood_check(cub, x, y - 1, overflow++);
 }
 
+void	display(t_cub *cub)
+{
+	int	i;
+
+	i = 0;
+	printf("\n______________DISPLAY______________\n");
+	printf("rx = %d\n", cub->rx);
+	printf("ry = %d\n", cub->ry);
+	printf("no = %s\n", cub->no);
+	printf("so = %s\n", cub->so);
+	printf("we = %s\n", cub->we);
+	printf("ea = %s\n", cub->ea);
+	printf("s = %s\n", cub->s);
+	printf("f = %d\n", cub->f);
+	printf("c = %d\n", cub->c);
+	printf("save = %d\n", cub->save);
+	printf("pos cp = %c\n", cub->map[cub->start.y][cub->start.x]);
+	printf("player pos x = %d\n", cub->start.x);
+	printf("player pos y = %d\n", cub->start.y);
+	printf("\n");
+	if (cub->map)
+	{
+		while (cub->map[i])
+			printf("%s\n", cub->map[i++]);
+	}
+	printf("_______________END_________________\n\n");
+}
+
 void	parse_map(t_cub *cub)
 {
 	get_map(cub);
@@ -89,5 +117,6 @@ void	parse_map(t_cub *cub)
 	cub->map[cub->start.y][cub->start.x] = '0';
 	flood_check(cub, cub->start.x, cub->start.y, 0);
 	cub->map[cub->start.y][cub->start.x] = cub->cp;
+	display(cub);
 	start_game(cub);
 }
