@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/18 13:48:25 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/20 01:38:26 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	raycasting(t_cub *cub, t_mlx *mlx)
 	double	dirX = -1, dirY = 0; //initial direction vector
 	double	planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
 
-	double time = 0; //time of current frame
-	double oldTime = 0; //time of previous frame
 	int w = cub->rx;
 
 	while (1)
@@ -129,56 +127,47 @@ void	raycasting(t_cub *cub, t_mlx *mlx)
 			if (side == 1) {color = color / 2;}
 
 			//draw the pixels of the stripe as a vertical line
-			mlx_pixel_put(win->addr, win->img, drawStart, drawEnd, color);
-		}
-		//timing for input and FPS counter
-		oldTime = time;
-		time = getTicks();
-		double frameTime = (time - oldTime) / 1000.0; //frameTime is the time this frame has taken, in seconds
-		print(1.0 / frameTime); //FPS counter
-		redraw();
-		cls();
-
-		//speed modifiers
-		double moveSpeed = frameTime * 5.0; //the constant value is in squares/second
-		double rotSpeed = frameTime * 3.0; //the constant value is in radians/second
-
-		readKeys();
-		//move forward if no wall in front of you
-		if (keyDown(SDLK_UP))
-		{
-			if (cub->map[int(posX + dirX * moveSpeed)][int(posY)] == 0)
-				posX += dirX * moveSpeed;
-			if (cub->map[int(posX)][int(posY + dirY * moveSpeed)] == 0)
-				posY += dirY * moveSpeed;
-		}
-		//move backwards if no wall behind you
-		if (keyDown(SDLK_DOWN))
-		{
-		if(cub->map[int(posX - dirX * moveSpeed)][int(posY)] == 0) posX -= dirX * moveSpeed;
-		if(cub->map[int(posX)][int(posY - dirY * moveSpeed)] == 0) posY -= dirY * moveSpeed;
-		}
-		//rotate to the right
-		if (keyDown(SDLK_RIGHT))
-		{
-		//both camera direction and camera plane must be rotated
-			double oldDirX = dirX;
-			dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-			dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
-			double oldPlaneX = planeX;
-			planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-			planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
-		}
-		//rotate to the left
-		if (keyDown(SDLK_LEFT))
-		{
+			//mlx_verline(cub, mlx);
+			if (keycode == UP)
+			{
+				if (cub->map[(int)posX + dirX * moveSpeed][(int)posY] == 'O')
+					posX += dirX * moveSpeed;
+				if (cub->map[(int)posX][(int)posY + dirY * moveSpeed] == 'O')
+					posY += dirY * moveSpeed;
+			}
+			//move backwards if no wall behind you
+			int keycode = 0;
+			if (keycode == DOWN)
+			{
+				if (cub->map[int(posX - dirX * moveSpeed)][int(posY)] == 'O')
+					posX -= dirX * moveSpeed;
+			if (cub->map[int(posX)][int(posY - dirY * moveSpeed)] == 'O')
+				posY -= dirY * moveSpeed;
+			}
+			//rotate to the right
+			if (keycode == RIGHT)
+			{
 			//both camera direction and camera plane must be rotated
-			double oldDirX = dirX;
-			dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-			dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
-			double oldPlaneX = planeX;
-			planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-			planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+				double oldDirX = dirX;
+				dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
+				dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+				double oldPlaneX = planeX;
+				planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
+				planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+			}
+			//rotate to the left
+			if (keycode == LEFT)
+			{
+				//both camera direction and camera plane must be rotated
+				double oldDirX = dirX;
+				dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
+				dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+				double oldPlaneX = planeX;
+				planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
+				planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+			}
 		}
+		mlx_hook(mlx->win, 2, 1L<<0, key_hook, mlx);
+		mlx_loop(mlx->mlx);
 	}
 }

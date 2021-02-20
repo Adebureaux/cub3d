@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
-#    Updated: 2021/02/18 22:51:03 by adeburea         ###   ########.fr        #
+#    Updated: 2021/02/20 00:46:58 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 NAME	=	cub3D
 CC		=	clang
-FLAGS	=	-Wall -Wextra -g -fsanitize=address
+FLAGS	=	-O3 -Wall -Wextra -Werror -g -fsanitize=address
 INC		=	incs
 OBJ		=	objs
 SRC		=	srcs
@@ -25,7 +25,8 @@ OBJS	=	$(addprefix $(OBJ)/, $(SRCS:.c=.o))
 SRCS 	=	get_next_line.c \
 			parse_file.c \
 			parse_map.c \
-			start_game.c
+			start_game.c \
+			raycasting.c
 
 all: init $(NAME)
 
