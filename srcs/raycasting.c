@@ -6,14 +6,39 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/20 01:38:26 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/20 02:35:53 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-void	raycasting(t_cub *cub, t_mlx *mlx)
+int		mlx_verline(t_cub *cub, t_mlx *mlx)
 {
+	// if (mlx->pos.y2 < mlx->pos.y1)
+	// {
+	// 	mlx->pos.y1 += mlx->pos.y2;
+	// 	mlx->pos.y2 = mlx->pos.y1 - mlx->pos.y2;
+	// 	mlx->pos.y1 -= mlx->pos.y2;
+	// }
+	// if (mlx->pos.y2 < 0 || mlx->pos.y1 >= cub->ry
+	// 	|| cub->rx < 0 || mlx->pos.y2 >= cub->ry)
+	// 	return (0);
+	// if (mlx->pos.y1 < 0)
+	// 	mlx->pos.y1 = 0;
+	// if (mlx->pos.y2 >=  cub->ry)
+	// 	mlx->pos.y2 =  cub->rx - 1;
+	printf("ICI x = %d, y1 = %d, y2 = %d\n", mlx->pos.x, mlx->pos.y1, mlx->pos.y2);
+	while (mlx->pos.y1 < mlx->pos.y2)
+	{
+		mlx_pixel_put(mlx->mlx, mlx->win, cub->rx, mlx->pos.y1, mlx->color);
+		mlx->pos.y1++;
+	}
+	return (1);
+}
+
+void	raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray)
+{
+	(void)ray;
 	double	posX = (double)cub->start.x;
 	double	posY = (double)cub->start.y;  //x and y start position
 	double	dirX = -1, dirY = 0; //initial direction vector
@@ -21,6 +46,12 @@ void	raycasting(t_cub *cub, t_mlx *mlx)
 
 	int w = cub->rx;
 
+	mlx->pos.x = 1;
+	mlx->pos.y1 = 1;
+	mlx->pos.y2 = 500;
+	mlx->color = 0x00FF0000;
+	printf("x = %d, y1 = %d, y2 = %d\n", mlx->pos.x, mlx->pos.y1, mlx->pos.y2);
+	mlx_verline(cub, mlx);
 	while (1)
 	{
 		for(int x = 0; x < w; x++)
@@ -113,7 +144,7 @@ void	raycasting(t_cub *cub, t_mlx *mlx)
 				drawEnd = h - 1;
 
 			//choose wall color
-			int color = cub->c;
+			mlx->color = 0x00FF0000;
 			// switch(cub->map[mapX][mapY])
 			// {
 			// 	case 1:  color = RGB_Red;  break; //red
@@ -124,48 +155,14 @@ void	raycasting(t_cub *cub, t_mlx *mlx)
 			// }
 
 			//give x and y sides different brightness
-			if (side == 1) {color = color / 2;}
-
-			//draw the pixels of the stripe as a vertical line
-			//mlx_verline(cub, mlx);
-			if (keycode == UP)
-			{
-				if (cub->map[(int)posX + dirX * moveSpeed][(int)posY] == 'O')
-					posX += dirX * moveSpeed;
-				if (cub->map[(int)posX][(int)posY + dirY * moveSpeed] == 'O')
-					posY += dirY * moveSpeed;
-			}
-			//move backwards if no wall behind you
-			int keycode = 0;
-			if (keycode == DOWN)
-			{
-				if (cub->map[int(posX - dirX * moveSpeed)][int(posY)] == 'O')
-					posX -= dirX * moveSpeed;
-			if (cub->map[int(posX)][int(posY - dirY * moveSpeed)] == 'O')
-				posY -= dirY * moveSpeed;
-			}
-			//rotate to the right
-			if (keycode == RIGHT)
-			{
-			//both camera direction and camera plane must be rotated
-				double oldDirX = dirX;
-				dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-				dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
-				double oldPlaneX = planeX;
-				planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-				planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
-			}
-			//rotate to the left
-			if (keycode == LEFT)
-			{
-				//both camera direction and camera plane must be rotated
-				double oldDirX = dirX;
-				dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-				dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
-				double oldPlaneX = planeX;
-				planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-				planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
-			}
+			mlx->pos.x = x;
+			mlx->pos.y1 = 1;
+			mlx->pos.y2 = 500;
+			printf("x = %d, y1 = %d, y2 = %d\n", mlx->pos.x, mlx->pos.y1, mlx->pos.y2);
+			if (mlx_verline(cub, mlx))
+				printf("HEY\n");
+			else
+				printf("NON\n");
 		}
 		mlx_hook(mlx->win, 2, 1L<<0, key_hook, mlx);
 		mlx_loop(mlx->mlx);

@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/20 01:34:46 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/20 02:08:55 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ struct			s_mlx
 	t_pos		pos;
 };
 
-typedef struct  s_mov	t_mov;
-struct			s_mov
+typedef struct  s_ray	t_ray;
+struct			s_ray
 {
-	int posX;
+	int x;
 };
 int				get_next_line(int fd, char **line);
 void			ft_exit(int status, t_cub *cub, char *err);
@@ -93,7 +93,7 @@ void			ft_free(t_cub *cub, int i);
 void			parse_file(char *av, t_cub *cub);
 void			parse_map(t_cub *cub);
 void			start_game(t_cub *cub);
-void			raycasting(t_cub *cub, t_mlx *mlx);
+void			raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray);
 int				key_hook(int keycode, t_mlx *mlx);
 int				mlx_verline(t_cub *cub, t_mlx *mlx);
 #endif
