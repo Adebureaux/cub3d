@@ -6,165 +6,244 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/20 02:35:53 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/22 00:43:05 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-int		mlx_verline(t_cub *cub, t_mlx *mlx)
+#define screenWidth 640
+#define screenHeight 480
+#define texWidth 64
+#define texHeight 64
+
+int worldMap[mapWidth][mapHeight]=
 {
-	// if (mlx->pos.y2 < mlx->pos.y1)
-	// {
-	// 	mlx->pos.y1 += mlx->pos.y2;
-	// 	mlx->pos.y2 = mlx->pos.y1 - mlx->pos.y2;
-	// 	mlx->pos.y1 -= mlx->pos.y2;
-	// }
-	// if (mlx->pos.y2 < 0 || mlx->pos.y1 >= cub->ry
-	// 	|| cub->rx < 0 || mlx->pos.y2 >= cub->ry)
-	// 	return (0);
-	// if (mlx->pos.y1 < 0)
-	// 	mlx->pos.y1 = 0;
-	// if (mlx->pos.y2 >=  cub->ry)
-	// 	mlx->pos.y2 =  cub->rx - 1;
-	printf("ICI x = %d, y1 = %d, y2 = %d\n", mlx->pos.x, mlx->pos.y1, mlx->pos.y2);
-	while (mlx->pos.y1 < mlx->pos.y2)
-	{
-		mlx_pixel_put(mlx->mlx, mlx->win, cub->rx, mlx->pos.y1, mlx->color);
-		mlx->pos.y1++;
-	}
-	return (1);
+  {4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,7,7,7,7,7,7,7,7},
+  {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
+  {4,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
+  {4,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7},
+  {4,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,7},
+  {4,0,4,0,0,0,0,5,5,5,5,5,5,5,5,5,7,7,0,7,7,7,7,7},
+  {4,0,5,0,0,0,0,5,0,5,0,5,0,5,0,5,7,0,0,0,7,7,7,1},
+  {4,0,6,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
+  {4,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,1},
+  {4,0,8,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,0,0,0,8},
+  {4,0,0,0,0,0,0,5,0,0,0,0,0,0,0,5,7,0,0,0,7,7,7,1},
+  {4,0,0,0,0,0,0,5,5,5,5,0,5,5,5,5,7,7,7,7,7,7,7,1},
+  {6,6,6,6,6,6,6,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
+  {8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+  {6,6,6,6,6,6,0,6,6,6,6,0,6,6,6,6,6,6,6,6,6,6,6,6},
+  {4,4,4,4,4,4,0,4,4,4,6,0,6,2,2,2,2,2,2,2,3,3,3,3},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,0,0,0,6,2,0,0,5,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+  {4,0,6,0,6,0,0,0,0,4,6,0,0,0,0,0,5,0,0,0,0,0,0,2},
+  {4,0,0,5,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,2,0,2,2},
+  {4,0,6,0,6,0,0,0,0,4,6,0,6,2,0,0,5,0,0,2,0,0,0,2},
+  {4,0,0,0,0,0,0,0,0,4,6,0,6,2,0,0,0,0,0,2,0,0,0,2},
+  {4,4,4,4,4,4,4,4,4,4,1,1,1,2,2,2,2,2,2,3,3,3,3,3}
+};
+
+uint buffer[screenHeight][screenWidth];
+
+void mlx_draw_buffer(uint *buffer)
+{
+  Uint32* bufp;
+  bufp = (Uint32*)scr->pixels;
+
+  for(int y = 0; y < h; y++)
+  {
+    for(int x = 0; x < w; x++)
+    {
+      *bufp=buffer[h * x + y];
+      bufp++;
+    }
+    bufp += scr->pitch / 4;
+    bufp -= w;
+  }
 }
 
 void	raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
-	(void)ray;
-	double	posX = (double)cub->start.x;
-	double	posY = (double)cub->start.y;  //x and y start position
-	double	dirX = -1, dirY = 0; //initial direction vector
-	double	planeX = 0, planeY = 0.66; //the 2d raycaster version of camera plane
+  double posX = 22.0, posY = 11.5;  //x and y start position
+  double dirX = -1.0, dirY = 0.0; //initial direction vector
+  double planeX = 0.0, planeY = 0.66; //the 2d raycaster version of camera plane
 
-	int w = cub->rx;
+  void *texture[5];
 
-	mlx->pos.x = 1;
-	mlx->pos.y1 = 1;
-	mlx->pos.y2 = 500;
-	mlx->color = 0x00FF0000;
-	printf("x = %d, y1 = %d, y2 = %d\n", mlx->pos.x, mlx->pos.y1, mlx->pos.y2);
-	mlx_verline(cub, mlx);
-	while (1)
-	{
-		for(int x = 0; x < w; x++)
-		{
-			//calculate ray position and direction
-			double cameraX = 2 * x / (double)w - 1; //x-coordinate in camera space
-			double rayDirX = dirX + planeX * cameraX;
-			double rayDirY = dirY + planeY * cameraX;
+ //generate some textures
+  unsigned long tw, th;
+  texture[0] = mlx_xpm_file_to_image(mlx->mlx, cub->no, TEXW, TEXH);
+  loadImage(texture[1], tw, th, "pics/redbrick.png");
+  loadImage(texture[2], tw, th, "pics/purplestone.png");
+  loadImage(texture[3], tw, th, "pics/greystone.png");
+  loadImage(texture[4], tw, th, "pics/bluestone.png");
+  loadImage(texture[5], tw, th, "pics/mossy.png");
+  loadImage(texture[6], tw, th, "pics/wood.png");
+  loadImage(texture[7], tw, th, "pics/colorstone.png");
 
-			//which box of the map we're in
-			int mapX = (int)posX;
-			int mapY = (int)posY;
+  //start the main loop
+  while (1)
+  {
+    for(int x = 0; x < w; x++)
+    {
+      //calculate ray position and direction
+      double cameraX = 2 * x / (double)w - 1; //x-coordinate in camera space
+      double rayDirX = dirX + planeX*cameraX;
+      double rayDirY = dirY + planeY*cameraX;
 
-			//length of ray from current position to next x or y-side
-			double sideDistX;
-			double sideDistY;
+      //which box of the map we're in
+      int mapX = int(posX);
+      int mapY = int(posY);
 
-			//length of ray from one x or y-side to next x or y-side
-			double deltaDistX = fabs(1 / rayDirX);
-			double deltaDistY = fabs(1 / rayDirY);
-			double perpWallDist;
+      //length of ray from current position to next x or y-side
+      double sideDistX;
+      double sideDistY;
 
-			//what direction to step in x or y-direction (either +1 or -1)
-			int stepX;
-			int stepY;
+      //length of ray from one x or y-side to next x or y-side
+      double deltaDistX = std::abs(1 / rayDirX);
+      double deltaDistY = std::abs(1 / rayDirY);
+      double perpWallDist;
 
-			int hit = 0; //was there a wall hit?
-			int side; //was a NS or a EW wall hit?
-			deltaDistX = (rayDirY == 0) ? 0 : ((rayDirX == 0) ? 1 : fabs(1 / rayDirX));
-			deltaDistY = (rayDirX == 0) ? 0 : ((rayDirY == 0) ? 1 : fabs(1 / rayDirY));
+      //what direction to step in x or y-direction (either +1 or -1)
+      int stepX;
+      int stepY;
 
-			//calculate step and initial sideDist
-			if (rayDirX < 0)
-			{
-				stepX = -1;
-				sideDistX = (posX - mapX) * deltaDistX;
-			}
-			else
-			{
-				stepX = 1;
-				sideDistX = (mapX + 1.0 - posX) * deltaDistX;
-			}
-			if (rayDirY < 0)
-			{
-				stepY = -1;
-				sideDistY = (posY - mapY) * deltaDistY;
-			}
-			else
-			{
-				stepY = 1;
-				sideDistY = (mapY + 1.0 - posY) * deltaDistY;
-			}
+      int hit = 0; //was there a wall hit?
+      int side; //was a NS or a EW wall hit?
 
-			//perform DDA
-			while (hit == 0)
-			{
-				//jump to next map square, OR in x-direction, OR in y-direction
-				if (sideDistX < sideDistY)
-				{
-					sideDistX += deltaDistX;
-					mapX += stepX;
-					side = 0;
-				}
-				else
-				{
-					sideDistY += deltaDistY;
-					mapY += stepY;
-					side = 1;
-				}
-				//Check if ray has hit a wall
-				if (cub->map[mapX][mapY] != 'O')
-					hit = 1;
-			}
+      //calculate step and initial sideDist
+      if(rayDirX < 0)
+      {
+        stepX = -1;
+        sideDistX = (posX - mapX) * deltaDistX;
+      }
+      else
+      {
+        stepX = 1;
+        sideDistX = (mapX + 1.0 - posX) * deltaDistX;
+      }
+      if(rayDirY < 0)
+      {
+        stepY = -1;
+        sideDistY = (posY - mapY) * deltaDistY;
+      }
+      else
+      {
+        stepY = 1;
+        sideDistY = (mapY + 1.0 - posY) * deltaDistY;
+      }
+      //perform DDA
+      while (hit == 0)
+      {
+        //jump to next map square, OR in x-direction, OR in y-direction
+        if(sideDistX < sideDistY)
+        {
+          sideDistX += deltaDistX;
+          mapX += stepX;
+          side = 0;
+        }
+        else
+        {
+          sideDistY += deltaDistY;
+          mapY += stepY;
+          side = 1;
+        }
+        //Check if ray has hit a wall
+        if(worldMap[mapX][mapY] > 0) hit = 1;
+      }
 
-			//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
-			if (side == 0)
-				perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
-			else
-				perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
+      //Calculate distance of perpendicular ray (Euclidean distance will give fisheye effect!)
+      if(side == 0) perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
+      else          perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
 
-			//Calculate height of line to draw on screen
-			int h = cub->ry;
-			int lineHeight = (int)(h / perpWallDist);
+      //Calculate height of line to draw on screen
+      int lineHeight = (int)(h / perpWallDist);
 
-			//calculate lowest and highest pixel to fill in current stripe
-			int drawStart = -lineHeight / 2 + h / 2;
-				if (drawStart < 0)drawStart = 0;
-			int drawEnd = lineHeight / 2 + h / 2;
-			if (drawEnd >= h)
-				drawEnd = h - 1;
+      //calculate lowest and highest pixel to fill in current stripe
+      int drawStart = -lineHeight / 2 + h / 2;
+      if(drawStart < 0) drawStart = 0;
+      int drawEnd = lineHeight / 2 + h / 2;
+      if(drawEnd >= h) drawEnd = h - 1;
 
-			//choose wall color
-			mlx->color = 0x00FF0000;
-			// switch(cub->map[mapX][mapY])
-			// {
-			// 	case 1:  color = RGB_Red;  break; //red
-			// 	case 2:  color = RGB_Green;  break; //green
-			// 	case 3:  color = RGB_Blue;   break; //blue
-			// 	case 4:  color = RGB_White;  break; //white
-			// 	default: color = RGB_Yellow; break; //yellow
-			// }
+      //texturing calculations
+      int texNum = worldMap[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
 
-			//give x and y sides different brightness
-			mlx->pos.x = x;
-			mlx->pos.y1 = 1;
-			mlx->pos.y2 = 500;
-			printf("x = %d, y1 = %d, y2 = %d\n", mlx->pos.x, mlx->pos.y1, mlx->pos.y2);
-			if (mlx_verline(cub, mlx))
-				printf("HEY\n");
-			else
-				printf("NON\n");
-		}
-		mlx_hook(mlx->win, 2, 1L<<0, key_hook, mlx);
-		mlx_loop(mlx->mlx);
-	}
+      //calculate value of wallX
+      double wallX; //where exactly the wall was hit
+      if(side == 0) wallX = posY + perpWallDist * rayDirY;
+      else          wallX = posX + perpWallDist * rayDirX;
+      wallX -= floor((wallX));
+
+      //x coordinate on the texture
+      int texX = int(wallX * double(texWidth));
+      if(side == 0 && rayDirX > 0) texX = texWidth - texX - 1;
+      if(side == 1 && rayDirY < 0) texX = texWidth - texX - 1;
+
+      // TODO: an integer-only bresenham or DDA like algorithm could make the texture coordinate stepping faster
+      // How much to increase the texture coordinate per screen pixel
+      double step = 1.0 * texHeight / lineHeight;
+      // Starting texture coordinate
+      double texPos = (drawStart - h / 2 + lineHeight / 2) * step;
+      for(int y = drawStart; y < drawEnd; y++)
+      {
+        // Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+        int texY = (int)texPos & (texHeight - 1);
+        texPos += step;
+        Uint32 color = texture[texNum][texHeight * texY + texX];
+        //make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+        if(side == 1)
+			color = (color >> 1) & 8355711;
+        buffer[y][x] = color;
+      }
+    }
+
+    drawBuffer(buffer[0]);
+    for(int y = 0; y < h; y++) for(int x = 0; x < w; x++) buffer[y][x] = 0; //clear the buffer instead of cls()
+
+    //speed modifiers
+    double moveSpeed = frameTime * 5.0; //the constant value is in squares/second
+    double rotSpeed = frameTime * 3.0; //the constant value is in radians/second
+
+    readKeys();
+    //move forward if no wall in front of you
+    if(keyDown(SDLK_UP))
+    {
+      if(worldMap[int(posX + dirX * moveSpeed)][int(posY)] == false) posX += dirX * moveSpeed;
+      if(worldMap[int(posX)][int(posY + dirY * moveSpeed)] == false) posY += dirY * moveSpeed;
+    }
+    //move backwards if no wall behind you
+    if(keyDown(SDLK_DOWN))
+    {
+      if(worldMap[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
+      if(worldMap[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
+    }
+    //rotate to the right
+    if(keyDown(SDLK_RIGHT))
+    {
+      //both camera direction and camera plane must be rotated
+      double oldDirX = dirX;
+      dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
+      dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+      double oldPlaneX = planeX;
+      planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
+      planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+    }
+    //rotate to the left
+    if(keyDown(SDLK_LEFT))
+    {
+      //both camera direction and camera plane must be rotated
+      double oldDirX = dirX;
+      dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
+      dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+      double oldPlaneX = planeX;
+      planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
+      planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+    }
+    if(keyDown(SDLK_ESCAPE))
+    {
+      break;
+    }
+  }
 }

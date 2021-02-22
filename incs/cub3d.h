@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/20 02:08:55 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/21 19:11:41 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ struct			s_pos
 {
 	int			x;
 	int			y;
-	int			y1;
-	int			y2;
 };
 
 typedef struct s_cub	t_cub;
@@ -87,6 +85,7 @@ struct			s_ray
 {
 	int x;
 };
+
 int				get_next_line(int fd, char **line);
 void			ft_exit(int status, t_cub *cub, char *err);
 void			ft_free(t_cub *cub, int i);
@@ -95,5 +94,4 @@ void			parse_map(t_cub *cub);
 void			start_game(t_cub *cub);
 void			raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray);
 int				key_hook(int keycode, t_mlx *mlx);
-int				mlx_verline(t_cub *cub, t_mlx *mlx);
 #endif

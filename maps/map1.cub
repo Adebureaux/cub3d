@@ -1,9 +1,9 @@
 R 500 200
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-EA ./path_to_the_east_texture
-WE ./path_to_the_west_texture
-S ./path_to_the_sprite_texture
+NO ./textures/redbrick.png
+SO ./textures/redbrick.png
+EA ./textures/redbrick.png
+WE ./textures/redbrick.png
+S ./textures/barrel.png
 F 255,100,0
 C 100,100,255
 
