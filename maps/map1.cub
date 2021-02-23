@@ -1,9 +1,9 @@
-R 500 200
-NO ./textures/redbrick.png
-SO ./textures/redbrick.png
-EA ./textures/redbrick.png
-WE ./textures/redbrick.png
-S ./textures/barrel.png
+R 500 500
+NO ./textures/redbrick.xpm
+SO ./textures/redbrick.xpm
+EA ./textures/redbrick.xpm
+WE ./textures/redbrick.xpm
+S ./textures/barrel.xpm
 F 255,100,0
 C 100,100,255
 

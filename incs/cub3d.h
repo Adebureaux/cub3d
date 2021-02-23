@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/21 19:11:41 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/23 01:26:06 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@
 # define RIGHT 65363
 # define DOWN 65364
 # define ESCAPE 65307
-# define MOVE_SPEED 100
-# define ROT_SPEED 100
-
+# define TEX_WIDTH 64
+# define TEX_HEIGHT 64
+# define MOVE_SPEED 1
+# define ROT_SPEED 10
 
 typedef struct s_rgb	t_rgb;
 struct			s_rgb
@@ -69,6 +70,7 @@ typedef struct  s_mlx	t_mlx;
 struct			s_mlx
 {
 	void		*cub;
+	void		*ray;
 	void		*mlx;
 	void		*win;
 	void		*img;
@@ -80,15 +82,42 @@ struct			s_mlx
 	t_pos		pos;
 };
 
+typedef struct  s_dpos	t_dpos;
+struct			s_dpos
+{
+	double		x;
+	double		y;
+};
+
 typedef struct  s_ray	t_ray;
 struct			s_ray
 {
-	int x;
+	t_mlx		tex[5];
+	t_dpos		pos;
+	t_dpos		dir;
+	t_dpos		plane;
+	t_dpos		ray;
+	t_dpos		side_dist;
+	t_dpos		delta_dist;
+	t_pos		map;
+	t_pos		step;
+	t_pos		tex_p;
+	double		tex_pos;
+	double		wall_dist;
+	double		cam;
+	double		wall;
+	int			hit;
+	int			side;
+	int			step_p;
+	int			line_h;
+	int			draw_start;
+	int			draw_end;
+	int			tex_num;
+	int			color;
 };
 
 int				get_next_line(int fd, char **line);
 void			ft_exit(int status, t_cub *cub, char *err);
-void			ft_free(t_cub *cub, int i);
 void			parse_file(char *av, t_cub *cub);
 void			parse_map(t_cub *cub);
 void			start_game(t_cub *cub);

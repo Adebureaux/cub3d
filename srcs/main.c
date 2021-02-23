@@ -6,13 +6,13 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/19 03:16:00 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/02/22 18:20:32 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-void	ft_free(t_cub *cub, int i)
+void	free_cub(t_cub *cub, int i)
 {
 	if (cub)
 	{
@@ -40,11 +40,9 @@ void	ft_free(t_cub *cub, int i)
 
 void	ft_exit(int status, t_cub *cub, char *err)
 {
-	ft_free(cub, 0);
-	if (status && !errno)
+	free_cub(cub, 0);
+	if (status)
 		ft_putstr_fd(err, 2);
-	else if (status && errno)
-		perror("Error");
 	else
 		ft_putstr_fd("Cube3d exited properly\n", 1);
 	exit(status);
