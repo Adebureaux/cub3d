@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/23 01:26:06 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/11 00:18:37 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ struct			s_dpos
 typedef struct  s_ray	t_ray;
 struct			s_ray
 {
-	t_mlx		tex[5];
+	int			tex[5][4096];
+	t_mlx		texture[5];
 	t_dpos		pos;
 	t_dpos		dir;
 	t_dpos		plane;
@@ -122,5 +123,5 @@ void			parse_file(char *av, t_cub *cub);
 void			parse_map(t_cub *cub);
 void			start_game(t_cub *cub);
 void			raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray);
-int				key_hook(int keycode, t_mlx *mlx);
+void			free_mlx(t_mlx *mlx, t_ray *ray);
 #endif
