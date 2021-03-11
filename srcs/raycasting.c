@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/11 00:25:10 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/11 15:02:45 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,35 +63,25 @@ double planeX, planeY;
 int texture[8][4096];
 int buffer[screenHeight][screenWidth];
 
-typedef struct	s_data {
-	void    	*mlx;
-	void   		*mlx_win;
-	void        *img;
-	char        *addr;
-	int         bits_per_pixel;
-	int         line_length;
-	int         endian;
-}				t_data;
+t_mlx tex[8];
 
-t_data tex[8];
-
-void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void	my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color)
 {
 	char    *dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	dst = mlx->addr + (y * mlx->len + x * (mlx->bpp / 8));
 	*(unsigned int*)dst = color;
 }
 
-int		mlx_get_pixel_color(t_data *mlx, int x, int y)
+int		mlx_get_pixel_color(t_mlx *mlx, int x, int y)
 {
 	char	*color;
 
-	color = mlx->addr + (y * mlx->line_length + x * (mlx->bits_per_pixel / 8));
+	color = mlx->addr + (y * mlx->len + x * (mlx->bpp / 8));
 	return (*(unsigned int*)color);
 }
 
-void mov_up()
+void	mov_up()
 {
 	if (worldMap[(int)(posX + dirX * moveSpeed)][(int)(posY)] == 0)
 		posX += dirX * moveSpeed;
@@ -99,7 +89,7 @@ void mov_up()
 		posY += dirY * moveSpeed;
 }
 
-void mov_down()
+void	mov_down()
 {
 	if (worldMap[(int)(posX - dirX * moveSpeed)][(int)(posY)] == 0)
 		posX -= dirX * moveSpeed;
@@ -107,7 +97,7 @@ void mov_down()
 		posY -= dirY * moveSpeed;
 }
 
-void mov_right()
+void	mov_right()
 {
 	double oldDirX = dirX;
 	dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
@@ -117,7 +107,7 @@ void mov_right()
 	planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
 }
 
-void mov_left()
+void	mov_left()
 {
 	double oldDirX = dirX;
 	dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
@@ -127,7 +117,7 @@ void mov_left()
 	planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
 }
 
-void	draw(t_data *img)
+void	draw(t_mlx *mlx)
 {
 	moveSpeed = 0.5; //the constant value is in squares/second
 	rotSpeed = 0.3; //the 2d raycaster version of camera plane
@@ -236,14 +226,14 @@ void	draw(t_data *img)
 			//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 			if(side == 1) color = (color >> 1) & 8355711;
 			//buffer[y][x] = color;
-			my_mlx_pixel_put(img, x, y, color);
+			my_mlx_pixel_put(mlx, x, y, color);
 		}
 		//drawBuffer(img);
 		//for(int y = 0; y < h; y++) for(int x = 0; x < w; x++) buffer[y][x] = 0; //clear the buffer instead of cls()
 	}
 }
 
-void put_texture_in_buffer(t_data *img)
+void put_texture_in_buffer(t_mlx *mlx)
 {
 	int x = 0;
 	int y = 0;
@@ -257,7 +247,7 @@ void put_texture_in_buffer(t_data *img)
 			while (y < 64)
 			{
 				texture[i][texWidth * x + y] = mlx_get_pixel_color(&tex[i], y, x);
-				printf("texture[i] = %d\n", texture[i][x + y]);
+				//printf("texture[i] = %d\n", texture[i][x + y]);
 				y++;
 			}
 			x++;
@@ -266,13 +256,13 @@ void put_texture_in_buffer(t_data *img)
 	}
 }
 
-int		key_hook(int keycode, t_data *img)
+int		key_hook(int keycode, t_mlx *mlx)
 {
-	t_data new;
+	t_mlx new;
 
-	mlx_destroy_image(img->mlx, img->img);
-	new.img = mlx_new_image(img->mlx, screenWidth, screenHeight);
-	new.addr = mlx_get_data_addr(new.img, &new.bits_per_pixel, &new.line_length, &new.endian);
+	mlx_destroy_image(mlx->mlx, mlx->img);
+	new.img = mlx_new_image(mlx->mlx, screenWidth, screenHeight);
+	new.addr = mlx_get_data_addr(new.img, &new.bpp, &new.len, &new.endian);
 	if (keycode == ESCAPE)
 		exit(EXIT_SUCCESS);
 	else if (keycode == UP)
@@ -284,13 +274,13 @@ int		key_hook(int keycode, t_data *img)
 	else if (keycode == LEFT)
 		mov_left();
 	draw(&new);
-	img->img = new.img;
-	img->addr = mlx_get_data_addr(new.img, &new.bits_per_pixel, &new.line_length, &new.endian);
-	mlx_put_image_to_window(img->mlx, img->mlx_win, img->img, 0, 0);
+	mlx->img = new.img;
+	mlx->addr = mlx_get_data_addr(new.img, &new.bpp, &new.len, &new.endian);
+	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
 	return (keycode);
 }
 
-void	load_tex(t_data *mlx)
+void	load_tex(t_mlx *mlx)
 {
 	int		i;
 	int x = 0;
@@ -316,28 +306,28 @@ void	load_tex(t_data *mlx)
 	while (i < 8)
 	{
 		tex[i].addr = mlx_get_data_addr(tex[i].img,
-			&tex[i].bits_per_pixel, &tex[i].line_length, &tex[i].endian);
+			&tex[i].bpp, &tex[i].len, &tex[i].endian);
 		i++;
 	}
 	put_texture_in_buffer(mlx);
 }
 
-void	raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray)
+void	raycasting(t_cub *cub, t_mlx *todo, t_ray *ray)
 {
-	t_data  img;
+	t_mlx  mlx;
 
 	posX = 22, posY = 11.5;
 	dirX = -1, dirY = 0; //initial direction vector
 	planeX = 0, planeY = 0.66;
 
-	img.mlx = mlx_init();
-	img.mlx_win = mlx_new_window(img.mlx, screenWidth, screenHeight, "Raycaster");
-	img.img = mlx_new_image(img.mlx, screenWidth, screenHeight);
-	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-	load_tex(&img);
-	put_texture_in_buffer(&img);
-	draw(&img);
-	mlx_hook(img.mlx_win, 2, 1L<<0, key_hook, &img);
-	mlx_put_image_to_window(img.mlx, img.mlx_win, img.img, 0, 0);
-	mlx_loop(img.mlx);
+	mlx.mlx = mlx_init();
+	mlx.win = mlx_new_window(mlx.mlx, screenWidth, screenHeight, "Raycaster");
+	mlx.img = mlx_new_image(mlx.mlx, screenWidth, screenHeight);
+	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bpp, &mlx.len, &mlx.endian);
+	load_tex(&mlx);
+	put_texture_in_buffer(&mlx);
+	draw(&mlx);
+	mlx_hook(mlx.win, 2, 1L<<0, key_hook, &mlx);
+	mlx_put_image_to_window(mlx.mlx, mlx.win, mlx.img, 0, 0);
+	mlx_loop(mlx.mlx);
 }

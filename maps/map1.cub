@@ -1,9 +1,9 @@
-R 500 500
+R 800 800
 NO ./textures/redbrick.xpm
 SO ./textures/bluestone.xpm
 EA ./textures/mossy.xpm
 WE ./textures/purplestone.xpm
-S ./textures/pillar.xpm
+S ./textures/eagle.xpm
 F 255,100,0
 C 100,100,255
 

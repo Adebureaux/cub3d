@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/11 00:18:37 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/11 15:02:17 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,6 @@ void			parse_map(t_cub *cub);
 void			start_game(t_cub *cub);
 void			raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray);
 void			free_mlx(t_mlx *mlx, t_ray *ray);
+void			my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
+int				mlx_get_pixel_color(t_mlx *mlx, int x, int y);
 #endif
