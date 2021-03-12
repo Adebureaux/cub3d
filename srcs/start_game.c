@@ -6,50 +6,74 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/11 00:24:19 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/12 12:15:44 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-void	free_mlx(t_mlx *mlx, t_ray *ray)
+void	free_mlx(t_mlx *mlx, t_mlx tex[5])
 {
 	int		i;
 
 	i = 0;
 	while (i < 5)
 	{
-		if (ray->texture[i].img)
-			mlx_destroy_image(mlx->mlx, ray->texture[i].img);
+		if (tex[i].img)
+			mlx_destroy_image(mlx->mlx, tex[i].img);
 		i++;
 	}
 	mlx_destroy_window(mlx->mlx, mlx->win);
 }
 
+void	bufferize_texture(t_mlx *mlx, t_mlx *tex, int *dst)
+{
+	int		x;
+	int		y;
+	int		size;
+
+	x = 0;
+	size = 64;
+	while (x < size)
+	{
+		y = 0;
+		while (y < size)
+		{
+			dst[size * x + y] = mlx_get_pixel_color(tex, y, x);
+			printf("texture[i] = %d\n", dst[size * x + y]);
+			y++;
+		}
+		x++;
+	}
+	mlx_destroy_image(mlx->mlx, tex->img);
+}
+
 void	load_texture(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
 	int		i;
+	t_mlx	tex[5];
 
 	i = 0;
-	ray->texture[0].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->no, &ray->texture[0].pos.x, &ray->texture[0].pos.y);
-	ray->texture[1].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->so, &ray->texture[1].pos.x, &ray->texture[1].pos.y);
-	ray->texture[2].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->we, &ray->texture[2].pos.x, &ray->texture[2].pos.y);
-	ray->texture[3].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->ea, &ray->texture[3].pos.x, &ray->texture[3].pos.y);
-	ray->texture[4].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->s, &ray->texture[4].pos.x, &ray->texture[4].pos.y);
+	tex[0].img = mlx_xpm_file_to_image
+		(mlx->mlx, cub->no, &tex[0].pos.x, &tex[0].pos.y);
+	tex[1].img = mlx_xpm_file_to_image
+		(mlx->mlx, cub->so, &tex[1].pos.x, &tex[1].pos.y);
+	tex[2].img = mlx_xpm_file_to_image
+		(mlx->mlx, cub->we, &tex[2].pos.x, &tex[2].pos.y);
+	tex[3].img = mlx_xpm_file_to_image
+		(mlx->mlx, cub->ea, &tex[3].pos.x, &tex[3].pos.y);
+	tex[4].img = mlx_xpm_file_to_image
+		(mlx->mlx, cub->s, &tex[4].pos.x, &tex[4].pos.y);
 	while (i < 5)
 	{
-		if (!ray->texture[i].img)
+		if (!tex[i].img)
 		{
-			free_mlx(mlx, ray);
+			free_mlx(mlx, tex);
 			ft_exit(EXIT_FAILURE, cub, "Error: Failed to load texture\n");
 		}
-		ray->texture[i].addr = mlx_get_data_addr(ray->texture[i].img,
-			&ray->texture[i].bpp, &ray->texture[i].len, &ray->texture[i].endian);
+		tex[i].addr = mlx_get_data_addr(tex[i].img,
+			&tex[i].bpp, &tex[i].len, &tex[i].endian);
+		bufferize_texture(mlx, &tex[i], ray->tex[i]);
 		i++;
 	}
 }

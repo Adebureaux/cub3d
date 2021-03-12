@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
-#    Updated: 2021/03/11 00:12:53 by adeburea         ###   ########.fr        #
+#    Updated: 2021/03/12 12:07:50 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 NAME	=	cub3D
 CC		=	clang
-FLAGS	=	-O3 -Wall -Wextra #-Werror -g -fsanitize=address
+FLAGS	=	-O3 -Wall -Wextra -g -fsanitize=address
 INC		=	incs
 OBJ		=	objs
 SRC		=	srcs
