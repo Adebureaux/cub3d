@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/12 12:07:30 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/13 12:07:23 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 # define TEX_HEIGHT 64
 # define MOVE_SPEED 1
 # define ROT_SPEED 10
+# define TEXW 64
+# define TEXH 64
 
 typedef struct s_rgb	t_rgb;
 struct			s_rgb
@@ -122,7 +124,7 @@ void			parse_file(char *av, t_cub *cub);
 void			parse_map(t_cub *cub);
 void			start_game(t_cub *cub);
 void			raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray);
-void			free_mlx(t_mlx *mlx, t_mlx tex[5]);
-void			my_mlx_pixel_put(t_mlx *mlx, int x, int y, int color);
-int				mlx_get_pixel_color(t_mlx *mlx, int x, int y);
+void			free_mlx(t_mlx *mlx, t_mlx tex[5], int i);
+void			mlx_pixel_draw(t_mlx *mlx, int x, int y, int color);
+int				mlx_pixel_get(t_mlx *mlx, int x, int y);
 #endif

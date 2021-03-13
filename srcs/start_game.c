@@ -6,17 +6,14 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/12 12:15:44 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/13 12:11:34 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-void	free_mlx(t_mlx *mlx, t_mlx tex[5])
+void	free_mlx(t_mlx *mlx, t_mlx tex[5], int i)
 {
-	int		i;
-
-	i = 0;
 	while (i < 5)
 	{
 		if (tex[i].img)
@@ -30,17 +27,14 @@ void	bufferize_texture(t_mlx *mlx, t_mlx *tex, int *dst)
 {
 	int		x;
 	int		y;
-	int		size;
 
 	x = 0;
-	size = 64;
-	while (x < size)
+	while (x < TEXW)
 	{
 		y = 0;
-		while (y < size)
+		while (y < TEXH)
 		{
-			dst[size * x + y] = mlx_get_pixel_color(tex, y, x);
-			printf("texture[i] = %d\n", dst[size * x + y]);
+			dst[TEXH * x + y] = mlx_pixel_get(tex, x, y);
 			y++;
 		}
 		x++;
@@ -68,7 +62,7 @@ void	load_texture(t_cub *cub, t_mlx *mlx, t_ray *ray)
 	{
 		if (!tex[i].img)
 		{
-			free_mlx(mlx, tex);
+			free_mlx(mlx, tex, i);
 			ft_exit(EXIT_FAILURE, cub, "Error: Failed to load texture\n");
 		}
 		tex[i].addr = mlx_get_data_addr(tex[i].img,
