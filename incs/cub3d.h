@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/13 12:07:23 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/15 15:34:32 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@
 # define RIGHT 65363
 # define DOWN 65364
 # define ESCAPE 65307
-# define TEX_WIDTH 64
-# define TEX_HEIGHT 64
-# define MOVE_SPEED 1
-# define ROT_SPEED 10
+# define MS 0.2
+# define RS 0.1
 # define TEXW 64
 # define TEXH 64
 

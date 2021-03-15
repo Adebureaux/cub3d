@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/13 12:43:44 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/15 15:40:00 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ int worldMap[mapWidth][mapHeight]=
 
 double posX, posY;  //x and y start position
 double dirX, dirY; //initial direction vector
-double moveSpeed; //the constant value is in squares/second
-double rotSpeed; //the constant value is in radians/second
 double planeX, planeY;
 int texture[8][4096];
 t_mlx tex[8];
@@ -72,46 +70,44 @@ int		mlx_pixel_get(t_mlx *mlx, int x, int y)
 	return (*(unsigned int*)color);
 }
 
-void	mov_up(t_ray *ray)
+void	mov_up(t_cub *cub, t_ray *ray)
 {
-	if (worldMap[(int)(posX + dirX * moveSpeed)][(int)(posY)] == 0)
-		posX += dirX * moveSpeed;
-	if (worldMap[(int)(posX)][(int)(posY + dirY * moveSpeed)] == 0)
-		posY += dirY * moveSpeed;
+	if (cub->map[(int)(posX + dirX * MS)][(int)(posY)] == 'O')
+		posX += dirX * MS;
+	if (cub->map[(int)(posX)][(int)(posY + dirY * MS)] == 'O')
+		posY += dirY * MS;
 }
 
-void	mov_down(t_ray *ray)
+void	mov_down(t_cub *cub, t_ray *ray)
 {
-	if (worldMap[(int)(posX - dirX * moveSpeed)][(int)(posY)] == 0)
-		posX -= dirX * moveSpeed;
-	if (worldMap[(int)(posX)][(int)(posY - dirY * moveSpeed)] == 0)
-		posY -= dirY * moveSpeed;
+	if (cub->map[(int)(posX - dirX * MS)][(int)(posY)] == 'O')
+		posX -= dirX * MS;
+	if (cub->map[(int)(posX)][(int)(posY - dirY * MS)] == 'O')
+		posY -= dirY * MS;
 }
 
-void	mov_right(t_ray *ray)
+void	mov_right(t_cub *cub, t_ray *ray)
 {
 	double oldDirX = dirX;
-	dirX = dirX * cos(-rotSpeed) - dirY * sin(-rotSpeed);
-	dirY = oldDirX * sin(-rotSpeed) + dirY * cos(-rotSpeed);
+	dirX = dirX * cos(-RS) - dirY * sin(-RS);
+	dirY = oldDirX * sin(-RS) + dirY * cos(-RS);
 	double oldPlaneX = planeX;
-	planeX = planeX * cos(-rotSpeed) - planeY * sin(-rotSpeed);
-	planeY = oldPlaneX * sin(-rotSpeed) + planeY * cos(-rotSpeed);
+	planeX = planeX * cos(-RS) - planeY * sin(-RS);
+	planeY = oldPlaneX * sin(-RS) + planeY * cos(-RS);
 }
 
-void	mov_left(t_ray *ray)
+void	mov_left(t_cub *cub, t_ray *ray)
 {
 	double oldDirX = dirX;
-	dirX = dirX * cos(rotSpeed) - dirY * sin(rotSpeed);
-	dirY = oldDirX * sin(rotSpeed) + dirY * cos(rotSpeed);
+	dirX = dirX * cos(RS) - dirY * sin(RS);
+	dirY = oldDirX * sin(RS) + dirY * cos(RS);
 	double oldPlaneX = planeX;
-	planeX = planeX * cos(rotSpeed) - planeY * sin(rotSpeed);
-	planeY = oldPlaneX * sin(rotSpeed) + planeY * cos(rotSpeed);
+	planeX = planeX * cos(RS) - planeY * sin(RS);
+	planeY = oldPlaneX * sin(RS) + planeY * cos(RS);
 }
 
 void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
-	moveSpeed = 0.2; //the constant value is in squares/second
-	rotSpeed = 0.1; //the 2d raycaster version of camera plane
 	for(int x = 0; x < w; x++)
 	{
 		//calculate ray position and direction
@@ -159,6 +155,8 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 			sideDistY = (mapY + 1.0 - posY) * deltaDistY;
 		}
 		//perform DDA
+		int texNum = 0; //1 subtracted from it so that texture 0 can be used!
+
 		while (hit == 0)
 		{
 			//jump to next map square, OR in x-direction, OR in y-direction
@@ -175,8 +173,17 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 				side = 1;
 			}
 			//Check if ray has hit a wall
-			if (worldMap[mapX][mapY] > 0) hit = 1;
+			if (cub->map[mapX][mapY] == '1')
+				hit = 1;
 		}
+		if (side == 0 && rayDirX > 0)
+			texNum = 0;
+		else if (side == 0 && rayDirX < 0)
+			texNum = 1;
+		else if (side == 1 && rayDirY < 0)
+			texNum = 2;
+		else
+			texNum = 3;
 		//Calculate distance projected on camera direction (Euclidean distance will give fisheye effect!)
 		if (side == 0) perpWallDist = (mapX - posX + (1 - stepX) / 2) / rayDirX;
 		else           perpWallDist = (mapY - posY + (1 - stepY) / 2) / rayDirY;
@@ -191,7 +198,7 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		if(drawEnd >= h)drawEnd = h - 1;
 
 		//texturing calculations
-		int texNum = worldMap[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
+		//int texNum = worldMap[mapX][mapY] - 1; //1 subtracted from it so that texture 0 can be used!
 
 		//calculate value of wallX
 		double wallX; //where exactly the wall was hit
@@ -215,37 +222,13 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 			texPos += step;
 
 			//int color = texture[texNum][TEXH * texY + texX];
-			int color = ray->tex[side][TEXH * texY + texX];
+			int color = ray->tex[texNum][TEXH * texY + texX];
 
 			//make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
 			if (side == 1)
 				color = (color >> 1) & 8355711;
 			mlx_pixel_draw(mlx, x, y, color);
 		}
-	}
-}
-
-void put_texture_in_buffer(t_mlx *mlx)
-{
-	//DELETE
-	int x = 0;
-	int y = 0;
-	int i = 0;
-	while (i < 8)
-	{
-		x = 0;
-		while (x < 64)
-		{
-			y = 0;
-			while (y < 64)
-			{
-				texture[i][TEXW * x + y] = mlx_pixel_get(&tex[i], y, x);
-				//printf("texture[i] = %d\n", texture[i][x + y]);
-				y++;
-			}
-			x++;
-		}
-		i++;
 	}
 }
 
@@ -259,13 +242,13 @@ int		key_hook(int keycode, t_mlx *mlx)
 	if (keycode == ESCAPE)
 		exit(EXIT_SUCCESS);
 	else if (keycode == UP)
-		mov_up(mlx->ray);
+		mov_up(mlx->cub, mlx->ray);
 	else if (keycode == DOWN)
-		mov_down(mlx->ray);
+		mov_down(mlx->cub, mlx->ray);
 	else if (keycode == RIGHT)
-		mov_right(mlx->ray);
+		mov_right(mlx->cub, mlx->ray);
 	else if (keycode == LEFT)
-		mov_left(mlx->ray);
+		mov_left(mlx->cub, mlx->ray);
 	draw(mlx->cub, &new, mlx->ray);
 	mlx->img = new.img;
 	mlx->addr = mlx_get_data_addr(new.img, &new.bpp, &new.len, &new.endian);
@@ -273,47 +256,13 @@ int		key_hook(int keycode, t_mlx *mlx)
 	return (keycode);
 }
 
-void	load_tex(t_mlx *mlx)
-{
-	//DELETE
-	int		i;
-	int x = 0;
-	int y = 0;
-
-	i = 0;
-	tex[0].img = mlx_xpm_file_to_image
-		(mlx->mlx, "./textures/eagle.xpm", &x, &y);
-	tex[1].img = mlx_xpm_file_to_image
-		(mlx->mlx, "./textures/redbrick.xpm", &x, &y);
-	tex[2].img = mlx_xpm_file_to_image
-		(mlx->mlx, "./textures/purplestone.xpm", &x, &y);
-	tex[3].img = mlx_xpm_file_to_image
-		(mlx->mlx, "./textures/greystone.xpm", &x, &y);
-	tex[4].img = mlx_xpm_file_to_image
-		(mlx->mlx, "./textures/bluestone.xpm", &x, &y);
-	tex[5].img = mlx_xpm_file_to_image
-		(mlx->mlx, "./textures/mossy.xpm", &x, &y);
-	tex[6].img = mlx_xpm_file_to_image
-		(mlx->mlx, "./textures/wood.xpm", &x, &y);
-	tex[7].img = mlx_xpm_file_to_image
-		(mlx->mlx, "./textures/colorstone.xpm", &x, &y);
-	while (i < 8)
-	{
-		tex[i].addr = mlx_get_data_addr(tex[i].img,
-			&tex[i].bpp, &tex[i].len, &tex[i].endian);
-		i++;
-	}
-	put_texture_in_buffer(mlx);
-}
-
 void	raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
-	posX = 22, posY = 11.5;
+	posX = cub->start.y;
+	posY = cub->start.x;
 	dirX = -1, dirY = 0; //initial direction vector
 	planeX = 0, planeY = 0.66;
 
-	load_tex(mlx);
-	put_texture_in_buffer(mlx);
 	draw(cub, mlx, ray);
 	mlx_hook(mlx->win, 2, 1L<<0, key_hook, mlx);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
