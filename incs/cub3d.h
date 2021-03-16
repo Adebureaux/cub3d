@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/15 15:34:32 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/16 04:11:11 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@
 # define RIGHT 65363
 # define DOWN 65364
 # define ESCAPE 65307
-# define MS 0.2
-# define RS 0.1
-# define TEXW 64
-# define TEXH 64
+# define MOV_S 0.2
+# define ROT_S 0.1
+# define TEX_W 64
+# define TEX_H 64
 
 typedef struct s_rgb	t_rgb;
 struct			s_rgb
@@ -44,6 +44,13 @@ struct			s_pos
 {
 	int			x;
 	int			y;
+};
+
+typedef struct  s_dpos	t_dpos;
+struct			s_dpos
+{
+	double		x;
+	double		y;
 };
 
 typedef struct s_cub	t_cub;
@@ -78,15 +85,9 @@ struct			s_mlx
 	int			bpp;
 	int			len;
 	int			endian;
-	int			color;
 	t_pos		pos;
-};
-
-typedef struct  s_dpos	t_dpos;
-struct			s_dpos
-{
-	double		x;
-	double		y;
+	int			right;
+	int			left;
 };
 
 typedef struct  s_ray	t_ray;
@@ -95,25 +96,7 @@ struct			s_ray
 	int			tex[5][4096];
 	t_dpos		pos;
 	t_dpos		dir;
-	t_dpos		plane;
-	t_dpos		ray;
-	t_dpos		side_dist;
-	t_dpos		delta_dist;
-	t_pos		map;
-	t_pos		step;
-	t_pos		tex_p;
-	double		tex_pos;
-	double		wall_dist;
-	double		cam;
-	double		wall;
-	int			hit;
-	int			side;
-	int			step_p;
-	int			line_h;
-	int			draw_start;
-	int			draw_end;
-	int			tex_num;
-	int			color;
+	t_dpos		pla;
 };
 
 int				get_next_line(int fd, char **line);
@@ -122,7 +105,6 @@ void			parse_file(char *av, t_cub *cub);
 void			parse_map(t_cub *cub);
 void			start_game(t_cub *cub);
 void			raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray);
-void			free_mlx(t_mlx *mlx, t_mlx tex[5], int i);
 void			mlx_pixel_draw(t_mlx *mlx, int x, int y, int color);
 int				mlx_pixel_get(t_mlx *mlx, int x, int y);
 #endif

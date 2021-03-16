@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/15 15:28:16 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/16 04:05:53 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	flood_check(t_cub *cub, int x, int y, int overflow)
 {
 	if (x < 0 || y < 0 || !cub->map[y][x] || cub->map[y][x] == ' ')
 		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
-	if (overflow > 11591)
+	if (overflow > 30000)
 		ft_exit(EXIT_FAILURE, cub, "Error: Map is too big\n");
 	if (cub->map[y][x] != '0' && cub->map[y][x] != '2')
 		return ;
@@ -98,7 +98,6 @@ void	display(t_cub *cub)
 	printf("f = %d\n", cub->f);
 	printf("c = %d\n", cub->c);
 	printf("save = %d\n", cub->save);
-	printf("pos cp = %c\n", cub->map[cub->start.y][cub->start.x]);
 	printf("player pos x = %d\n", cub->start.x);
 	printf("player pos y = %d\n", cub->start.y);
 	printf("\n");
@@ -116,7 +115,6 @@ void	parse_map(t_cub *cub)
 	check_map(cub);
 	cub->map[cub->start.y][cub->start.x] = '0';
 	flood_check(cub, cub->start.x, cub->start.y, 0);
-	//cub->map[cub->start.y][cub->start.x] = cub->cp;
 	display(cub);
 	start_game(cub);
 }

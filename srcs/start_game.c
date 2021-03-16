@@ -6,13 +6,13 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/13 12:11:34 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/16 04:07:08 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-void	free_mlx(t_mlx *mlx, t_mlx tex[5], int i)
+void	free_tex(t_mlx *mlx, t_mlx tex[5], int i)
 {
 	while (i < 5)
 	{
@@ -29,12 +29,12 @@ void	bufferize_texture(t_mlx *mlx, t_mlx *tex, int *dst)
 	int		y;
 
 	x = 0;
-	while (x < TEXW)
+	while (x < TEX_W)
 	{
 		y = 0;
-		while (y < TEXH)
+		while (y < TEX_H)
 		{
-			dst[TEXH * x + y] = mlx_pixel_get(tex, x, y);
+			dst[TEX_H * x + y] = mlx_pixel_get(tex, x, y);
 			y++;
 		}
 		x++;
@@ -62,7 +62,7 @@ void	load_texture(t_cub *cub, t_mlx *mlx, t_ray *ray)
 	{
 		if (!tex[i].img)
 		{
-			free_mlx(mlx, tex, i);
+			free_tex(mlx, tex, i);
 			ft_exit(EXIT_FAILURE, cub, "Error: Failed to load texture\n");
 		}
 		tex[i].addr = mlx_get_data_addr(tex[i].img,
@@ -87,23 +87,18 @@ void	resize_window(t_cub *cub, t_mlx *mlx)
 	mlx->pos.y = cub->ry;
 }
 
-void	init_window(t_cub *cub, t_mlx *mlx, t_ray *ray)
-{
-	mlx->mlx = mlx_init();
-	mlx->cub = cub;
-	mlx->ray = ray;
-	resize_window(cub, mlx);
-	mlx->win = mlx_new_window(mlx->mlx, cub->rx, cub->ry, "Cube3D");
-	mlx->img = mlx_new_image(mlx->mlx, cub->rx, cub->ry);
-	mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bpp, &mlx->len, &mlx->endian);
-	load_texture(cub, mlx, ray);
-}
-
 void	start_game(t_cub *cub)
 {
 	t_mlx	mlx;
 	t_ray	ray;
 
-	init_window(cub, &mlx, &ray);
+	mlx.mlx = mlx_init();
+	mlx.cub = cub;
+	mlx.ray = &ray;
+	resize_window(cub, &mlx);
+	mlx.win = mlx_new_window(mlx.mlx, cub->rx, cub->ry, "Cube3D");
+	mlx.img = mlx_new_image(mlx.mlx, cub->rx, cub->ry);
+	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bpp, &mlx.len, &mlx.endian);
+	load_texture(cub, &mlx, &ray);
 	raycasting(cub, &mlx, &ray);
 }
