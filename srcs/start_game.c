@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/16 04:07:08 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:02:11 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	load_texture(t_cub *cub, t_mlx *mlx, t_ray *ray)
 
 	i = 0;
 	tex[0].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->no, &tex[0].pos.x, &tex[0].pos.y);
+		(mlx->mlx, cub->so, &tex[0].pos.x, &tex[0].pos.y);
 	tex[1].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->so, &tex[1].pos.x, &tex[1].pos.y);
+		(mlx->mlx, cub->no, &tex[1].pos.x, &tex[1].pos.y);
 	tex[2].img = mlx_xpm_file_to_image
 		(mlx->mlx, cub->we, &tex[2].pos.x, &tex[2].pos.y);
 	tex[3].img = mlx_xpm_file_to_image

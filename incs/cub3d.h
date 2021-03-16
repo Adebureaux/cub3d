@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/16 04:11:11 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/16 18:00:57 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@
 # include <errno.h>
 # include <stdio.h>
 # include <math.h>
+# define MOVE_UP 119
+# define MOVE_LEFT 97
+# define MOVE_DOWN 115
+# define MOVE_RIGHT 100
 # define LEFT 65361
-# define UP 65362
 # define RIGHT 65363
-# define DOWN 65364
 # define ESCAPE 65307
 # define MOV_S 0.2
 # define ROT_S 0.1

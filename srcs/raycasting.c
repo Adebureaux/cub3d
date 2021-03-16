@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/16 04:20:26 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/16 23:08:21 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,33 @@ void	mov_down(t_cub *cub, t_ray *ray)
 		ray->pos.y -= ray->dir.y * MOV_S;
 }
 
-void	mov_right(t_ray *ray)
+void	mov_left(t_cub *cub, t_ray *ray)
+{
+	char	pos;
+
+	pos = cub->map[(int)(ray->pos.x - ray->pla.x * MOV_S)]
+					[(int)(ray->pos.y - ray->pla.y * MOV_S)];
+	if (pos == 'O' || pos == 'X')
+	{
+		ray->pos.x -= ray->pla.x * MOV_S / 2;
+		ray->pos.y -= ray->pla.y * MOV_S / 2;
+	}
+}
+
+void	mov_right(t_cub *cub, t_ray *ray)
+{
+	char	pos;
+
+	pos = cub->map[(int)(ray->pos.x + ray->pla.x * MOV_S)]
+					[(int)(ray->pos.y - ray->pla.y * MOV_S)];
+	if (pos == 'O' || pos == 'X')
+	{
+		ray->pos.x += ray->pla.x * MOV_S / 2;
+		ray->pos.y += ray->pla.y * MOV_S / 2;
+	}
+}
+
+void	rot_right(t_ray *ray)
 {
 	double	dirx;
 	double	plax;
@@ -65,7 +91,7 @@ void	mov_right(t_ray *ray)
 	ray->pla.y = plax * sin(-ROT_S) + ray->pla.y * cos(-ROT_S);
 }
 
-void	mov_left(t_ray *ray)
+void	rot_left(t_ray *ray)
 {
 	double	dirx;
 	double	plax;
@@ -78,12 +104,76 @@ void	mov_left(t_ray *ray)
 	ray->pla.y = plax * sin(ROT_S) + ray->pla.y * cos(ROT_S);
 }
 
+void 	draw_floor(t_cub *cub, t_mlx *mlx, t_ray *ray)
+{
+	//FLOOR CASTING
+	int screenHeight = cub->ry;
+	int screenWidth = cub->rx;
+	for(int y = 0; y < screenHeight; y++)
+	{
+		// rayDir for leftmost ray (x = 0) and rightmost ray (x = w)
+		float rayDirX0 = ray->dir.x - ray->pla.x;
+		float rayDirY0 = ray->dir.y - ray->pla.y;
+		float rayDirX1 = ray->dir.x + ray->pla.x;
+		float rayDirY1 = ray->dir.y + ray->pla.y;
+
+		// Current y position compared to the center of the screen (the horizon)
+		int p = y - screenHeight / 2;
+
+		// Vertical position of the camera.
+		float posZ = 0.5 * screenHeight;
+
+		// Horizontal distance from the camera to the floor for the current row.
+		// 0.5 is the z position exactly in the middle between floor and ceiling.
+		float rowDistance = posZ / p;
+
+		// calculate the real world step vector we have to add for each x (parallel to camera plane)
+		// adding step by step avoids multiplications with a weight in the inner loop
+		float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / screenWidth;
+		float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / screenWidth;
+
+		// real world coordinates of the leftmost column. This will be updated as we step to the right.
+		float floorX = ray->pos.x + rowDistance * rayDirX0;
+		float floorY = ray->pos.y + rowDistance * rayDirY0;
+
+		for(int x = 0; x < screenWidth; ++x)
+		{
+		// the cell coord is simply got from the integer parts of floorX and floorY
+		int cellX = (int)(floorX);
+		int cellY = (int)(floorY);
+
+		// get the texture coordinate from the fractional part
+		int tx = (int)(TEX_W * (floorX - cellX)) & (TEX_W - 1);
+		int ty = (int)(TEX_H * (floorY - cellY)) & (TEX_H - 1);
+
+		floorX += floorStepX;
+		floorY += floorStepY;
+
+		// choose texture and draw the pixel
+		int floorTexture = 3;
+		int ceilingTexture = 6;
+		int color;
+
+		// floor
+		color = cub->f;
+		color = (color >> 1) & 8355711; // make a bit darker
+		mlx_pixel_draw(mlx, x, y, color);
+
+		// ceiling (symmetrical, at screenHeight - y - 1 instead of y)
+		color = cub->c;
+		color = (color >> 1) & 8355711; // make a bit darker
+		mlx_pixel_draw(mlx, x, screenHeight - y - 1, color);
+		}
+	}
+}
+
 void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
 	int		x;
 	int		y;
 
 	x = 0;
+	draw_floor(cub, mlx, ray);
 	while (x < cub->rx)
 	{
 		double cameraX = 2 * x / (double)(cub->rx) - 1; //x-coordinate in camera space
@@ -220,14 +310,18 @@ int		key_hook(int keycode, t_mlx *mlx)
 	mlx_destroy_image(mlx->mlx, mlx->img);
 	new.img = mlx_new_image(mlx->mlx, mlx->pos.x, mlx->pos.y);
 	new.addr = mlx_get_data_addr(new.img, &new.bpp, &new.len, &new.endian);
-	if (keycode == UP)
+	if (keycode == MOVE_UP)
 		mov_up(mlx->cub, mlx->ray);
-	else if (keycode == DOWN)
+	else if (keycode == MOVE_LEFT)
+		mov_left(mlx->cub, mlx->ray);
+	else if (keycode == MOVE_RIGHT)
+		mov_right(mlx->cub, mlx->ray);
+	else if (keycode == MOVE_DOWN)
 		mov_down(mlx->cub, mlx->ray);
 	else if (keycode == mlx->right)
-		mov_right(mlx->ray);
+		rot_right(mlx->ray);
 	else if (keycode == mlx->left)
-		mov_left(mlx->ray);
+		rot_left(mlx->ray);
 	draw(mlx->cub, &new, mlx->ray);
 	mlx->img = new.img;
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
