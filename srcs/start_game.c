@@ -6,71 +6,11 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/16 20:02:11 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/17 00:29:56 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
-
-void	free_tex(t_mlx *mlx, t_mlx tex[5], int i)
-{
-	while (i < 5)
-	{
-		if (tex[i].img)
-			mlx_destroy_image(mlx->mlx, tex[i].img);
-		i++;
-	}
-	mlx_destroy_window(mlx->mlx, mlx->win);
-}
-
-void	bufferize_texture(t_mlx *mlx, t_mlx *tex, int *dst)
-{
-	int		x;
-	int		y;
-
-	x = 0;
-	while (x < TEX_W)
-	{
-		y = 0;
-		while (y < TEX_H)
-		{
-			dst[TEX_H * x + y] = mlx_pixel_get(tex, x, y);
-			y++;
-		}
-		x++;
-	}
-	mlx_destroy_image(mlx->mlx, tex->img);
-}
-
-void	load_texture(t_cub *cub, t_mlx *mlx, t_ray *ray)
-{
-	int		i;
-	t_mlx	tex[5];
-
-	i = 0;
-	tex[0].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->so, &tex[0].pos.x, &tex[0].pos.y);
-	tex[1].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->no, &tex[1].pos.x, &tex[1].pos.y);
-	tex[2].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->we, &tex[2].pos.x, &tex[2].pos.y);
-	tex[3].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->ea, &tex[3].pos.x, &tex[3].pos.y);
-	tex[4].img = mlx_xpm_file_to_image
-		(mlx->mlx, cub->s, &tex[4].pos.x, &tex[4].pos.y);
-	while (i < 5)
-	{
-		if (!tex[i].img)
-		{
-			free_tex(mlx, tex, i);
-			ft_exit(EXIT_FAILURE, cub, "Error: Failed to load texture\n");
-		}
-		tex[i].addr = mlx_get_data_addr(tex[i].img,
-			&tex[i].bpp, &tex[i].len, &tex[i].endian);
-		bufferize_texture(mlx, &tex[i], ray->tex[i]);
-		i++;
-	}
-}
 
 void	resize_window(t_cub *cub, t_mlx *mlx)
 {
@@ -87,6 +27,50 @@ void	resize_window(t_cub *cub, t_mlx *mlx)
 	mlx->pos.y = cub->ry;
 }
 
+void	set_position_2(t_cub *cub, t_ray *ray)
+{
+	if (cub->cp == 'E')
+	{
+		ray->dir.x = 0.01;
+		ray->pla.x = 0.66;
+		ray->dir.y = 0.99;
+		ray->pla.y = 0.01;
+	}
+	else if (cub->cp == 'W')
+	{
+		ray->dir.x = -0.01;
+		ray->pla.x = -0.66;
+		ray->dir.y = -0.99;
+		ray->pla.y = -0.01;
+	}
+}
+
+void	set_position_1(t_cub *cub, t_mlx *mlx, t_ray *ray)
+{
+	ray->pos.x = cub->start.y + 0.5;
+	ray->pos.y = cub->start.x + 0.5;
+	mlx->right = RIGHT;
+	mlx->left = LEFT;
+	if (cub->cp == 'N')
+	{
+		ray->dir.x = -0.99;
+		ray->pla.x = 0.01;
+		ray->dir.y = 0;
+		ray->pla.y = 0.66;
+	}
+	else if (cub->cp == 'S')
+	{
+		mlx->right = LEFT;
+		mlx->left = RIGHT;
+		ray->dir.x = 0.99;
+		ray->pla.x = 0.01;
+		ray->dir.y = 0;
+		ray->pla.y = 0.66;
+	}
+	else
+		set_position_2(cub, ray);
+}
+
 void	start_game(t_cub *cub)
 {
 	t_mlx	mlx;
@@ -100,5 +84,6 @@ void	start_game(t_cub *cub)
 	mlx.img = mlx_new_image(mlx.mlx, cub->rx, cub->ry);
 	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bpp, &mlx.len, &mlx.endian);
 	load_texture(cub, &mlx, &ray);
+	set_position_1(cub, &mlx, &ray);
 	raycasting(cub, &mlx, &ray);
 }

@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
-#    Updated: 2021/03/12 12:07:50 by adeburea         ###   ########.fr        #
+#    Updated: 2021/03/17 00:40:38 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,11 @@ OBJS	=	$(addprefix $(OBJ)/, $(SRCS:.c=.o))
 SRCS 	=	get_next_line.c \
 			parse_file.c \
 			parse_map.c \
+			load_texture.c \
 			start_game.c \
-			raycasting.c
+			mlx_utils.c \
+			raycasting.c \
+			sprites.c
 
 all: init $(NAME)
 

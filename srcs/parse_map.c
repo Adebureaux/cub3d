@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/16 04:05:53 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/16 23:37:41 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ void	display(t_cub *cub)
 	printf("f = %d\n", cub->f);
 	printf("c = %d\n", cub->c);
 	printf("save = %d\n", cub->save);
-	printf("player pos x = %d\n", cub->start.x);
-	printf("player pos y = %d\n", cub->start.y);
 	printf("\n");
 	if (cub->map)
 	{

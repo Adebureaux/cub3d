@@ -6,27 +6,11 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/16 23:08:21 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/18 18:34:53 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
-
-void	mlx_pixel_draw(t_mlx *mlx, int x, int y, int color)
-{
-	char    *dst;
-
-	dst = mlx->addr + (y * mlx->len + x * (mlx->bpp / 8));
-	*(unsigned int*)dst = color;
-}
-
-int		mlx_pixel_get(t_mlx *mlx, int x, int y)
-{
-	char	*color;
-
-	color = mlx->addr + (x * mlx->len + y * (mlx->bpp / 8));
-	return (*(unsigned int*)color);
-}
 
 void	mov_up(t_cub *cub, t_ray *ray)
 {
@@ -107,9 +91,7 @@ void	rot_left(t_ray *ray)
 void 	draw_floor(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
 	//FLOOR CASTING
-	int screenHeight = cub->ry;
-	int screenWidth = cub->rx;
-	for(int y = 0; y < screenHeight; y++)
+	for(int y = 0; y < cub->ry; y++)
 	{
 		// rayDir for leftmost ray (x = 0) and rightmost ray (x = w)
 		float rayDirX0 = ray->dir.x - ray->pla.x;
@@ -118,10 +100,10 @@ void 	draw_floor(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		float rayDirY1 = ray->dir.y + ray->pla.y;
 
 		// Current y position compared to the center of the screen (the horizon)
-		int p = y - screenHeight / 2;
+		int p = y - cub->ry / 2;
 
 		// Vertical position of the camera.
-		float posZ = 0.5 * screenHeight;
+		float posZ = 0.5 * cub->ry;
 
 		// Horizontal distance from the camera to the floor for the current row.
 		// 0.5 is the z position exactly in the middle between floor and ceiling.
@@ -129,14 +111,14 @@ void 	draw_floor(t_cub *cub, t_mlx *mlx, t_ray *ray)
 
 		// calculate the real world step vector we have to add for each x (parallel to camera plane)
 		// adding step by step avoids multiplications with a weight in the inner loop
-		float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / screenWidth;
-		float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / screenWidth;
+		float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / cub->rx;
+		float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / cub->rx;
 
 		// real world coordinates of the leftmost column. This will be updated as we step to the right.
 		float floorX = ray->pos.x + rowDistance * rayDirX0;
 		float floorY = ray->pos.y + rowDistance * rayDirY0;
 
-		for(int x = 0; x < screenWidth; ++x)
+		for(int x = 0; x < cub->rx; ++x)
 		{
 		// the cell coord is simply got from the integer parts of floorX and floorY
 		int cellX = (int)(floorX);
@@ -150,19 +132,16 @@ void 	draw_floor(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		floorY += floorStepY;
 
 		// choose texture and draw the pixel
-		int floorTexture = 3;
-		int ceilingTexture = 6;
 		int color;
 
 		// floor
-		color = cub->f;
+		color = ray->tex[5][TEX_W * ty + tx];
 		color = (color >> 1) & 8355711; // make a bit darker
 		mlx_pixel_draw(mlx, x, y, color);
 
-		// ceiling (symmetrical, at screenHeight - y - 1 instead of y)
+		// ceiling (symmetrical, at cub->ry - y - 1 instead of y)
 		color = cub->c;
-		color = (color >> 1) & 8355711; // make a bit darker
-		mlx_pixel_draw(mlx, x, screenHeight - y - 1, color);
+		mlx_pixel_draw(mlx, x, cub->ry - y - 1, color);
 		}
 	}
 }
@@ -176,6 +155,7 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 	draw_floor(cub, mlx, ray);
 	while (x < cub->rx)
 	{
+		double		perpWallDist;
 		double cameraX = 2 * x / (double)(cub->rx) - 1; //x-coordinate in camera space
 		double rayDirX = ray->dir.x + ray->pla.x * cameraX;
 		double rayDirY = ray->dir.y + ray->pla.y * cameraX;
@@ -190,7 +170,6 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		//length of ray from one x or y-side to next x or y-side
 		double deltaDistX = (rayDirY == 0) ? 0 : ((rayDirX == 0) ? 1 : fabs(1 / rayDirX));
 		double deltaDistY = (rayDirX == 0) ? 0 : ((rayDirY == 0) ? 1 : fabs(1 / rayDirY));
-		double perpWallDist;
 
 		//what direction to step in x or y-direction (either +1 or -1)
 		int stepX;
@@ -222,9 +201,18 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		//perform DDA
 		int texNum = 0; //1 subtracted from it so that texture 0 can be used!
 
+		int spr_hit = 0;
 		while (hit == 0)
 		{
 			//jump to next map square, OR in x-direction, OR in y-direction
+			if (cub->map[mapX][mapY] == 'X')
+			{
+				printf("%d\n", ray->spr_nbr);
+				ray->spr[ray->spr_nbr].x = (int)mapX + 0.5;
+				ray->spr[ray->spr_nbr].y = (int)mapY + 0.5;
+				spr_hit = 1;
+				ray->spr_nbr = 1;
+			}
 			if (sideDistX < sideDistY)
 			{
 				sideDistX += deltaDistX;
@@ -237,7 +225,7 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 				mapY += stepY;
 				side = 1;
 			}
-			//Check if ray has hit a wall
+
 			if (cub->map[mapX][mapY] == '1')
 				hit = 1;
 		}
@@ -293,9 +281,12 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 			mlx_pixel_draw(mlx, x, y, color);
 			y++;
 		}
+		ray->z_buff[x] = perpWallDist; //perpendicular distance is used
 		x++;
 	}
+	draw_sprite(cub, mlx, ray);
 }
+
 
 int		key_hook(int keycode, t_mlx *mlx)
 {
@@ -330,40 +321,6 @@ int		key_hook(int keycode, t_mlx *mlx)
 
 void	raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
-	ray->pos.x = cub->start.y + 0.5;
-	ray->pos.y = cub->start.x + 0.5;
-	mlx->right = RIGHT;
-	mlx->left = LEFT;
-	if (cub->cp == 'N')
-	{
-		ray->dir.x = -0.99;
-		ray->pla.x = 0.01;
-		ray->dir.y = 0;
-		ray->pla.y = 0.66;
-	}
-	else if (cub->cp == 'S')
-	{
-		mlx->right = LEFT;
-		mlx->left = RIGHT;
-		ray->dir.x = 0.99;
-		ray->pla.x = 0.01;
-		ray->dir.y = 0;
-		ray->pla.y = 0.66;
-	}
-	else if (cub->cp == 'E')
-	{
-		ray->dir.x = 0.01;
-		ray->pla.x = 0.66;
-		ray->dir.y = 0.99;
-		ray->pla.y = 0.01;
-	}
-	else if (cub->cp == 'W')
-	{
-		ray->dir.x = -0.01;
-		ray->pla.x = -0.66;
-		ray->dir.y = -0.99;
-		ray->pla.y = -0.01;
-	}
 	draw(cub, mlx, ray);
 	mlx_hook(mlx->win, 2, 1L<<0, key_hook, mlx);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);

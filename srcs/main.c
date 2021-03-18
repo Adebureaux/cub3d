@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/16 04:09:39 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/16 23:26:06 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_exit(int status, t_cub *cub, char *err)
 	exit(status);
 }
 
-void	init_cub(t_cub	*cub)
+void	init_cub(t_cub *cub)
 {
 	cub->rx = -1;
 	cub->ry = -1;
