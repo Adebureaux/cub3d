@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 02:20:07 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 03:19:39 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 17:40:21 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,63 @@ void	rot_left(t_ray *ray)
 	ray->pla.y = plax * sin(ROT_S) + ray->pla.y * cos(ROT_S);
 }
 
-int		key_hook(int keycode, t_mlx *mlx)
+int		key_press(int keycode, t_mlx *mlx)
 {
-	t_mlx	new;
-
 	if (keycode == ESCAPE)
 		quit(mlx);
-	mlx_destroy_image(mlx->mlx, mlx->img);
-	new.img = mlx_new_image(mlx->mlx, mlx->pos.x, mlx->pos.y);
-	new.addr = mlx_get_data_addr(new.img, &new.bpp, &new.len, &new.endian);
-	if (keycode == MOVE_UP)
-		mov_up(mlx->cub, mlx->ray);
+	else if (keycode == MOVE_UP)
+		mlx->move_up = 1;
 	else if (keycode == MOVE_LEFT)
-		mov_left(mlx->cub, mlx->ray);
+		mlx->move_left = 1;
 	else if (keycode == MOVE_RIGHT)
-		mov_right(mlx->cub, mlx->ray);
+		mlx->move_right = 1;
 	else if (keycode == MOVE_DOWN)
-		mov_down(mlx->cub, mlx->ray);
+		mlx->move_down = 1;
 	else if (keycode == mlx->right)
-		rot_right(mlx->ray);
+		mlx->rot_right = 1;
 	else if (keycode == mlx->left)
+		mlx->rot_left = 1;
+	return (1);
+}
+
+int		key_release(int keycode, t_mlx *mlx)
+{
+	if (keycode == MOVE_UP)
+		mlx->move_up = 0;
+	else if (keycode == MOVE_LEFT)
+		mlx->move_left = 0;
+	else if (keycode == MOVE_RIGHT)
+		mlx->move_right = 0;
+	else if (keycode == MOVE_DOWN)
+		mlx->move_down = 0;
+	else if (keycode == mlx->right)
+		mlx->rot_right = 0;
+	else if (keycode == mlx->left)
+		mlx->rot_left = 0;
+	return (1);
+}
+
+int		key_hook(t_mlx *mlx)
+{
+	t_mlx	tmp;
+
+	mlx_destroy_image(mlx->mlx, mlx->img);
+	tmp.img = mlx_new_image(mlx->mlx, mlx->pos.x, mlx->pos.y);
+	tmp.addr = mlx_get_data_addr(tmp.img, &tmp.bpp, &tmp.len, &tmp.endian);
+	if (mlx->move_up == 1)
+		mov_up(mlx->cub, mlx->ray);
+	else if (mlx->move_left == 1)
+		mov_left(mlx->cub, mlx->ray);
+	else if (mlx->move_right == 1)
+		mov_right(mlx->cub, mlx->ray);
+	else if (mlx->move_down == 1)
+		mov_down(mlx->cub, mlx->ray);
+	else if (mlx->rot_right == 1)
+		rot_right(mlx->ray);
+	else if (mlx->rot_left == 1)
 		rot_left(mlx->ray);
-	draw(mlx->cub, &new, mlx->ray);
-	mlx->img = new.img;
+	draw(mlx->cub, &tmp, mlx->ray);
+	mlx->img = tmp.img;
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img, 0, 0);
-	return (keycode);
+	return (1);
 }

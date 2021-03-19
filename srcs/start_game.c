@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/17 00:29:56 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 17:48:59 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,16 @@ void	set_position_1(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		set_position_2(cub, ray);
 }
 
+void	set_move(t_mlx *mlx)
+{
+	mlx->move_up = 0;
+	mlx->move_left = 0;
+	mlx->move_right = 0;
+	mlx->move_down = 0;
+	mlx->rot_left = 0;
+	mlx->rot_right = 0;
+}
+
 void	start_game(t_cub *cub)
 {
 	t_mlx	mlx;
@@ -80,7 +90,7 @@ void	start_game(t_cub *cub)
 	mlx.cub = cub;
 	mlx.ray = &ray;
 	resize_window(cub, &mlx);
-	mlx.win = mlx_new_window(mlx.mlx, cub->rx, cub->ry, "Cube3D");
+	mlx.win = mlx_new_window(mlx.mlx, cub->rx, cub->ry, "cub3D");
 	mlx.img = mlx_new_image(mlx.mlx, cub->rx, cub->ry);
 	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bpp, &mlx.len, &mlx.endian);
 	load_texture(cub, &mlx, &ray);

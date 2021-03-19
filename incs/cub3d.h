@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 02:46:56 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 20:14:28 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define RIGHT 65363
 # define ESCAPE 65307
 # define MOV_S 0.2
-# define ROT_S 0.1
+# define ROT_S 0.08
 # define TEX_W 64
 # define TEX_H 64
 
@@ -53,6 +53,13 @@ struct			s_dpos
 {
 	double		x;
 	double		y;
+};
+
+typedef struct  s_fpos	t_fpos;
+struct			s_fpos
+{
+	float		x;
+	float		y;
 };
 
 typedef struct s_cub	t_cub;
@@ -92,6 +99,12 @@ struct			s_mlx
 	t_pos		pos;
 	int			right;
 	int			left;
+	int			move_up;
+	int			move_left;
+	int			move_right;
+	int			move_down;
+	int			rot_left;
+	int			rot_right;
 };
 
 typedef struct  s_ray	t_ray;
@@ -105,6 +118,27 @@ struct			s_ray
 	t_dpos		pla;
 	int			side;
 	int			tex_nbr;
+	double		perp_wall_dst;
+	double		cam;
+	t_dpos		ray_dir;
+	t_pos		map;
+	t_dpos		side_dst;
+	t_dpos		delta_dst;
+	t_pos		step;
+	int			hit;
+	int			line_h;
+	int			draw_s;
+	int			draw_e;
+	double		wall;
+	t_pos		tex_pos;
+	double		step_b;
+	double		tex_b;
+	int			color;
+	t_fpos 		ray_dir0;
+	t_fpos		ray_dir1;
+	int			p;
+	int			x;
+	int			y;
 };
 
 int				get_next_line(int fd, char **line);
@@ -116,12 +150,16 @@ void			load_texture(t_cub *cub, t_mlx *mlx, t_ray *ray);
 void			raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray);
 void			mlx_pixel_draw(t_mlx *mlx, int x, int y, int color);
 int				mlx_pixel_get(t_mlx *mlx, int x, int y);
-int				key_hook(int keycode, t_mlx *mlx);
+int				key_press(int keycode, t_mlx *mlx);
+int				key_release(int keycode, t_mlx *mlx);
+int				key_hook(t_mlx *mlx);
 void			mov_up(t_cub *cub, t_ray *ray);
 void			mov_down(t_cub *cub, t_ray *ray);
 void			mov_left(t_cub *cub, t_ray *ray);
 void			mov_right(t_cub *cub, t_ray *ray);
 int				quit(t_mlx *mlx);
+void			draw(t_cub *cub, t_mlx *mlx, t_ray *ray);
 void			draw_sprite(t_cub *cub, t_mlx *mlx, t_ray *ray);
+void			draw_wall(t_cub *cub, t_mlx *mlx, t_ray *ray);
 
 #endif

@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sprites.c                                          :+:      :+:    :+:   */
+/*   sprite.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:26:06 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 02:10:48 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 16:21:01 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
 // A function to implement bubble sort
-void	sort_sprite(t_dpos *arr, double *comp, int n)
+void	sort_sprite(t_dpos *arr, double *cmp, int n)
 {
     int i, j;
+	double	temp;
 	t_dpos tmp;
 
-    for (i = 0; i < n-1; i++)
+    for (i = 0; i < n; i++)
 	{
     // Last i elements are already in place
-    for (j = 0; j < n-i-1; j++)
+    for (j = 0; j < n-i - 1; j++)
 	{
-        if (comp[j] < comp[j+1])
+        if (cmp[j] < cmp[j+1])
 		{
-			tmp = arr[j+1];
-			arr[j+1] = arr[j];
-			arr[j] = tmp;
+			temp = cmp[j];
+			cmp[j] = cmp[j + 1];
+			cmp[j + 1] = temp;
+			tmp = arr[j];
+			arr[j] = arr[j + 1];
+			arr[j + 1] = tmp;
 		}
 	}
 	}
