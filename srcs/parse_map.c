@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/16 23:37:41 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 02:29:54 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,16 @@ void	get_map(t_cub *cub)
 	cub->map[i] = NULL;
 }
 
+void	count_sprites(t_cub *cub, int i, int j)
+{
+	if (cub->map[i][j] == '2')
+	{
+		cub->spr[cub->spr_nbr].x = i;
+		cub->spr[cub->spr_nbr].y = j;
+		cub->spr_nbr++;
+	}
+}
+
 void	check_map(t_cub *cub)
 {
 	int	i;
@@ -44,6 +54,7 @@ void	check_map(t_cub *cub)
 		j = 0;
 		while (cub->map[i][j])
 		{
+			count_sprites(cub, i, j);
 			if (!ft_strchr(" 012NSEW", cub->map[i][j]))
 				ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
 			if (ft_strchr("NSEW", cub->map[i][j]))
@@ -58,8 +69,6 @@ void	check_map(t_cub *cub)
 		}
 		i++;
 	}
-	if (!ft_strchr("NSWE", cub->cp))
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
 }
 
 void	flood_check(t_cub *cub, int x, int y, int overflow)
@@ -82,37 +91,13 @@ void	flood_check(t_cub *cub, int x, int y, int overflow)
 	flood_check(cub, x, y - 1, overflow++);
 }
 
-void	display(t_cub *cub)
-{
-	int	i;
-
-	i = 0;
-	printf("\n______________DISPLAY______________\n");
-	printf("rx = %d\n", cub->rx);
-	printf("ry = %d\n", cub->ry);
-	printf("no = %s\n", cub->no);
-	printf("so = %s\n", cub->so);
-	printf("we = %s\n", cub->we);
-	printf("ea = %s\n", cub->ea);
-	printf("s = %s\n", cub->s);
-	printf("f = %d\n", cub->f);
-	printf("c = %d\n", cub->c);
-	printf("save = %d\n", cub->save);
-	printf("\n");
-	if (cub->map)
-	{
-		while (cub->map[i])
-			printf("%s\n", cub->map[i++]);
-	}
-	printf("_______________END_________________\n\n");
-}
-
 void	parse_map(t_cub *cub)
 {
 	get_map(cub);
 	check_map(cub);
+	if (!ft_strchr("NSWE", cub->cp))
+		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
 	cub->map[cub->start.y][cub->start.x] = '0';
 	flood_check(cub, cub->start.x, cub->start.y, 0);
-	display(cub);
 	start_game(cub);
 }

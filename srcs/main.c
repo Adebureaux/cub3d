@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/16 23:26:06 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 02:16:47 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	init_cub(t_cub *cub)
 	cub->cp = 'X';
 	cub->line = NULL;
 	cub->map = NULL;
+	cub->spr_nbr = 0;
 }
 
 int		main(int ac, char **av)

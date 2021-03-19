@@ -6,34 +6,55 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:26:06 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/18 18:35:14 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 02:10:48 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
+// A function to implement bubble sort
+void	sort_sprite(t_dpos *arr, double *comp, int n)
+{
+    int i, j;
+	t_dpos tmp;
+
+    for (i = 0; i < n-1; i++)
+	{
+    // Last i elements are already in place
+    for (j = 0; j < n-i-1; j++)
+	{
+        if (comp[j] < comp[j+1])
+		{
+			tmp = arr[j+1];
+			arr[j+1] = arr[j];
+			arr[j] = tmp;
+		}
+	}
+	}
+}
+
 void	draw_sprite(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
 	//DRAW SPRITE
 	//1D ray->z_buff
-
 	//arrays used to sort the sprites
-	int spriteOrder[ray->spr_nbr];
-	double spriteDistance[ray->spr_nbr];
 	//SPRITE CASTING
 	//sort sprites from far to close
-	for(int i = 0; i < ray->spr_nbr; i++)
+	for(int i = 0; i < cub->spr_nbr; i++)
 	{
-	spriteOrder[i] = i;
-	spriteDistance[i] = ((ray->pos.x - ray->spr[ray->spr_nbr].x) * (ray->pos.x - ray->spr[ray->spr_nbr].x) + (ray->pos.y - ray->spr[ray->spr_nbr].y) * (ray->pos.y - ray->spr[ray->spr_nbr].y)); //sqrt not taken, unneeded
+		ray->spr_dst[i] = ((ray->pos.x - cub->spr[i].x)
+		* (ray->pos.x - cub->spr[i].x) + (ray->pos.y - cub->spr[i].y)
+		* (ray->pos.y - cub->spr[i].y));
 	}
+	sort_sprite(cub->spr, ray->spr_dst, cub->spr_nbr);
 	//sortSprites(spriteOrder, spriteDistance, ray->spr_nbr);
 	//after sorting the sprites, do the projection and draw them
-		for(int i = 0; i < ray->spr_nbr; i++)
+
+		for(int i = 0; i < cub->spr_nbr; i++)
 		{
 		//translate sprite position to relative to camera
-		double spriteX = ray->spr[ray->spr_nbr].x - ray->pos.x;
-		double spriteY = ray->spr[ray->spr_nbr].y - ray->pos.y;
+		double spriteX = cub->spr[i].x - ray->pos.x + 0.5;
+		double spriteY = cub->spr[i].y - ray->pos.y + 0.5;
 
 		//transform sprite with the inverse camera matrix
 		// [ ray->pla.x   ray->dir.x ] -1                                       [ ray->dir.y      -ray->dir.x ]
@@ -71,7 +92,7 @@ void	draw_sprite(t_cub *cub, t_mlx *mlx, t_ray *ray)
 			//2) it's on the screen (left)
 			//3) it's on the screen (right)
 			//4) ZBuffer, with perpendicular distance
-			if(transformY > 0 && stripe > 0 && stripe < cub->rx && transformY < ray->z_buff[stripe])
+			if(transformY > 0 && stripe > 0 && stripe < cub->rx && transformY < ray->buf[stripe])
 			for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
 			{
 			int d = (y) * 256 - cub->ry * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats

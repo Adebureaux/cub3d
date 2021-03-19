@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
-#    Updated: 2021/03/17 00:40:38 by adeburea         ###   ########.fr        #
+#    Updated: 2021/03/19 02:26:53 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,9 @@ SRCS 	=	get_next_line.c \
 			start_game.c \
 			mlx_utils.c \
 			raycasting.c \
+			hook.c \
+			move.c \
+			wall.c \
 			sprites.c
 
 all: init $(NAME)

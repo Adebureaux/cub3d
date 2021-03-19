@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/18 18:30:37 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 02:46:56 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ struct			s_cub
 	t_pos		start;
 	char		*line;
 	char		**map;
+	t_dpos		spr[100];
+	int			spr_nbr;
 };
 
 typedef struct  s_mlx	t_mlx;
@@ -96,12 +98,13 @@ typedef struct  s_ray	t_ray;
 struct			s_ray
 {
 	int			tex[8][4096];
-	double		z_buff[3000];
-	t_dpos		spr[100];
+	double		buf[3000];
+	double		spr_dst[100];
 	t_dpos		pos;
 	t_dpos		dir;
 	t_dpos		pla;
-	int			spr_nbr;
+	int			side;
+	int			tex_nbr;
 };
 
 int				get_next_line(int fd, char **line);
@@ -113,5 +116,12 @@ void			load_texture(t_cub *cub, t_mlx *mlx, t_ray *ray);
 void			raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray);
 void			mlx_pixel_draw(t_mlx *mlx, int x, int y, int color);
 int				mlx_pixel_get(t_mlx *mlx, int x, int y);
+int				key_hook(int keycode, t_mlx *mlx);
+void			mov_up(t_cub *cub, t_ray *ray);
+void			mov_down(t_cub *cub, t_ray *ray);
+void			mov_left(t_cub *cub, t_ray *ray);
+void			mov_right(t_cub *cub, t_ray *ray);
+int				quit(t_mlx *mlx);
 void			draw_sprite(t_cub *cub, t_mlx *mlx, t_ray *ray);
+
 #endif
