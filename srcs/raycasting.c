@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 20:57:55 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 22:53:02 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,8 @@
 
 void	draw_floor(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
-	int		y;
-
-	y = 0;
-	while (y < cub->ry)
+	ray->y = 0;
+	while (ray->y < cub->ry)
 	{
 		// rayDir for leftmost ray (x = 0) and rightmost ray (x = w)
 		ray->ray_dir0.x = ray->dir.x - ray->pla.x;
@@ -26,7 +24,7 @@ void	draw_floor(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		ray->ray_dir1.y = ray->dir.y + ray->pla.y;
 
 		// Current y position compared to the center of the screen (the horizon)
-		ray->p = y - cub->ry / 2;
+		ray->p = ray->y - cub->ry / 2;
 
 		// Vertical position of the camera.
 		float posZ = 0.5 * cub->ry;
@@ -62,13 +60,13 @@ void	draw_floor(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		// floor
 		ray->color = ray->tex[5][TEX_W * ty + tx];
 		ray->color = (ray->color >> 1) & 8355711; // make a bit darker
-		mlx_pixel_draw(mlx, x, y, ray->color);
+		mlx_pixel_draw(mlx, x, ray->y, ray->color);
 
 		// ceiling (symmetrical, at cub->ry - y - 1 instead of y)
 		ray->color = cub->c;
-		mlx_pixel_draw(mlx, x, cub->ry - y - 1, ray->color);
+		mlx_pixel_draw(mlx, x, cub->ry - ray->y - 1, ray->color);
 		}
-		y++;
+		ray->y++;
 	}
 }
 
@@ -81,6 +79,7 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		draw_wall(cub, mlx, ray);
 		ray->x++;
 	}
+	printf("ray->map.x = %d, ray->map.y = %d\n", ray->map.x, ray->map.y);
 	draw_sprite(cub, mlx, ray);
 }
 

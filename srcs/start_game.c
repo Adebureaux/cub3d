@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 17:48:59 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 22:27:13 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,17 @@ void	set_position_2(t_cub *cub, t_ray *ray)
 {
 	if (cub->cp == 'E')
 	{
-		ray->dir.x = 0.01;
+		ray->dir.x = 0;
 		ray->pla.x = 0.66;
-		ray->dir.y = 0.99;
-		ray->pla.y = 0.01;
+		ray->dir.y = 1;
+		ray->pla.y = 0;
 	}
 	else if (cub->cp == 'W')
 	{
-		ray->dir.x = -0.01;
+		ray->dir.x = 0;
 		ray->pla.x = -0.66;
-		ray->dir.y = -0.99;
-		ray->pla.y = -0.01;
+		ray->dir.y = -1;
+		ray->pla.y = 0;
 	}
 }
 
@@ -53,8 +53,8 @@ void	set_position_1(t_cub *cub, t_mlx *mlx, t_ray *ray)
 	mlx->left = LEFT;
 	if (cub->cp == 'N')
 	{
-		ray->dir.x = -0.99;
-		ray->pla.x = 0.01;
+		ray->dir.x = -1;
+		ray->pla.x = 0;
 		ray->dir.y = 0;
 		ray->pla.y = 0.66;
 	}
@@ -62,8 +62,8 @@ void	set_position_1(t_cub *cub, t_mlx *mlx, t_ray *ray)
 	{
 		mlx->right = LEFT;
 		mlx->left = RIGHT;
-		ray->dir.x = 0.99;
-		ray->pla.x = 0.01;
+		ray->dir.x = 1;
+		ray->pla.x = 0;
 		ray->dir.y = 0;
 		ray->pla.y = 0.66;
 	}

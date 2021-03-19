@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 02:20:07 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 20:34:08 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/19 22:53:44 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	draw_wall_end(t_cub *cub, t_mlx *mlx, t_ray *ray)
 	{
 		ray->tex_pos.y = (int)ray->tex_b & (TEX_H - 1);
 		ray->tex_b += ray->step_b;
-		ray->color = ray->tex[ray->tex_nbr][TEX_H * ray->tex_pos.y + ray->tex_pos.x];
+		ray->color = ray->tex[ray->tex_nbr][TEX_H *
+		ray->tex_pos.y + ray->tex_pos.x];
 		if (ray->side == 1)
 			ray->color = (ray->color >> 1) & 8355711;
 		mlx_pixel_draw(mlx, ray->x, ray->y, ray->color);
@@ -40,7 +41,7 @@ void	draw_wall_end(t_cub *cub, t_mlx *mlx, t_ray *ray)
 	ray->buf[ray->x] = ray->perp_wall_dst;
 }
 
-void	draw_wall_calc(t_cub *cub, t_mlx *mlx, t_ray *ray)
+void	draw_wall_calc(t_cub *cub, t_ray *ray)
 {
 	if (ray->side == 0 && ray->ray_dir.x > 0)
 		ray->tex_nbr = 0;
@@ -51,9 +52,11 @@ void	draw_wall_calc(t_cub *cub, t_mlx *mlx, t_ray *ray)
 	else
 		ray->tex_nbr = 3;
 	if (ray->side == 0)
-		ray->perp_wall_dst = (ray->map.x - ray->pos.x + (1 - ray->step.x) / 2) / ray->ray_dir.x;
+		ray->perp_wall_dst = (ray->map.x - ray->pos.x +
+			(1 - ray->step.x) / 2) / ray->ray_dir.x;
 	else
-		ray->perp_wall_dst = (ray->map.y - ray->pos.y + (1 - ray->step.y) / 2) / ray->ray_dir.y;
+		ray->perp_wall_dst = (ray->map.y - ray->pos.y +
+			(1 - ray->step.y) / 2) / ray->ray_dir.y;
 	ray->line_h = (int)(cub->ry / ray->perp_wall_dst);
 	ray->draw_s = -ray->line_h / 2 + cub->ry / 2;
 	if (ray->draw_s < 0)
@@ -63,9 +66,9 @@ void	draw_wall_calc(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		ray->draw_e = cub->ry - 1;
 }
 
-void	draw_wall_hit(t_cub *cub, t_mlx *mlx, t_ray *ray)
+void	draw_wall_hit(t_cub *cub, t_ray *ray)
 {
-	if (ray->side_dst.x < ray->side_dst.y)
+	if (ray->side_dst.x <= ray->side_dst.y)
 	{
 		ray->side_dst.x += ray->delta_dst.x;
 		ray->map.x += ray->step.x;
@@ -77,11 +80,16 @@ void	draw_wall_hit(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		ray->map.y += ray->step.y;
 		ray->side = 1;
 	}
+	if (!cub->map[ray->map.x][ray->map.y])
+	{
+		printf("ray->map.x = %d, ray->map.y = %d\n", ray->map.x, ray->map.y);
+		ft_exit(EXIT_FAILURE, cub, "CRASH : SORTIE DE MAP\n");
+	}
 	if (cub->map[ray->map.x][ray->map.y] == '1')
 		ray->hit = 1;
 }
 
-void	draw_wall_dir(t_cub *cub, t_mlx *mlx, t_ray *ray)
+void	draw_wall_dir(t_ray *ray)
 {
 	if (ray->ray_dir.x < 0)
 	{
@@ -115,9 +123,9 @@ void	draw_wall(t_cub *cub, t_mlx *mlx, t_ray *ray)
 	ray->hit = 0;
 	ray->delta_dst.x = fabs(1 / ray->ray_dir.x);
 	ray->delta_dst.y = fabs(1 / ray->ray_dir.y);
-	draw_wall_dir(cub, mlx, ray);
+	draw_wall_dir(ray);
 	while (ray->hit == 0)
-		draw_wall_hit(cub, mlx, ray);
-	draw_wall_calc(cub, mlx, ray);
+		draw_wall_hit(cub, ray);
+	draw_wall_calc(cub, ray);
 	draw_wall_end(cub, mlx, ray);
 }
