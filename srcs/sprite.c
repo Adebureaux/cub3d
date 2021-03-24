@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:26:06 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 16:21:01 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/24 17:12:34 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,8 @@ void	sort_sprite(t_dpos *arr, double *cmp, int n)
 
 void	draw_sprite(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
-	//DRAW SPRITE
-	//1D ray->z_buff
-	//arrays used to sort the sprites
-	//SPRITE CASTING
-	//sort sprites from far to close
+	if (cub->spr_nbr > 100)
+		quit_error(mlx, "Error: Too many sprites\n");
 	for(int i = 0; i < cub->spr_nbr; i++)
 	{
 		ray->spr_dst[i] = ((ray->pos.x - cub->spr[i].x)

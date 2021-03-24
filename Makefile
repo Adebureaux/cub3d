@@ -6,7 +6,7 @@
 #    By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#              #
-#    Updated: 2021/03/19 20:02:19 by adeburea         ###   ########.fr        #
+#    Updated: 2021/03/24 17:05:25 by adeburea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,8 @@ SRCS 	=	get_next_line.c \
 			hook.c \
 			move.c \
 			wall.c \
-			sprite.c
+			sprite.c \
+			save.c
 
 all: init $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 22:53:02 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/24 18:11:27 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,14 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		draw_wall(cub, mlx, ray);
 		ray->x++;
 	}
-	printf("ray->map.x = %d, ray->map.y = %d\n", ray->map.x, ray->map.y);
 	draw_sprite(cub, mlx, ray);
 }
 
 void	raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
 	draw(cub, mlx, ray);
+	if (cub->save)
+		save(cub, mlx);
 	mlx_hook(mlx->win, 33, 1L << 17, quit, mlx);
 	mlx_hook(mlx->win, 2, 1L << 0, key_press, mlx);
 	mlx_loop_hook(mlx->mlx, key_hook, mlx);

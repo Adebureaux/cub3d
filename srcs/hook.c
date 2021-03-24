@@ -6,13 +6,13 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 02:20:07 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 21:51:18 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/23 14:36:50 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-void	rot_right(t_ray *ray)
+void	rot_right(t_cub *cub, t_ray *ray)
 {
 	double	dirx;
 	double	plax;
@@ -90,7 +90,7 @@ int		key_hook(t_mlx *mlx)
 	else if (mlx->move_down == 1)
 		mov_down(mlx->cub, mlx->ray);
 	else if (mlx->rot_right == 1)
-		rot_right(mlx->ray);
+		rot_right(mlx->ray, mlx->ray);
 	else if (mlx->rot_left == 1)
 		rot_left(mlx->ray);
 	draw(mlx->cub, &tmp, mlx->ray);

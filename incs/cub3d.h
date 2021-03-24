@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 20:14:28 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/24 18:11:03 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,10 @@ void			mov_down(t_cub *cub, t_ray *ray);
 void			mov_left(t_cub *cub, t_ray *ray);
 void			mov_right(t_cub *cub, t_ray *ray);
 int				quit(t_mlx *mlx);
+int				quit_error(t_mlx *mlx, char *err);
 void			draw(t_cub *cub, t_mlx *mlx, t_ray *ray);
 void			draw_sprite(t_cub *cub, t_mlx *mlx, t_ray *ray);
 void			draw_wall(t_cub *cub, t_mlx *mlx, t_ray *ray);
+void			save(t_cub *cub, t_mlx *mlx);
 
 #endif
