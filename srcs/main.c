@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/25 02:01:55 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/25 03:14:49 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ void	ft_exit(int status, t_cub *cub, char *err)
 {
 	free_cub(cub, 0);
 	if (status)
+	{
+		ft_putstr_fd("Error\n", 2);
 		ft_putstr_fd(err, 2);
+	}
 	else
 		ft_putstr_fd("Cub3d exited properly\n", 1);
 	exit(status);
