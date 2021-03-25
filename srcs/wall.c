@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 02:20:07 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/22 13:10:13 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/25 01:02:52 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,6 @@ void	draw_wall_hit(t_cub *cub, t_ray *ray)
 		ray->map.y += ray->step.y;
 		ray->side = 1;
 	}
-	// if (!cub->map[ray->map.x][ray->map.y])
-	// {
-	// 	printf("ray->map.x = %d, ray->map.y = %d\n", ray->map.x, ray->map.y);
-	// }
 	if (cub->map[ray->map.x][ray->map.y] == '1')
 		ray->hit = 1;
 }

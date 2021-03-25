@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/24 18:11:03 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/25 03:10:53 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # define LEFT 65361
 # define RIGHT 65363
 # define ESCAPE 65307
-# define MOV_S 0.2
-# define ROT_S 0.08
+# define MOV_S 0.15
+# define ROT_S 0.05
 # define TEX_W 64
 # define TEX_H 64
 
@@ -48,14 +48,14 @@ struct			s_pos
 	int			y;
 };
 
-typedef struct  s_dpos	t_dpos;
+typedef struct s_dpos	t_dpos;
 struct			s_dpos
 {
 	double		x;
 	double		y;
 };
 
-typedef struct  s_fpos	t_fpos;
+typedef struct s_fpos	t_fpos;
 struct			s_fpos
 {
 	float		x;
@@ -84,7 +84,7 @@ struct			s_cub
 	int			spr_nbr;
 };
 
-typedef struct  s_mlx	t_mlx;
+typedef struct s_mlx	t_mlx;
 struct			s_mlx
 {
 	void		*cub;
@@ -107,7 +107,7 @@ struct			s_mlx
 	int			rot_right;
 };
 
-typedef struct  s_ray	t_ray;
+typedef struct s_ray	t_ray;
 struct			s_ray
 {
 	int			tex[8][4096];
@@ -134,11 +134,30 @@ struct			s_ray
 	double		step_b;
 	double		tex_b;
 	int			color;
-	t_fpos 		ray_dir0;
+	t_fpos		ray_dir0;
 	t_fpos		ray_dir1;
+	float		posz;
+	float		row_dst;
+	t_fpos		fl_step;
+	t_fpos		floor;
+	t_pos		cell;
+	t_pos		t;
 	int			p;
 	int			x;
 	int			y;
+	int			i;
+	int			d;
+	t_dpos		sprite;
+	double		inv_det;
+	t_dpos		transform;
+	int			sprite_screen;
+	int			sprite_height;
+	t_pos		draw;
+	t_pos		draw_start;
+	t_pos		draw_end;
+	int			sprite_width;
+	int			stripe;
+	t_pos		tex_p;
 };
 
 int				get_next_line(int fd, char **line);

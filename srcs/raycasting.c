@@ -6,73 +6,57 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/24 18:11:27 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/25 02:26:53 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
+void	init_floor(t_cub *cub, t_ray *ray)
+{
+	ray->ray_dir0.x = ray->dir.x - ray->pla.x;
+	ray->ray_dir0.y = ray->dir.y - ray->pla.y;
+	ray->ray_dir1.x = ray->dir.x + ray->pla.x;
+	ray->ray_dir1.y = ray->dir.y + ray->pla.y;
+	ray->p = ray->y - cub->ry / 2;
+	ray->posz = 0.5 * cub->ry;
+	ray->row_dst = ray->posz / ray->p;
+	ray->fl_step.x = ray->row_dst *
+						(ray->ray_dir1.x - ray->ray_dir0.x) / cub->rx;
+	ray->fl_step.y = ray->row_dst *
+						(ray->ray_dir1.y - ray->ray_dir0.y) / cub->rx;
+	ray->floor.x = ray->pos.x + ray->row_dst * ray->ray_dir0.x;
+	ray->floor.y = ray->pos.y + ray->row_dst * ray->ray_dir0.y;
+}
+
 void	draw_floor(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
-	ray->y = 0;
-	while (ray->y < cub->ry)
+	init_floor(cub, ray);
+	ray->x = 0;
+	while (ray->x++ < cub->rx)
 	{
-		// rayDir for leftmost ray (x = 0) and rightmost ray (x = w)
-		ray->ray_dir0.x = ray->dir.x - ray->pla.x;
-		ray->ray_dir0.y = ray->dir.y - ray->pla.y;
-		ray->ray_dir1.x = ray->dir.x + ray->pla.x;
-		ray->ray_dir1.y = ray->dir.y + ray->pla.y;
-
-		// Current y position compared to the center of the screen (the horizon)
-		ray->p = ray->y - cub->ry / 2;
-
-		// Vertical position of the camera.
-		float posZ = 0.5 * cub->ry;
-
-		// Horizontal distance from the camera to the floor for the current row.
-		// 0.5 is the z position exactly in the middle between floor and ceiling.
-		float rowDistance = posZ / ray->p;
-
-		// calculate the real world step vector we have to add for each x (parallel to camera plane)
-		// adding step by step avoids multiplications with a weight in the inner loop
-		float floorStepX = rowDistance * (ray->ray_dir1.x - ray->ray_dir0.x) / cub->rx;
-		float floorStepY = rowDistance * (ray->ray_dir1.y - ray->ray_dir0.y) / cub->rx;
-
-		// real world coordinates of the leftmost column. This will be updated as we step to the right.
-		float floorX = ray->pos.x + rowDistance * ray->ray_dir0.x;
-		float floorY = ray->pos.y + rowDistance * ray->ray_dir0.y;
-
-		for(int x = 0; x < cub->rx; ++x)
-		{
-		// the cell coord is simply got from the integer parts of floorX and floorY
-		int cellX = (int)(floorX);
-		int cellY = (int)(floorY);
-
-		// get the texture coordinate from the fractional part
-		int tx = (int)(TEX_W * (floorX - cellX)) & (TEX_W - 1);
-		int ty = (int)(TEX_H * (floorY - cellY)) & (TEX_H - 1);
-
-		floorX += floorStepX;
-		floorY += floorStepY;
-
-		// choose texture and draw the pixel
-
-		// floor
-		ray->color = ray->tex[5][TEX_W * ty + tx];
-		ray->color = (ray->color >> 1) & 8355711; // make a bit darker
-		mlx_pixel_draw(mlx, x, ray->y, ray->color);
-
-		// ceiling (symmetrical, at cub->ry - y - 1 instead of y)
+		ray->cell.x = (int)(ray->floor.x);
+		ray->cell.y = (int)(ray->floor.y);
+		ray->t.x = (int)(TEX_W * ray->floor.x - ray->cell.x) & TEX_W - 1;
+		ray->t.y = (int)(TEX_H * ray->floor.y - ray->cell.y) & TEX_H - 1;
+		ray->floor.x += ray->fl_step.x;
+		ray->floor.y += ray->fl_step.y;
+		ray->color = ray->tex[5][TEX_W * ray->t.y + ray->t.x];
+		ray->color = (ray->color >> 1) & 8355711;
+		mlx_pixel_draw(mlx, ray->x, ray->y, ray->color);
 		ray->color = cub->c;
-		mlx_pixel_draw(mlx, x, cub->ry - ray->y - 1, ray->color);
-		}
-		ray->y++;
+		mlx_pixel_draw(mlx, ray->x, cub->ry - ray->y - 1, ray->color);
 	}
 }
 
 void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
-	draw_floor(cub, mlx, ray);
+	ray->y = 0;
+	while (ray->y < cub->ry)
+	{
+		draw_floor(cub, mlx, ray);
+		ray->y++;
+	}
 	ray->x = 0;
 	while (ray->x < cub->rx)
 	{
