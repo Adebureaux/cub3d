@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/25 02:26:53 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/25 14:03:54 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,26 @@ void	draw_floor(t_cub *cub, t_mlx *mlx, t_ray *ray)
 	}
 }
 
+void	draw_life(t_cub *cub, t_mlx *mlx)
+{
+	int		h;
+	int		i;
+	int		j;
+
+	h = cub->rx * 90 / 100;
+	i = cub->rx - h;
+	while (i < h)
+	{
+		j = cub->ry * 90 / 100;
+		while (j < cub->ry)
+		{
+			mlx_pixel_draw(mlx, i, j, 0X00FF0000);
+			j++;
+		}
+		i++;
+	}
+}
+
 void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
 	ray->y = 0;
@@ -64,6 +84,7 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		ray->x++;
 	}
 	draw_sprite(cub, mlx, ray);
+	draw_life(cub, mlx);
 }
 
 void	raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray)
