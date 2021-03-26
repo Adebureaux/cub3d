@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/26 13:51:29 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/26 15:33:43 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	parse_file(char *av, t_cub *cub)
 	{
 		ret = get_next_line(cub->fd, &cub->line);
 		if (ret < 1)
-			ft_exit(EXIT_FAILURE, cub, "Wrong description\n");
+			ft_exit(EXIT_FAILURE, cub, "Wrong map file\n");
 		if (cub->line[0])
 		{
 			parse_desc(cub);
