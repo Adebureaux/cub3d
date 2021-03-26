@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/02/18 22:09:04 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/26 13:51:29 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,30 @@ void	parse_resolution(t_cub *cub)
 
 	i = 2;
 	if (ft_strncmp(cub->line, "R ", 2))
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong resolution\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
 	cub->rx = ft_atoi(cub->line + i);
 	if (cub->rx < 1)
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong resolution\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
 	while (ft_isdigit(cub->line[i]))
 		i++;
 	if (cub->line[i++] != ' ')
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong resolution\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
 	cub->ry = ft_atoi(cub->line + i);
 	if (cub->ry < 1)
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong resolution\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
 	while (ft_isdigit(cub->line[i]))
 		i++;
 	if (cub->line[i])
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong resolution\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
 }
 
 void	parse_texture(char **dst, t_cub *cub, int len)
 {
 	if (cub->line[len] != ' ')
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong texture\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong texture\n");
 	*dst = ft_strdup(cub->line + len + 1);
 	if (!*dst || !*dst[0])
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong texture\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong texture\n");
 }
 
 void	parse_color(int *c, t_cub *cub)
@@ -51,23 +51,23 @@ void	parse_color(int *c, t_cub *cub)
 
 	i = 2;
 	if (!ft_isdigit(cub->line[i]))
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong color\n");
 	rgb.r = ft_atoi(&cub->line[i]);
 	i += ft_nbrlen_base(rgb.r, 10);
 	if (cub->line[i++] != ',' || rgb.r < 0 || rgb.r > 255)
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong color\n");
 	if (!ft_isdigit(cub->line[i]))
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong color\n");
 	rgb.g = ft_atoi(&cub->line[i]);
 	i += ft_nbrlen_base(rgb.g, 10);
 	if (cub->line[i++] != ',' || rgb.g < 0 || rgb.g > 255)
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong color\n");
 	if (!ft_isdigit(cub->line[i]))
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong color\n");
 	rgb.b = ft_atoi(&cub->line[i]);
 	i += ft_nbrlen_base(rgb.b, 10);
 	if (cub->line[i] || rgb.b < 0 || rgb.b > 255)
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong color\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong color\n");
 	*c = (rgb.r << 16 | rgb.g << 8 | rgb.b);
 }
 
@@ -90,7 +90,7 @@ void	parse_desc(t_cub *cub)
 	else if (!ft_strncmp("C ", cub->line, 2) && cub->c == -1)
 		parse_color(&cub->c, cub);
 	else
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong description\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong description\n");
 }
 
 void	parse_file(char *av, t_cub *cub)
@@ -105,7 +105,7 @@ void	parse_file(char *av, t_cub *cub)
 	{
 		ret = get_next_line(cub->fd, &cub->line);
 		if (ret < 1)
-			ft_exit(EXIT_FAILURE, cub, "Error: Wrong description\n");
+			ft_exit(EXIT_FAILURE, cub, "Wrong description\n");
 		if (cub->line[0])
 		{
 			parse_desc(cub);

@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 12:36:38 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/26 02:21:25 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/26 13:51:04 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	get_map(t_cub *cub)
 	len = sizeof(char*);
 	cub->map = (void*)malloc(len * 2);
 	if (!cub->map)
-		ft_exit(EXIT_FAILURE, cub, "Error: Malloc break in init_cub\n");
+		ft_exit(EXIT_FAILURE, cub, "Malloc break in init_cub\n");
 	while (get_next_line(cub->fd, &cub->map[0]) > 0 && !cub->map[0][0])
 		free(cub->map[0]);
 	while (get_next_line(cub->fd, &cub->map[i]) > 0)
@@ -56,11 +56,11 @@ void	check_map(t_cub *cub)
 		{
 			count_sprites(cub, i, j);
 			if (!ft_strchr(" 012NSEW", cub->map[i][j]))
-				ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
+				ft_exit(EXIT_FAILURE, cub, "Wrong map\n");
 			if (ft_strchr("NSEW", cub->map[i][j]))
 			{
 				if (cub->cp != 'X' && cub->cp)
-					ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
+					ft_exit(EXIT_FAILURE, cub, "Wrong map\n");
 				cub->cp = cub->map[i][j];
 				cub->start.x = j;
 				cub->start.y = i;
@@ -74,9 +74,9 @@ void	check_map(t_cub *cub)
 void	flood_check(t_cub *cub, int x, int y, int overflow)
 {
 	if (x < 0 || y < 0 || !cub->map[y][x] || cub->map[y][x] == ' ')
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong map\n");
 	if (overflow > 30000)
-		ft_exit(EXIT_FAILURE, cub, "Error: Map is too big\n");
+		ft_exit(EXIT_FAILURE, cub, "Map is too big\n");
 	if (cub->map[y][x] != '0' && cub->map[y][x] != '2')
 		return ;
 	if (cub->map[y][x] == 'O' || cub->map[y][x] == 'X')
@@ -96,7 +96,7 @@ void	parse_map(t_cub *cub)
 	get_map(cub);
 	check_map(cub);
 	if (!ft_strchr("NSWE", cub->cp))
-		ft_exit(EXIT_FAILURE, cub, "Error: Wrong map\n");
+		ft_exit(EXIT_FAILURE, cub, "Wrong map\n");
 	cub->map[cub->start.y][cub->start.x] = '0';
 	flood_check(cub, cub->start.x, cub->start.y, 0);
 	start_game(cub);

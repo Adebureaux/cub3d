@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 19:32:57 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/26 03:06:02 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/26 14:12:25 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,17 @@ int		main(int ac, char **av)
 	t_cub	cub;
 
 	if (ac > 3 || ac < 2)
-		ft_exit(EXIT_FAILURE, NULL, "Error: Wrong number of arguments\n");
+		ft_exit(EXIT_FAILURE, NULL, "Wrong number of arguments\n");
 	init_cub(&cub);
 	if (ac == 3)
 	{
 		if (!ft_strcmp(av[2], "--save"))
 			cub.save = 1;
 		else
-			ft_exit(EXIT_FAILURE, &cub, "Error: Wrong second argument\n");
+			ft_exit(EXIT_FAILURE, &cub, "Wrong second argument\n");
 	}
 	if (ft_strcmp(ft_strnstr(av[1], ".cub", ft_strlen(av[1])), ".cub"))
-		ft_exit(EXIT_FAILURE, &cub, "Error: Wrong map format\n");
+		ft_exit(EXIT_FAILURE, &cub, "Wrong map format\n");
 	parse_file(av[1], &cub);
 	ft_exit(EXIT_SUCCESS, &cub, NULL);
 }

@@ -1,4 +1,4 @@
-R 1200 800
+R 10000 10000
 NO ./textures/multibrick.xpm
 SO ./textures/bluestone.xpm
 EA ./textures/woodbrick.xpm

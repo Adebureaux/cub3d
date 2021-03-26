@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:26:06 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/26 04:04:00 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/26 14:06:51 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ void	free_tex(t_mlx *mlx, t_mlx *tex, int i)
 {
 	while (i < 8)
 	{
-		printf("%d\n", i);
-		printf("%p\n", tex[i].img);
 		if (tex[i].img)
 			mlx_destroy_image(mlx->mlx, tex[i].img);
 		i++;
 	}
-	quit_error(mlx, "Error: Failed to load texture\n");
+	quit_error(mlx, "Failed to load texture\n");
 }
 
 void	bufferize_texture(t_mlx *mlx, t_mlx *tex, int *dst)

@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:26:06 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/25 03:07:59 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/26 13:51:38 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	init_sprite(t_cub *cub, t_mlx *mlx, t_ray *ray)
 
 	i = 0;
 	if (cub->spr_nbr > 100)
-		quit_error(mlx, "Error: Too many sprites\n");
+		quit_error(mlx, "Too many sprites\n");
 	while (i < cub->spr_nbr)
 	{
 		ray->spr_dst[i] = ((ray->pos.x - cub->spr[i].x)
