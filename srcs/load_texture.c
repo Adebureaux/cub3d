@@ -6,25 +6,23 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 23:26:06 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/17 00:32:37 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/26 04:04:00 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-void	free_tex(t_mlx *mlx, t_mlx *tex, int max)
+void	free_tex(t_mlx *mlx, t_mlx *tex, int i)
 {
-	int		i;
-
-	i = 0;
-	while (i < max)
+	while (i < 8)
 	{
+		printf("%d\n", i);
+		printf("%p\n", tex[i].img);
 		if (tex[i].img)
 			mlx_destroy_image(mlx->mlx, tex[i].img);
 		i++;
 	}
-	mlx_destroy_window(mlx->mlx, mlx->win);
-	ft_exit(EXIT_FAILURE, mlx->cub, "Error: Failed to load texture\n");
+	quit_error(mlx, "Error: Failed to load texture\n");
 }
 
 void	bufferize_texture(t_mlx *mlx, t_mlx *tex, int *dst)
@@ -46,22 +44,42 @@ void	bufferize_texture(t_mlx *mlx, t_mlx *tex, int *dst)
 	mlx_destroy_image(mlx->mlx, tex->img);
 }
 
-void	load_more_texture(t_mlx *mlx, t_mlx *tex)
+void	load_more_texture(t_mlx *mlx, t_ray *ray, t_mlx *tex)
 {
+	int		i;
+
 	tex[5].img = mlx_xpm_file_to_image(mlx->mlx, "./textures/wood.xpm",
 		&tex[5].pos.x, &tex[5].pos.y);
 	tex[6].img = mlx_xpm_file_to_image(mlx->mlx, "./textures/pillar.xpm",
 		&tex[6].pos.x, &tex[6].pos.y);
 	tex[7].img = mlx_xpm_file_to_image(mlx->mlx, "./textures/greenlight.xpm",
 		&tex[7].pos.x, &tex[7].pos.y);
+	i = 0;
+	while (i < 8)
+	{
+		if (!tex[i].img)
+			free_tex(mlx, tex, i);
+		tex[i].addr = mlx_get_data_addr(tex[i].img,
+			&tex[i].bpp, &tex[i].len, &tex[i].endian);
+		bufferize_texture(mlx, &tex[i], ray->tex[i]);
+		i++;
+	}
+}
+
+void	init_tex(t_mlx *tex)
+{
+	int		i;
+
+	i = 0;
+	while (i < 8)
+		tex[i++].img = NULL;
 }
 
 void	load_texture(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
-	int		i;
 	t_mlx	tex[8];
 
-	i = 0;
+	init_tex(tex);
 	tex[0].img = mlx_xpm_file_to_image(mlx->mlx, cub->so,
 		&tex[0].pos.x, &tex[0].pos.y);
 	tex[1].img = mlx_xpm_file_to_image(mlx->mlx, cub->no,
@@ -72,14 +90,5 @@ void	load_texture(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		&tex[3].pos.x, &tex[3].pos.y);
 	tex[4].img = mlx_xpm_file_to_image(mlx->mlx, cub->s,
 		&tex[4].pos.x, &tex[4].pos.y);
-	load_more_texture(mlx, tex);
-	while (i < 8)
-	{
-		if (!tex[i].img)
-			free_tex(mlx, tex, i);
-		tex[i].addr = mlx_get_data_addr(tex[i].img,
-			&tex[i].bpp, &tex[i].len, &tex[i].endian);
-		bufferize_texture(mlx, &tex[i], ray->tex[i]);
-		i++;
-	}
+	load_more_texture(mlx, ray, tex);
 }

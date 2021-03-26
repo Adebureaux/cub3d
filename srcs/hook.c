@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/19 02:20:07 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/25 01:40:40 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/26 03:02:46 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int		key_press(int keycode, t_mlx *mlx)
 		quit(mlx);
 	else if (keycode == MOVE_UP)
 		mlx->move_up = 1;
-	else if (keycode == MOVE_LEFT)
+	else if (keycode == mlx->left_dir)
 		mlx->move_left = 1;
-	else if (keycode == MOVE_RIGHT)
+	else if (keycode == mlx->right_dir)
 		mlx->move_right = 1;
 	else if (keycode == MOVE_DOWN)
 		mlx->move_down = 1;
@@ -61,9 +61,9 @@ int		key_release(int keycode, t_mlx *mlx)
 {
 	if (keycode == MOVE_UP)
 		mlx->move_up = 0;
-	else if (keycode == MOVE_LEFT)
+	else if (keycode == mlx->left_dir)
 		mlx->move_left = 0;
-	else if (keycode == MOVE_RIGHT)
+	else if (keycode == mlx->right_dir)
 		mlx->move_right = 0;
 	else if (keycode == MOVE_DOWN)
 		mlx->move_down = 0;

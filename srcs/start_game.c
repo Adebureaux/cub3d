@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/19 22:27:13 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/26 02:41:32 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,20 @@ void	resize_window(t_cub *cub, t_mlx *mlx)
 	mlx->pos.y = cub->ry;
 }
 
-void	set_position_2(t_cub *cub, t_ray *ray)
+void	set_position_2(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
-	if (cub->cp == 'E')
+	if (cub->cp == 'S')
+	{
+		mlx->right = LEFT;
+		mlx->left = RIGHT;
+		mlx->left_dir = MOVE_RIGHT;
+		mlx->right_dir = MOVE_LEFT;
+		ray->dir.x = 1;
+		ray->pla.x = 0;
+		ray->dir.y = 0;
+		ray->pla.y = 0.66;
+	}
+	else if (cub->cp == 'E')
 	{
 		ray->dir.x = 0;
 		ray->pla.x = 0.66;
@@ -49,8 +60,10 @@ void	set_position_1(t_cub *cub, t_mlx *mlx, t_ray *ray)
 {
 	ray->pos.x = cub->start.y + 0.5;
 	ray->pos.y = cub->start.x + 0.5;
-	mlx->right = RIGHT;
 	mlx->left = LEFT;
+	mlx->right = RIGHT;
+	mlx->left_dir = MOVE_LEFT;
+	mlx->right_dir = MOVE_RIGHT;
 	if (cub->cp == 'N')
 	{
 		ray->dir.x = -1;
@@ -58,17 +71,8 @@ void	set_position_1(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		ray->dir.y = 0;
 		ray->pla.y = 0.66;
 	}
-	else if (cub->cp == 'S')
-	{
-		mlx->right = LEFT;
-		mlx->left = RIGHT;
-		ray->dir.x = 1;
-		ray->pla.x = 0;
-		ray->dir.y = 0;
-		ray->pla.y = 0.66;
-	}
 	else
-		set_position_2(cub, ray);
+		set_position_2(cub, mlx, ray);
 }
 
 void	set_move(t_mlx *mlx)
@@ -95,5 +99,6 @@ void	start_game(t_cub *cub)
 	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bpp, &mlx.len, &mlx.endian);
 	load_texture(cub, &mlx, &ray);
 	set_position_1(cub, &mlx, &ray);
+	set_move(&mlx);
 	raycasting(cub, &mlx, &ray);
 }

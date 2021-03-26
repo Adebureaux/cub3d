@@ -1,12 +1,10 @@
-INC=/usr/include
-HT=Linux
-DOCP=do_cp
 
 
+INC=%%%%
 
 INCLIB=$(INC)/../lib
 
-CC=gcc
+CC=clang
 
 CFLAGS= -I$(INC) -O3 -I..
 

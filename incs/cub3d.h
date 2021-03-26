@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/25 03:10:53 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/25 15:53:35 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ struct			s_mlx
 	int			move_down;
 	int			rot_left;
 	int			rot_right;
+	int			left_dir;
+	int			right_dir;
 };
 
 typedef struct s_ray	t_ray;
