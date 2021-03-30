@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/30 13:08:47 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/30 13:16:56 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	parse_resolution(t_cub *cub)
 	i = 2;
 	if (ft_strncmp(cub->line, "R ", 2))
 		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
+	while (cub->line[i] == ' ')
+		i++;
 	cub->rx = ft_atoi(cub->line + i);
 	if (cub->rx < 1)
 		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
@@ -26,6 +28,8 @@ void	parse_resolution(t_cub *cub)
 		i++;
 	if (cub->line[i++] != ' ')
 		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
+	while (cub->line[i] == ' ')
+		i++;
 	cub->ry = ft_atoi(cub->line + i);
 	if (cub->ry < 1)
 		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
