@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 13:37:18 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/30 13:16:56 by adeburea         ###   ########.fr       */
+/*   Updated: 2021/03/30 14:51:22 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	parse_resolution(t_cub *cub)
 		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
 	while (ft_isdigit(cub->line[i]))
 		i++;
+	while (cub->line[i] == ' ')
+		i++;
 	if (cub->line[i])
 		ft_exit(EXIT_FAILURE, cub, "Wrong resolution\n");
 }
@@ -43,7 +45,11 @@ void	parse_texture(char **dst, t_cub *cub, int len)
 {
 	if (cub->line[len] != ' ')
 		ft_exit(EXIT_FAILURE, cub, "Wrong texture\n");
+	while (cub->line[len] == ' ')
+		len++;
 	*dst = ft_strdup(cub->line + len + 1);
+	while (cub->line[len + 1] == ' ')
+		len++;
 	if (!*dst || !*dst[0])
 		ft_exit(EXIT_FAILURE, cub, "Wrong texture\n");
 }
@@ -54,6 +60,8 @@ void	parse_color(int *c, t_cub *cub)
 	t_rgb	rgb;
 
 	i = 2;
+	while (cub->line[i] == ' ')
+		i++;
 	if (!ft_isdigit(cub->line[i]))
 		ft_exit(EXIT_FAILURE, cub, "Wrong color\n");
 	rgb.r = ft_atoi(&cub->line[i]);
