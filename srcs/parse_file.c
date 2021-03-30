@@ -45,11 +45,7 @@ void	parse_texture(char **dst, t_cub *cub, int len)
 {
 	if (cub->line[len] != ' ')
 		ft_exit(EXIT_FAILURE, cub, "Wrong texture\n");
-	while (cub->line[len] == ' ')
-		len++;
 	*dst = ft_strdup(cub->line + len + 1);
-	while (cub->line[len + 1] == ' ')
-		len++;
 	if (!*dst || !*dst[0])
 		ft_exit(EXIT_FAILURE, cub, "Wrong texture\n");
 }
