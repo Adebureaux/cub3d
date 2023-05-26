@@ -13,7 +13,7 @@
 .PHONY: all clean fclean re
 
 NAME	=	cub3D
-CC		=	clang
+CC		= clang
 FLAGS	=	-O3 -Wall -Wextra -Werror
 INC		=	incs
 OBJ		=	objs

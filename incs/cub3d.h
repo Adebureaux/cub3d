@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 14:11:33 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/26 14:26:28 by adeburea         ###   ########.fr       */
+/*   Updated: 2023/05/26 18:52:42 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # define LEFT 65361
 # define RIGHT 65363
 # define ESCAPE 65307
-# define MOV_S 0.12
-# define ROT_S 0.035
+# define MOV_S 0.1
+# define ROT_S 0.03
 # define TEX_W 64
 # define TEX_H 64
 

@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 18:01:00 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/30 13:07:06 by adeburea         ###   ########.fr       */
+/*   Updated: 2023/05/26 18:55:10 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	resize_window(t_cub *cub, t_mlx *mlx)
 	res.x = cub->rx;
 	res.y = cub->ry;
 	mlx_get_screen_size(mlx->mlx, &cub->rx, &cub->ry);
+	// For double screen divide the x size by 2
+	cub->rx /= 2;
 	if (cub->rx > res.x)
 		cub->rx = res.x;
 	if (cub->ry > res.y)

@@ -6,7 +6,7 @@
 /*   By: adeburea <adeburea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 14:49:17 by adeburea          #+#    #+#             */
-/*   Updated: 2021/03/30 13:08:03 by adeburea         ###   ########.fr       */
+/*   Updated: 2023/05/26 18:50:41 by adeburea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ void	draw(t_cub *cub, t_mlx *mlx, t_ray *ray)
 		ray->x++;
 	}
 	draw_sprite(cub, mlx, ray);
-	draw_life(cub, mlx);
+	// Shitty function
+	// draw_life(cub, mlx);
 }
 
 void	raycasting(t_cub *cub, t_mlx *mlx, t_ray *ray)
