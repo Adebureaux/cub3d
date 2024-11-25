@@ -28,6 +28,6 @@ Based on your `make` choice, you should use one map or another.
 - :arrow_left: :o: :arrow_right: to rotate the camera
 
 
-### Resources :book:
+### Resources
 + [Minilibx Info](https://qst0.github.io/ft_libgfx/)
 + [Lodev Raycasting Tutorial](https://lodev.org/cgtutor/raycasting.html)
