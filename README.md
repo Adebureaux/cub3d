@@ -24,7 +24,7 @@ Based on your `make` choice, you should use one map or another.
 
 ## Controllers
 
-- W A S D :arrow_forward: to move through the map
+- W A S D to move through the map
 - :arrow_left: :o: :arrow_right: to rotate the camera
 
 
