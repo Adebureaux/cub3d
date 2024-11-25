@@ -11,18 +11,18 @@ Wolfenstein 3D is the ancestor of games like Doom (Id Software, 1993), Doom II
 that are additional eternal milestones in the world of video games.
 If you want to know more [Wolfenstein 3D](https://es.wikipedia.org/wiki/Wolfenstein_3D)
 
-## Pre-requisites :exclamation:
+## Pre-requisites
 - [x] Linux OS
 - [x] GCC Compiler
 
-## Installation :rocket:
+## Installation
 1. `git clone https://www.github.com/MikelTolino/Cub3D.git`
 2. `make` or `make bonus`
 3. `./cub3D maps/mandatory.cub` or  `./cub3D maps/bonus.cub`
 
 Based on your `make` choice, you should use one map or another.
 
-## Controllers :bomb:
+## Controllers
 
 - W A S D :arrow_forward: to move through the map
 - :arrow_left: :o: :arrow_right: to rotate the camera
